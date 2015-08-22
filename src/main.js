@@ -56,12 +56,16 @@ cc.game.onStart = function(){
     // Adjust viewport meta
     cc.view.adjustViewPort(true);
     // Setup the resolution policy and design resolution size
-    cc.view.setDesignResolutionSize(800, 450, cc.ResolutionPolicy.SHOW_ALL);
+    cc.view.setDesignResolutionSize(g_layout.canvas_width, g_layout.canvas_height, cc.ResolutionPolicy.SHOW_ALL);
     // The game will be resized when browser size change
     cc.view.resizeWithBrowserSize(true);
+    
+    //load loaderimage
+    cc._loaderImage = g_loader_image;
+    
     //load resources
     cc.LoaderScene.preload(g_resources, function () {
-        cc.director.runScene(new HelloWorldScene());
+        cc.director.runScene(new BokupanMainScene());
     }, this);
 };
 cc.game.run();

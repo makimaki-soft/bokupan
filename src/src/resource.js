@@ -1,7 +1,8 @@
 var res = {
-    HelloWorld_png : "res/HelloWorld.png",
-    CloseNormal_png : "res/CloseNormal.png",
-    CloseSelected_png : "res/CloseSelected.png"
+      HelloWorld_png : "res/HelloWorld.png"
+    , CloseNormal_png : "res/CloseNormal.png"
+    , CloseSelected_png : "res/CloseSelected.png"
+    , MainMap_png : "res/map_ver2.png"
 };
 
 var g_resources = [];

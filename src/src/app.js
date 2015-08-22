@@ -51,12 +51,13 @@ var HelloWorldLayer = cc.Layer.extend({
         //    you may modify it.
         // ask the window size
         var size = cc.winSize;
+        cc.log(size.width,size.height);
 
         // add a "close" icon to exit the progress. it's an autorelease object
         var closeItem = new cc.MenuItemImage(
             res.CloseNormal_png,
             res.CloseSelected_png,
-            callbuck_up, this);
+            0, this);
         closeItem.attr({
             x: size.width - 20,
             y: 20,
@@ -92,12 +93,27 @@ var HelloWorldLayer = cc.Layer.extend({
     }
 });
 
-var HelloWorldScene = cc.Scene.extend({
+var BokupanMainScene = cc.Scene.extend({
     onEnter:function () {
         this._super();
         
-        var layer = new HelloWorldLayer();
-        layer.init();
-        this.addChild(layer);
+        //var layer = new HelloWorldLayer();
+        //this.addChild(layer);
+        
+        var playerStatusLayer = new DummyLayer(cc.color(200,200,50,100), 750, 200);
+        playerStatusLayer.setPosition(cc.p(0,0));
+        this.addChild(playerStatusLayer);
+        
+        var menuLayer = new DummyLayer(cc.color(255,200,100,100), 750, 200);
+        menuLayer.setPosition(cc.p(0,200));
+        this.addChild(menuLayer);
+        
+        var mainMapLayer = new MainMapLayer(cc.color(100,255,140,100), 750, 750);
+        mainMapLayer.setPosition(cc.p(0,400));
+        this.addChild(mainMapLayer);
+
+        var enemyStatusLayer = new DummyLayer(cc.color(70,20,70,100), 750, 1334-1150);
+        enemyStatusLayer.setPosition(cc.p(0,1150));
+        this.addChild(enemyStatusLayer);
     }
 });
