@@ -1,7 +1,7 @@
 {
     "project_type": "javascript",
 
-    "debugMode" : 1,
+    "debugMode" : 5,
     "showFPS" : false,
     "frameRate" : 30,
     "id" : "gameCanvas",
@@ -17,5 +17,6 @@
         , "src/layout.js"
         , "src/MainMapLayer.js"
         , "src/DummyLayer.js"
+        , "src/DebugInfoLayer.js"
     ]
 }

@@ -100,20 +100,32 @@ var BokupanMainScene = cc.Scene.extend({
         //var layer = new HelloWorldLayer();
         //this.addChild(layer);
         
-        var playerStatusLayer = new DummyLayer(cc.color(200,200,50,100), 750, 200);
+        // for debug
+        var debugInfoLayer = new DebugInfoLayer();
+        debugInfoLayer.setPosition(cc.p(0,0));
+        debugInfoLayer.scheduleUpdate();
+        this.addChild(debugInfoLayer);
+        
+        var position_Y = 0;
+        
+        var playerStatusLayer = new DummyLayer(cc.color(200,200,50,100), g_layout.playerstatus_width, g_layout.playerstatus_height);
         playerStatusLayer.setPosition(cc.p(0,0));
         this.addChild(playerStatusLayer);
+        position_Y += g_layout.playerstatus_height;
         
-        var menuLayer = new DummyLayer(cc.color(255,200,100,100), 750, 200);
-        menuLayer.setPosition(cc.p(0,200));
+        var menuLayer = new DummyLayer(cc.color(255,200,100,100), g_layout.menu_width, g_layout.menu_height);
+        menuLayer.setPosition(cc.p(0,position_Y));
         this.addChild(menuLayer);
+        position_Y += g_layout.menu_height;
         
-        var mainMapLayer = new MainMapLayer(cc.color(100,255,140,100), 750, 750);
-        mainMapLayer.setPosition(cc.p(0,400));
+        var mainMapLayer = new MainMapLayer(cc.color(100,255,140,100), g_layout.map_width, g_layout.map_height);
+        mainMapLayer.setPosition(cc.p(0,position_Y));
         this.addChild(mainMapLayer);
+        position_Y += g_layout.map_height;
 
-        var enemyStatusLayer = new DummyLayer(cc.color(70,20,70,100), 750, 1334-1150);
-        enemyStatusLayer.setPosition(cc.p(0,1150));
+        var enemyStatusLayer = new DummyLayer(cc.color(70,200,70,100), g_layout.enemystatus_width, g_layout.enemystatus_height);
+        enemyStatusLayer.setPosition(cc.p(0,position_Y));
         this.addChild(enemyStatusLayer);
+        position_Y += g_layout.enemystatus_height;
     }
 });
