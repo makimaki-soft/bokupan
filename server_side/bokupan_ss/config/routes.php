@@ -41,6 +41,12 @@ use Cake\Routing\Router;
  */
 Router::defaultRouteClass('Route');
 
+Router::scope('/rooms', ['controller' => 'Rooms'], function ($routes){
+    $routes->connect('/');
+    $routes->connect('/add', ['action' => 'add']);
+    $routes->connect('/:name', ['action' => 'enter'], ['pass' => ['name'], 'name' => '[a-zA-Z0-9]+']);
+});
+
 Router::scope('/', function ($routes) {
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
@@ -52,7 +58,8 @@ Router::scope('/', function ($routes) {
     /**
      * ...and connect the rest of 'Pages' controller's URLs.
      */
-    $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
+    //$routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
+    $routes->connect('/help', ['controller' => 'Pages', 'action' => 'display']);
 
     /**
      * Connect catchall routes for all controllers.
