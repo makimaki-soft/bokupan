@@ -12,8 +12,9 @@
  * @since         0.10.0
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+use Cake\Core\Configure;
 
-$cakeDescription = 'CakePHP: the rapid development php framework';
+$cakeDescription = Configure::read('Common.title');
 ?>
 <!DOCTYPE html>
 <html>
@@ -36,11 +37,10 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 <body>
     <header>
         <div class="header-title">
-            <span><?= $this->fetch('title') ?></span>
+            <span><?= $this->Html->link(__($this->fetch('title')), ['action' => 'index']) ?></span>
         </div>
         <div class="header-help">
-            <span><a target="_blank" href="http://book.cakephp.org/3.0/">Documentation</a></span>
-            <span><a target="_blank" href="http://api.cakephp.org/3.0/">API</a></span>
+            <span><a target="_blank" href="/">Help</a></span>
         </div>
     </header>
     <div id="container">

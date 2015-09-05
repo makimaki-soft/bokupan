@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Core\Configure;
 
 /**
  * Rooms Controller
@@ -20,6 +21,7 @@ class RoomsController extends AppController
     {
         $this->set('rooms', $this->paginate($this->Rooms));
         $this->set('_serialize', ['rooms']);
+        $this->set('title', Configure::read('Room.title'));
     }
 
     /**
@@ -29,10 +31,10 @@ class RoomsController extends AppController
      * @return void
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
-    public function enter($name = null)
+    public function enter($id= null)
     {
         $room = $this->Rooms->find()
-            ->where(['name' => $name])
+            ->where(['id' => $id])
             ->first();
         if(!$room) {
             throw new \Cake\Network\Exception\NotFoundException('Could not find that room'); 
@@ -50,10 +52,14 @@ class RoomsController extends AppController
     {
         $room = $this->Rooms->newEntity();
         if ($this->request->is('post')) {
-            $room = $this->Rooms->patchEntity($room, $this->request->data);
+            // 部屋作成時にシステム側で入力する値を設定
+            $post = $this->request->data;
+            $post["member_num"] = 1; // 部屋人数を1人に
+            $room = $this->Rooms->patchEntity($room, $post);
             if ($this->Rooms->save($room)) {
                 $this->Flash->success(__('The room has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                //return $this->redirect(['action' => 'index']);
+                return $this->redirect(['action' => 'enter', $room->id, $room->name]);
             } else {
                 $this->Flash->error(__('The room could not be saved. Please, try again.'));
             }
@@ -71,6 +77,7 @@ class RoomsController extends AppController
      */
     public function edit($id = null)
     {
+        $this->log($this->request);
         $room = $this->Rooms->get($id, [
             'contain' => []
         ]);
@@ -105,4 +112,38 @@ class RoomsController extends AppController
         }
         return $this->redirect(['action' => 'index']);
     }
+
+    /**
+     * Ready method
+     * jsから実行されるmethod hostとなるクライアントのpeer idを保存する
+     *
+     * @param
+     *   string|null $id Room id.
+     *   string|null $peer_id クライアントで発行したpeer id.
+     * @return bool
+     * @throws \Cake\Network\Exception\NotFoundException When record not found.
+     */
+    public function ready($id = null, $peer_id = null) {
+        $this->log($this->request);
+        if(is_null($peer_id)) {
+            throw new \Cake\Network\Exception\BadRequestException('Invalid Parameter'); 
+        }
+        $room = $this->Rooms->get($id, [
+            'contain' => []
+        ]);
+        if ($this->request->is(['get'])) {
+            $room = $this->Rooms->patchEntity($room, $this->request->data);
+            $room['host_user_pid'] = $peer_id;
+            $this->log($room);
+            if ($this->Rooms->save($room)) {
+                $this->Flash->success(__('The room has been saved.'));
+            } else {
+                $this->Flash->error(__('The room could not be saved. Please, try again.'));
+            }
+        }
+        $this->set(compact('room'));
+        $this->set('_serialize', ['room']);
+    }
+
+
 }

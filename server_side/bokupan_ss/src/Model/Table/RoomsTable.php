@@ -45,7 +45,29 @@ class RoomsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->allowEmpty('name');
+            ->requirePresence('name', 'create')
+            ->notEmpty('name')
+            ->add('name', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
+            ->add('member_num', 'valid', ['rule' => 'numeric'])
+            ->requirePresence('member_num', 'create')
+            ->notEmpty('member_num');
+
+        $validator
+            ->requirePresence('host_user', 'create')
+            ->notEmpty('host_user');
+
+        $validator
+            ->add('host_user_pid', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('host_user_pid')
+            ->add('host_user_pid', 'unique', ['rule' => 'validateUnique', 'provider' => 'table']);
+
+        $validator
+            ->allowEmpty('password');
+
+        $validator
+            ->allowEmpty('message');
 
         return $validator;
     }

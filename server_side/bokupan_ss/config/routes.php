@@ -44,7 +44,8 @@ Router::defaultRouteClass('Route');
 Router::scope('/rooms', ['controller' => 'Rooms'], function ($routes){
     $routes->connect('/');
     $routes->connect('/add', ['action' => 'add']);
-    $routes->connect('/:name', ['action' => 'enter'], ['pass' => ['name'], 'name' => '[a-zA-Z0-9]+']);
+    $routes->connect('/ready/:id/:peer_id', ['action' => 'ready'], ['pass' => ['id', 'peer_id']]);
+    $routes->connect('/:id/:name', ['action' => 'enter'], ['pass' => ['id','name'], 'id' => '[0-9]+']);
 });
 
 Router::scope('/', function ($routes) {

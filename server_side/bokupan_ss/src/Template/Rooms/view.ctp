@@ -13,10 +13,20 @@
         <div class="large-5 columns strings">
             <h6 class="subheader"><?= __('Name') ?></h6>
             <p><?= h($room->name) ?></p>
+            <h6 class="subheader"><?= __('Host User') ?></h6>
+            <p><?= h($room->host_user) ?></p>
+            <h6 class="subheader"><?= __('Password') ?></h6>
+            <p><?= h($room->password) ?></p>
+            <h6 class="subheader"><?= __('Message') ?></h6>
+            <p><?= h($room->message) ?></p>
         </div>
         <div class="large-2 columns numbers end">
             <h6 class="subheader"><?= __('Id') ?></h6>
             <p><?= $this->Number->format($room->id) ?></p>
+            <h6 class="subheader"><?= __('Member Num') ?></h6>
+            <p><?= $this->Number->format($room->member_num) ?></p>
+            <h6 class="subheader"><?= __('Host User Pid') ?></h6>
+            <p><?= $this->Number->format($room->host_user_pid) ?></p>
         </div>
         <div class="large-2 columns dates end">
             <h6 class="subheader"><?= __('Created') ?></h6>

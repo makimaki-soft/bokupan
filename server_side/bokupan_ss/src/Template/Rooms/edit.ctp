@@ -16,6 +16,11 @@
         <legend><?= __('Edit Room') ?></legend>
         <?php
             echo $this->Form->input('name');
+            echo $this->Form->input('member_num');
+            echo $this->Form->input('host_user');
+            echo $this->Form->input('host_user_pid');
+            echo $this->Form->input('password');
+            echo $this->Form->input('message');
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
