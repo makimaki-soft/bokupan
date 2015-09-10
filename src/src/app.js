@@ -130,9 +130,11 @@ var BokupanMainScene = cc.Scene.extend({
         position_Y += g_layout.enemystatus_height;
         
         // todo 
+        
         mainMapLayer.updateSection();
         // mainMapLayer.playerMove();
         menuLayer.setMoveFunction(mainMapLayer);
+        mainMapLayer.setMenuLayer(menuLayer);
         //menuLayer.moveFunc = mainMapLayer.playerMove;
     }
 });

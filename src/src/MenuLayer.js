@@ -13,24 +13,31 @@ var MenuLayer = cc.LayerColor.extend({
   , setMoveFunction:function(map){
       this.map = map;
       
-      this.moveIcon = new cc.MenuItemImage(
+      var moveIcon = new cc.MenuItemImage(
             res.IconMove,
             res.IconMove,
             map.playerMove, 
             map);
             
-        this.moveIcon.attr({
-            scaleX: this.height/this.moveIcon.height,
-            scaleY: this.height/this.moveIcon.height,
+        moveIcon.attr({
+            scaleX: this.height/moveIcon.height,
+            scaleY: this.height/moveIcon.height,
             x: 0,
             y: 0,
             anchorX: 0,
             anchorY: 0
         });
         
-        var menu = new cc.Menu(this.moveIcon);
-        menu.x = 0;
-        menu.y = 0;
-        this.addChild(menu, 1);  
-  }  
+        this.menuMove = new cc.Menu(moveIcon);
+        this.menuMove.x = 0;
+        this.menuMove.y = 0;
+        this.addChild(this.menuMove, 1);
+        
+        this.setMoveMenuEnable = function(bool){
+            this.menuMove.setEnabled(bool);
+        };
+        this.setMoveMenuResume = function(){
+            this.menuMove.setEnabled(true);
+        };
+  }
 });

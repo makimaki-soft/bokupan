@@ -29,6 +29,9 @@ var MainMapLayer = cc.LayerColor.extend({
         
       this.addChild(this.playerIcon, 0);
     }
+  , setMenuLayer:function(menuLayer){
+      this.menuLayer = menuLayer;
+  }
   , playerMove:function(){
         cc.log("playerMove");
         var offsetX = [-40, 0, 40, 0];
@@ -39,6 +42,7 @@ var MainMapLayer = cc.LayerColor.extend({
         var target = this.playerIcon;
         var cursors = [];
         var mvChoices = getNeighber(target.position);
+        var tmp = this;
         
         for (var i in mvChoices) {
           var idx = mvChoices[i];
@@ -101,7 +105,12 @@ var MainMapLayer = cc.LayerColor.extend({
               
               target.setNextPos(nextHome);
               target.scheduleOnce(target.updatePos, 1.1);
+              
+              tmp.menuLayer.setMoveMenuEnable(false);
+              
+              tmp.menuLayer.scheduleOnce(tmp.menuLayer.setMoveMenuResume, 1.1);
             }
+            
             
             return true;
           }
