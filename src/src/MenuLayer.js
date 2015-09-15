@@ -1,37 +1,35 @@
-var test = function(){
-    
-    cc.log("test ");
-}
-
 var MenuLayer = cc.LayerColor.extend({
     sprite:null,
     ctor:function (color,w,h) {
-        this._super(color,w,h);		        
-                
+        this._super(color,w,h);
+        
+        
+        
+        
         return true;
     }
   , setMoveFunction:function(map){
       this.map = map;
       
-      var moveIcon = new cc.MenuItemImage(
+      this.moveIcon = new Mkmk_MenuItemImage(
             res.IconMove,
             res.IconMove,
-            map.playerMove, 
+            /*map.playerMove*/  0, 
             map);
             
-        moveIcon.attr({
-            scaleX: this.height/moveIcon.height,
-            scaleY: this.height/moveIcon.height,
+        this.moveIcon.attr({
+            scaleX: this.height/this.moveIcon.height,
+            scaleY: this.height/this.moveIcon.height,
             x: 0,
             y: 0,
             anchorX: 0,
             anchorY: 0
         });
         
-        this.menuMove = new cc.Menu(moveIcon);
+        this.menuMove = new cc.Menu(this.moveIcon);
         this.menuMove.x = 0;
         this.menuMove.y = 0;
-        this.addChild(this.menuMove, 1);
+        this.addChild(this.menuMove, 0);
         
         this.setMoveMenuEnable = function(bool){
             this.menuMove.setEnabled(bool);

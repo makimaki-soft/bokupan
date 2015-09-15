@@ -22,7 +22,9 @@ var POSITION = {
   NUM_HOME : 13
 }
 
+// Positional relationship of the house to each other
 var NextHome = [
+  //          LEFT,           ABOVE,           RIGHT,           BELOW
   [POSITION.HOME_A, POSITION.HOME_4, POSITION.HOME_2,            null],   // HOME_1
   [POSITION.HOME_1, POSITION.HOME_5, POSITION.HOME_3,            null],   // HOME_2
   [POSITION.HOME_2, POSITION.HOME_6, POSITION.HOME_B,            null],   // HOME_3

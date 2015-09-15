@@ -21,5 +21,6 @@
         , "src/Avatar.js"
         , "src/Position.js"
         , "src/MenuLayer.js"
+        , "src/Phase.js"
     ]
 }

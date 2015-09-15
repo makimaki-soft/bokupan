@@ -1,98 +1,3 @@
-
-var callbuck_left = function(sender){
-    console.log("callbuck_left called");
-    var move = cc.MoveBy.create(1,cc.p(-100,0));
-    this.runAction(move);
-    sender.initWithString(
-            "up",
-            callbuck_up, 
-            this);
-}
-
-var callbuck_down = function(sender){
-    console.log("callbuck_down called");
-    var move = cc.MoveBy.create(1,cc.p(0,-100));
-    this.runAction(move);
-    sender.initWithString(
-            "left",
-            callbuck_left, 
-            this);
-}
-
-var callbuck_right = function(sender){
-    console.log("callbuck_right called");
-    var move = cc.MoveBy.create(1,cc.p(100,0));
-    this.runAction(move);
-    sender.initWithString(
-            "down",
-            callbuck_down, 
-            this);
-}
-
-var callbuck_up = function(sender){
-    console.log("callbuck_up called");
-    var move = cc.MoveBy.create(1,cc.p(0,100));
-    this.runAction(move);
-    sender.initWithString(
-            "right",
-            callbuck_right, 
-            this);
-}
-
-var HelloWorldLayer = cc.Layer.extend({
-    sprite:null,
-    ctor:function () {
-        //////////////////////////////
-        // 1. super init first
-        this._super();
-
-        /////////////////////////////
-        // 2. add a menu item with "X" image, which is clicked to quit the program
-        //    you may modify it.
-        // ask the window size
-        var size = cc.winSize;
-        cc.log(size.width,size.height);
-
-        // add a "close" icon to exit the progress. it's an autorelease object
-        var closeItem = new cc.MenuItemImage(
-            res.CloseNormal_png,
-            res.CloseSelected_png,
-            0, this);
-        closeItem.attr({
-            x: size.width - 20,
-            y: 20,
-            anchorX: 0.5,
-            anchorY: 0.5
-        });
-
-        var menu = new cc.Menu(closeItem);
-        menu.x = 0;
-        menu.y = 0;
-        this.addChild(menu, 1);
-
-        // add "HelloWorld" splash screen"
-        this.sprite = new cc.Sprite(res.HelloWorld_png);
-        this.sprite.attr({
-            x: size.width / 2,
-            y: size.height / 2
-        });
-        this.addChild(this.sprite, 0);
-        
-        var person = new cc.LabelTTF("(^^)","Arial",20);
-        person.setPosition(cc.p(100,100));
-        this.addChild(person,0);
-       
-        var botton_up = cc.MenuItemFont.create(
-            "up",
-            callbuck_up, 
-            person);
-        botton_up.setPosition(cc.p(size.width / -2 + 100,size.height/-2+50));
-        this.addChild(new cc.Menu(botton_up),0);
-        
-        return true;
-    }
-});
-
 var BokupanMainScene = cc.Scene.extend({
     onEnter:function () {
         this._super();
@@ -129,12 +34,60 @@ var BokupanMainScene = cc.Scene.extend({
         this.addChild(enemyStatusLayer);
         position_Y += g_layout.enemystatus_height;
         
-        // todo 
+        // sample 
         
-        mainMapLayer.updateSection();
-        // mainMapLayer.playerMove();
+        mainMapLayer.serPlayerIcon();
+        
         menuLayer.setMoveFunction(mainMapLayer);
         mainMapLayer.setMenuLayer(menuLayer);
-        //menuLayer.moveFunc = mainMapLayer.playerMove;
+        
+        var playerMovePhase = new Mkmk_Phase();
+        var ActionChoicePhase = new Mkmk_Phase();
+        
+        //////////// playerMovePhase ////////////
+        playerMovePhase.nextPhase = ActionChoicePhase;
+        playerMovePhase.onEnter = function(){
+            cc.log("onEnter Move Phase");
+            mainMapLayer.addCursor();
+            playerMovePhase.ev = cc.EventListener.create({
+                event: cc.EventListener.TOUCH_ONE_BY_ONE,
+                swallowTouches: true,
+                onTouchBegan: function (touch, event) {
+                    var touchX = touch.getLocationX();
+                    var touchY = touch.getLocationY();
+                    // cc.log(event);
+                    if(mainMapLayer.isInside(touchX, touchY)){
+                        var dir = mainMapLayer.getRelativeDirection(touchX,touchY);
+                        var res = mainMapLayer.movePlayer(dir);
+                        if(res){
+                            playerMovePhase.gotoNextPhase(1000);
+                        }
+                    }
+                }
+            });
+            cc.eventManager.addListener(playerMovePhase.ev,mainMapLayer);
+        };
+        playerMovePhase.onExit = function(){
+            cc.log("onExit Move Phase");
+            cc.eventManager.removeListener(playerMovePhase.ev);
+            mainMapLayer.removeCursor();
+        }
+        
+        //////////// ActionChoicePhase ////////////
+        ActionChoicePhase.nextPhase = playerMovePhase;
+        ActionChoicePhase.onEnter = function(){
+            cc.log("onEnter Action Choice Phase");
+            menuLayer.setMoveMenuEnable(true);
+            
+            this.setClickEventListener(menuLayer.moveIcon, this.gotoNextPhase);
+        }
+        ActionChoicePhase.onExit = function(){
+            cc.log("onExit Action Choice Phase");
+            menuLayer.setMoveMenuEnable(false);
+        }
+        
+        
+        //////////// Entry Point ////////////
+        ActionChoicePhase.onEnter();
     }
 });

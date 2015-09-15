@@ -6,6 +6,7 @@ var res = {
     , DummyObj : "res/dummyObj.png"
     , Allow_png : "res/allow.png"
     , IconMove : "res/IconMove.png"
+    , Test_png : "res/maru.png"
 };
 
 var g_resources = [];
