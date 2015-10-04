@@ -27,8 +27,7 @@ $cakeDescription = Configure::read('Common.title');
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('cake.css') ?>
+    <?= $this->element('css'); ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
@@ -36,12 +35,13 @@ $cakeDescription = Configure::read('Common.title');
 </head>
 <body>
     <header>
-        <div class="header-title">
-            <span><?= $this->Html->link(__($this->fetch('title')), ['action' => 'index']) ?></span>
-        </div>
-        <div class="header-help">
-            <span><a target="_blank" href="/">Help</a></span>
-        </div>
+        <nav >
+            <ul class="navbar">
+                <li><?= $this->Html->link("", ["controller" => "Pages", "action" => "display"], ["class"=>"glyphicon glyphicon-home"]) ?></li>
+                <li><?= $this->Html->link("ルームを作成する", ["controller" => "Rooms", "action" => "add"]) ?></li>
+                <li><?= $this->Html->link("説明書を読む", ["controller" => "Pages", "action" => "display"]) ?></li>
+            </ul>
+        </nav>
     </header>
     <div id="container">
 

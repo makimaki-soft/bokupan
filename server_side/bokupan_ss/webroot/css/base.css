@@ -43,3 +43,26 @@ footer {
   position: fixed;
   bottom: 0;
 }
+
+/*
+ * ルール一覧ページ
+ */
+.navbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+  padding-left: 10px;
+}
+
+.navbar li:first-child {
+  margin-right: auto;
+}
+
+.navbar li {
+  margin-right: 5px;
+}
+
+.rooms {
+  margin-right: 20px;
+  margin-left: 20px;
+}
