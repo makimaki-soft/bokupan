@@ -27,19 +27,30 @@ $cakeDescription = Configure::read('Common.title');
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        <?= $cakeDescription ?>
-    </title>
+    <title><?= $cakeDescription ?></title>
     <?= $this->Html->meta('icon') ?>
-    <?= $this->Html->css('base.css') ?>
+    <?= $this->element('css'); ?>
 </head>
 <body class="home">
     <header>
+        <ul class="header-right">
+            <li>
+                <?= $this->Html->image("circle_logo.png", ["alt" => "circle_log", 'url' => ['controller' => 'Pages', 'action' => 'display', "home"], "class" => "logo"]);?>
+            </li>
+            <li>ver 1.0.0</li>
+        </ul>
     </header>
     <div id="content">
-        <?= $this->Html->link("ゲームを始める", ["controller" => "Rooms", "action" => "index"]) ?>
+        <div class="main_img">
+            <?= $this->Html->image('game_logo.png', ['alt' => 'CakePHP']); ?>
+        </div>
+        <ul>
+        <li><?= $this->Html->link("ゲームを始める", ["controller" => "Rooms", "action" => "index"]) ?></li>
+        <li><?= $this->Html->link("説明書を読む", ["controller" => "Rooms", "action" => "index"]) ?></li>
+        </ul>
     </div>
     <footer>
+        <span>copy right</span>
     </footer>
 </body>
 </html>
