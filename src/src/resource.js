@@ -2,7 +2,7 @@ var res = {
       HelloWorld_png : "res/HelloWorld.png"
     , CloseNormal_png : "res/CloseNormal.png"
     , CloseSelected_png : "res/CloseSelected.png"
-    , MainMap_png : "res/map_ver2.png"
+    , MainMap_png : "res/map_ver3_nightscape.png"
     , DummyObj : "res/dummyObj.png"
     , Allow_png : "res/allow.png"
     , IconMove : "res/IconMove.png"
@@ -24,6 +24,7 @@ var res = {
     , CardPolice : "res/ItemPolice.png"
     , CardPeople : "res/ItemPeople.png"
     , PoliceIcon : "res/police.png"
+    , Player1_png : "res/koma_red.png"
 };
 
 var g_resources = [];
