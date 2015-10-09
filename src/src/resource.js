@@ -5,10 +5,17 @@ var res = {
     , MainMap_png : "res/map_ver3_nightscape.png"
     , DummyObj : "res/dummyObj.png"
     , Allow_png : "res/allow.png"
+<<<<<<< HEAD
     , IconMove : "res/IconMove.png"
     , IconAllow : "res/IconYajirushi.png"
     , IconAllow2 : "res/IconYajirushi2.png"
     , Yajirushi : "res/Yajirushi.png"
+=======
+    , IconMove : "res/command_move.png"
+    , IconGet : "res/command_get.png"
+    , IconChange : "res/command_change.png"
+    , IconItem : "res/command_item.png"
+>>>>>>> メニュー画像反映、表示だけ追記
     , Test_png : "res/maru.png"
     , IconCollect : "res/GetPants.png"
     , IconCollect2 : "res/GetPants2.png"
