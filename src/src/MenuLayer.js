@@ -3,19 +3,9 @@ var MenuLayer = cc.LayerColor.extend({
     ctor:function (color,w,h) {
         this._super(color,w,h);
         
-        
-        
-        
-        return true;
-    }
-  , setMoveFunction:function(map){
-      this.map = map;
-      
-      this.moveIcon = new Mkmk_MenuItemImage(
+        this.moveIcon = new Mkmk_MenuItemImage(
             res.IconMove,
-            res.IconMove,
-            /*map.playerMove*/  0, 
-            map);
+            res.IconMove);
             
         this.moveIcon.attr({
             scaleX: this.height/this.moveIcon.height,
@@ -31,11 +21,34 @@ var MenuLayer = cc.LayerColor.extend({
         this.menuMove.y = 0;
         this.addChild(this.menuMove, 0);
         
-        this.setMoveMenuEnable = function(bool){
-            this.menuMove.setEnabled(bool);
-        };
-        this.setMoveMenuResume = function(){
-            this.menuMove.setEnabled(true);
-        };
-  }
+        this.rotateIcon = new Mkmk_MenuItemImage(
+            res.IconAllow,
+            res.IconAllow2);
+        
+        this.rotateIcon.attr({
+            scaleX: this.height/this.rotateIcon.height,
+            scaleY: this.height/this.rotateIcon.height,
+            x: 100,
+            y: 0,
+            anchorX: 0,
+            anchorY: 0
+        });
+        
+        this.menuRotate = new cc.Menu(this.rotateIcon);
+        this.menuRotate.x = 0;
+        this.menuRotate.y = 0;
+        this.addChild(this.menuRotate, 0);
+        
+        return true;
+    }
+  , setMoveFunction:function(map){
+      this.map = map;
+      this.moveIcon.setCallback(map,0);
+    }
+  , setMoveMenuEnable:function(bool){
+      this.menuMove.setEnabled(bool);
+    }
+  , setsetMoveMenuResume:function(){
+      this.menuMove.setEnabled(true);
+    }
 });

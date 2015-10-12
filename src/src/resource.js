@@ -6,6 +6,9 @@ var res = {
     , DummyObj : "res/dummyObj.png"
     , Allow_png : "res/allow.png"
     , IconMove : "res/IconMove.png"
+    , IconAllow : "res/IconYajirushi.png"
+    , IconAllow2 : "res/IconYajirushi2.png"
+    , Yajirushi : "res/Yajirushi.png"
     , Test_png : "res/maru.png"
 };
 

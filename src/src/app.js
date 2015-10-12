@@ -43,6 +43,7 @@ var BokupanMainScene = cc.Scene.extend({
         
         var playerMovePhase = new Mkmk_Phase();
         var ActionChoicePhase = new Mkmk_Phase();
+        var RotateAllowPhase = new Mkmk_Phase();
         
         //////////// playerMovePhase ////////////
         playerMovePhase.nextPhase = ActionChoicePhase;
@@ -74,18 +75,42 @@ var BokupanMainScene = cc.Scene.extend({
         }
         
         //////////// ActionChoicePhase ////////////
-        ActionChoicePhase.nextPhase = playerMovePhase;
+        ActionChoicePhase.nextPhase = RotateAllowPhase;
         ActionChoicePhase.onEnter = function(){
             cc.log("onEnter Action Choice Phase");
             menuLayer.setMoveMenuEnable(true);
             
-            this.setClickEventListener(menuLayer.moveIcon, this.gotoNextPhase);
+            // this.setClickEventListener(menuLayer.moveIcon, this.gotoNextPhase);
+            this.setClickEventListener(menuLayer.rotateIcon, this.gotoNextPhase);
         }
         ActionChoicePhase.onExit = function(){
             cc.log("onExit Action Choice Phase");
             menuLayer.setMoveMenuEnable(false);
         }
         
+        //////////// RotateAllowPhase ////////////
+        RotateAllowPhase.nextPhase = ActionChoicePhase;
+        RotateAllowPhase.onEnter = function(){
+            cc.log("onEnter Rotate Phase");
+            mainMapLayer.addCursorAllow();
+            RotateAllowPhase.ev = cc.EventListener.create({
+                event: cc.EventListener.TOUCH_ONE_BY_ONE,
+                swallowTouches: true,
+                onTouchBegan: function (touch, event) {
+                    var touchX = touch.getLocationX();
+                    var touchY = touch.getLocationY();
+                    // cc.log(event);
+                    if(mainMapLayer.isInside(touchX, touchY)){
+                        var dir = mainMapLayer.getRelativeDirectionAllow(touchX,touchY);
+                        var res = mainMapLayer.rotateAllow(dir);
+                        if(res){
+                            RotateAllowPhase.gotoNextPhase(1000);
+                        }
+                    }
+                }
+            });
+            cc.eventManager.addListener(RotateAllowPhase.ev,mainMapLayer);
+        }
         
         //////////// Entry Point ////////////
         ActionChoicePhase.onEnter();

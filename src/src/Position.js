@@ -122,3 +122,27 @@ var getNextHome = function(pos, neighber){
       return NextHome[pos][neighber];
 }
 
+var AllowCoordinate = {
+    allow1 : {x:35 , y:168 }
+  , allow2 : {x:239, y:39 }
+  , allow3 : {x:165  ,y:370}
+  , allow4 : {x:365, y:233}
+}
+
+var getAllowCoordinate = function(pos){
+  switch(pos){
+    case 0:
+      return AllowCoordinate.allow1;
+      break;
+    case 1:
+      return AllowCoordinate.allow2;
+      break;
+    case 2:
+      return AllowCoordinate.allow3;
+      break;
+    case 3:
+      return AllowCoordinate.allow4;
+      break;
+  }
+  
+}
