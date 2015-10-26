@@ -3,44 +3,42 @@
 var Mkmk_MenuItemImage = cc.MenuItemImage.extend({
     ctor:function (normalImage, selectedImage, callback, target) {
         this.target = target;
-        this.firstCallBack = callback;
-        this._super(normalImage, selectedImage, this.firstCallBack, target);
+        this.CallBackOrg = callback;
+        this._super(normalImage, selectedImage, this.CallBackOrg, target);
     }
   
- , addCondition:function(fnc,obj){
+ , addCallbackFunc:function(  fnc,    // callBack
+                              target, // "this" of callBack
+                              id      // condition ID
+ ){
       this.setCallback(function(sender){
-          if(sender.firstCallBack){
-            sender.firstCallBack.call(this);
+          // sender には setCallback をcallしたオブジェクトが入る
+          if(sender.CallBackOrg){
+            // コンストラクタ呼び出し時のtargetでcallBackをcall
+            sender.CallBackOrg.call(this);
           }
-          fnc.call(obj);
+          // 追加のcallBackをcall
+          fnc.call(target, id, 0);
       },this.target);
   } 
 });
 
-
-
 function Mkmk_Phase() {
+    this.nextPhase = [];
     this.onEnter = function(){
       cc.log("onEnter");
     };
     this.onExit = function(){
       cc.log("onExit");
     };
-    this.setOnEnterEvent = function(item){
-        item.addStartCondition(this.onEnter);
+    this.setOnClickEventListener = function(mkmk_menuitem,fnc, id){
+        mkmk_menuitem.addCallbackFunc(fnc,this, id);
     };
-    this.setOnExitEvent = function(item){
-        item.addEndCondition(this.onExit);
-    };
-    this.setClickEventListener = function(item,fnc){
-        item.addCondition(fnc,this);
-    };
-    this.gotoNextPhase = function(delay_msec){
+    this.gotoNextPhase = function(id, delay_msec){
       this.onExit();
-      var tmp = this;
+      var nextPhase = this.nextPhase[id];
       setTimeout(function(){
-        tmp.nextPhase.onEnter.call(tmp.nextPhase);
+        nextPhase.onEnter();
       }, delay_msec);
     }
 }
-

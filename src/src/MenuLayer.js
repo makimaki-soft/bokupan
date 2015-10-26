@@ -41,14 +41,13 @@ var MenuLayer = cc.LayerColor.extend({
         
         return true;
     }
-  , setMoveFunction:function(map){
+  , setMapLayer:function(map){
       this.map = map;
-      this.moveIcon.setCallback(map,0);
     }
   , setMoveMenuEnable:function(bool){
       this.menuMove.setEnabled(bool);
     }
-  , setsetMoveMenuResume:function(){
-      this.menuMove.setEnabled(true);
+  , setRotateMenuEnable:function(bool){
+      this.menuRotate.setEnabled(bool);
     }
 });

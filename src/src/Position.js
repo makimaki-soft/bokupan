@@ -5,7 +5,21 @@ var NEIGHBER = {
   BELOW : 3
 }
 
-var POSITION = {
+var DIR = {
+  LEFT  : 0,
+  UP    : 1,
+  RIGHT : 2,
+  DOWN  : 3
+} 
+
+var DIR_ANG = [
+    -90 // LEFT
+  ,   0 // ABAVE
+  ,  90 // RIGHT
+  , 180 // BELOW
+];
+
+var POSITION_ID = {
   HOME_1 : 0,
   HOME_2 : 1,
   HOME_3 : 2,
@@ -19,130 +33,77 @@ var POSITION = {
   HOME_B : 10,
   HOME_C : 11,
   HOME_D : 12,
-  NUM_HOME : 13
+  ALLOW_1 : 13,
+  ALLOW_2 : 14,
+  ALLOW_3 : 15,
+  ALLOW_4 : 16,
+  NUM_POSISION : 17
 }
 
 // Positional relationship of the house to each other
-var NextHome = [
-  //          LEFT,           ABOVE,           RIGHT,           BELOW
-  [POSITION.HOME_A, POSITION.HOME_4, POSITION.HOME_2,            null],   // HOME_1
-  [POSITION.HOME_1, POSITION.HOME_5, POSITION.HOME_3,            null],   // HOME_2
-  [POSITION.HOME_2, POSITION.HOME_6, POSITION.HOME_B,            null],   // HOME_3
-  [           null, POSITION.HOME_7, POSITION.HOME_5, POSITION.HOME_1],   // HOME_4
-  [POSITION.HOME_4, POSITION.HOME_8, POSITION.HOME_6, POSITION.HOME_2],   // HOME_5
-  [POSITION.HOME_5, POSITION.HOME_9,            null, POSITION.HOME_3],   // HOME_6
-  [POSITION.HOME_C,            null, POSITION.HOME_8, POSITION.HOME_4],   // HOME_7
-  [POSITION.HOME_7,            null, POSITION.HOME_9, POSITION.HOME_5],   // HOME_8
-  [POSITION.HOME_8,            null, POSITION.HOME_D, POSITION.HOME_6],   // HOME_9
-  [           null,            null, POSITION.HOME_1,            null],   // HOME_A
-  [POSITION.HOME_3,            null,            null,            null],   // HOME_B
-  [           null,            null, POSITION.HOME_7,            null],   // HOME_C
-  [POSITION.HOME_9,            null,            null,            null]    // HOME_D
+var HOME_Relation = [
+  //             LEFT,              ABOVE,              RIGHT,              BELOW
+  [POSITION_ID.HOME_A, POSITION_ID.HOME_4, POSITION_ID.HOME_2,               null],   // HOME_1
+  [POSITION_ID.HOME_1, POSITION_ID.HOME_5, POSITION_ID.HOME_3,               null],   // HOME_2
+  [POSITION_ID.HOME_2, POSITION_ID.HOME_6, POSITION_ID.HOME_B,               null],   // HOME_3
+  [              null, POSITION_ID.HOME_7, POSITION_ID.HOME_5, POSITION_ID.HOME_1],   // HOME_4
+  [POSITION_ID.HOME_4, POSITION_ID.HOME_8, POSITION_ID.HOME_6, POSITION_ID.HOME_2],   // HOME_5
+  [POSITION_ID.HOME_5, POSITION_ID.HOME_9,               null, POSITION_ID.HOME_3],   // HOME_6
+  [POSITION_ID.HOME_C,               null, POSITION_ID.HOME_8, POSITION_ID.HOME_4],   // HOME_7
+  [POSITION_ID.HOME_7,               null, POSITION_ID.HOME_9, POSITION_ID.HOME_5],   // HOME_8
+  [POSITION_ID.HOME_8,               null, POSITION_ID.HOME_D, POSITION_ID.HOME_6],   // HOME_9
+  [              null,               null, POSITION_ID.HOME_1,               null],   // HOME_A
+  [POSITION_ID.HOME_3,               null,               null,               null],   // HOME_B
+  [              null,               null, POSITION_ID.HOME_7,               null],   // HOME_C
+  [POSITION_ID.HOME_9,               null,               null,               null],   // HOME_D
+  [              null,             DIR.UP,          DIR.RIGHT,           DIR.DOWN],   // ALLOW_1
+  [          DIR.LEFT,             DIR.UP,          DIR.RIGHT,               null],   // ALLOW_2
+  [          DIR.LEFT,               null,          DIR.RIGHT,           DIR.DOWN],   // ALLOW_3
+  [          DIR.LEFT,             DIR.UP,               null,           DIR.DOWN],   // ALLOW_4
 ]
 
-var HomeCoordinate = {
-    homeA : {x:24 , y:90 }
-  , homeB : {x:374, y:90 }
-  , homeC : {x:24  ,y:310}
-  , homeD : {x:374, y:310}
-  , home1 : {x:90,  y:90 }
-  , home2 : {x:200, y:90 }
-  , home3 : {x:309, y:90 }
-  , home4 : {x:90,  y:200}
-  , home5 : {x:200, y:200}
-  , home6 : {x:309, y:200}
-  , home7 : {x:90,  y:310}
-  , home8 : {x:200, y:310}
-  , home9 : {x:309, y:310}
-}
+var Coordinate = [
+    {x:90,  y:90 }  // HOME_1
+  , {x:200, y:90 }  // HOME_2
+  , {x:309, y: 90}  // HOME_3
+  , {x: 90, y:200}  // HOME_4
+  , {x:200, y:200}  // HOME_5
+  , {x:309, y:200}  // HOME_6
+  , {x: 90, y:310}  // HOME_7
+  , {x:200, y:310}  // HOME_8
+  , {x:309, y:310}  // HOME_9
+  , {x: 24, y: 90}  // HOME_A
+  , {x:374, y: 90}  // HOME_B
+  , {x: 24, y:310}  // HOME_C
+  , {x:374, y:310}  // HOME_D
+  , {x: 35, y:168}  // ALLOW_1
+  , {x:239, y: 39}  // ALLOW_2
+  , {x:165, y:370}  // ALLOW_3
+  , {x:365, y:233}  // ALLOW_4
+];  
 
-var getCoordinate = function(pos){
-  switch(pos){
-    case POSITION.HOME_1:
-      return HomeCoordinate.home1;
-    case POSITION.HOME_2:
-      return HomeCoordinate.home2;
-    case POSITION.HOME_3:
-      return HomeCoordinate.home3;
-    case POSITION.HOME_4:
-      return HomeCoordinate.home4;
-    case POSITION.HOME_5:
-      return HomeCoordinate.home5;
-    case POSITION.HOME_6:
-      return HomeCoordinate.home6;
-    case POSITION.HOME_7:
-      return HomeCoordinate.home7;
-    case POSITION.HOME_8:
-      return HomeCoordinate.home8;
-    case POSITION.HOME_9:
-      return HomeCoordinate.home9;
-    case POSITION.HOME_A:
-      return HomeCoordinate.homeA;
-    case POSITION.HOME_B:
-      return HomeCoordinate.homeB;
-    case POSITION.HOME_C:
-      return HomeCoordinate.homeC;
-    case POSITION.HOME_D:
-      return HomeCoordinate.homeD;
-  }  
-}
 
-var getNeighber = function(pos){
-  switch(pos){
-    case POSITION.HOME_1:
-      return [NEIGHBER.LEFT,NEIGHBER.ABAVE,NEIGHBER.RIGHT];
-    case POSITION.HOME_2:
-      return [NEIGHBER.LEFT,NEIGHBER.ABAVE,NEIGHBER.RIGHT];
-    case POSITION.HOME_3:
-      return [NEIGHBER.LEFT,NEIGHBER.ABAVE,NEIGHBER.RIGHT];
-    case POSITION.HOME_4:
-      return [NEIGHBER.ABAVE,NEIGHBER.RIGHT,NEIGHBER.BELOW];
-    case POSITION.HOME_5:
-      return [NEIGHBER.LEFT,NEIGHBER.ABAVE,NEIGHBER.RIGHT,NEIGHBER.BELOW];
-    case POSITION.HOME_6:
-      return [NEIGHBER.LEFT,NEIGHBER.ABAVE,NEIGHBER.BELOW];
-    case POSITION.HOME_7:
-      return [NEIGHBER.LEFT,NEIGHBER.RIGHT,NEIGHBER.BELOW];
-    case POSITION.HOME_8:
-      return [NEIGHBER.LEFT,NEIGHBER.RIGHT,NEIGHBER.BELOW];
-    case POSITION.HOME_9:
-      return [NEIGHBER.LEFT,NEIGHBER.RIGHT,NEIGHBER.BELOW];
-    case POSITION.HOME_A:
-      return [NEIGHBER.RIGHT];
-    case POSITION.HOME_B:
-      return [NEIGHBER.LEFT];
-    case POSITION.HOME_C:
-      return [NEIGHBER.RIGHT];
-    case POSITION.HOME_D:
-      return [NEIGHBER.LEFT];
-  }  
+
+var getCoordinate = function(positionID){
+  return Coordinate[positionID];
 }
 
 var getNextHome = function(pos, neighber){
-      return NextHome[pos][neighber];
+      return HOME_Relation[pos][neighber];
 }
 
-var AllowCoordinate = {
-    allow1 : {x:35 , y:168 }
-  , allow2 : {x:239, y:39 }
-  , allow3 : {x:165  ,y:370}
-  , allow4 : {x:365, y:233}
-}
-
-var getAllowCoordinate = function(pos){
-  switch(pos){
-    case 0:
-      return AllowCoordinate.allow1;
-      break;
-    case 1:
-      return AllowCoordinate.allow2;
-      break;
-    case 2:
-      return AllowCoordinate.allow3;
-      break;
-    case 3:
-      return AllowCoordinate.allow4;
-      break;
+var getNeighber = function(pos){
+  var neighber = [];
+  var cand = [NEIGHBER.LEFT, NEIGHBER.ABAVE, NEIGHBER.RIGHT, NEIGHBER.BELOW];
+  for(var i=0 ; i<cand.length ; i++){
+    if( HOME_Relation[pos][i] != null){
+      neighber.push(cand[i]);
+    }
   }
+  return neighber;
+}
+
+var getDirCandofAllow = function(positionID){
   
 }
+

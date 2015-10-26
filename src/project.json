@@ -18,7 +18,7 @@
         , "src/MainMapLayer.js"
         , "src/DummyLayer.js"
         , "src/DebugInfoLayer.js"
-        , "src/Avatar.js"
+        , "src/Mkmk_Piece.js"
         , "src/Position.js"
         , "src/MenuLayer.js"
         , "src/Phase.js"
