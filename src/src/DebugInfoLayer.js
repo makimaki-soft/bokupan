@@ -23,8 +23,6 @@ var DebugInfoLayer = cc.Layer.extend({
         //this.windowsize.setFontFillColor(cc.color(10,10,10,0));
         this.addChild(this.canvassize,0);   
         
-        
-        
         return true;
     }
      ,update:function(dt) {
