@@ -46,13 +46,14 @@ var MainMapLayer = cc.LayerColor.extend({
           this.allows.push(allow);
           cc.log(this.allows.length, allow.dir);
         }
+        
 
         return true;
     }
   , setPlayerIcon:function(){
       this.playerIcon = new Mkmk_Piece(res.DummyObj);
       this.playerIcon.setSize(40,40);
-      this.playerIcon.setPos(POSITION_ID.HOME_5);
+      this.playerIcon.setPos(this.player.getCurrPosition());
       this.addChild(this.playerIcon, 0);
     }
   , setMenuLayer:function(menuLayer){
@@ -171,6 +172,7 @@ var MainMapLayer = cc.LayerColor.extend({
         this.playerIcon.runAction(move);
         this.playerIcon.setNextPos(nextHome);
         this.playerIcon.scheduleOnce(this.playerIcon.updatePos,1);
+        this.player.setCurrPosition(nextHome);
         return true;
       }
       return false;
@@ -239,5 +241,22 @@ var MainMapLayer = cc.LayerColor.extend({
       }else{
         return NEIGHBER.BELOW;
       }
+  }
+  , setPlayer:function(player){
+      this.player = player;
+    }
+  , removeText:function(){
+      this.removeChild(this.text);
+  }
+  , textConsole:function(str){
+      this.text = cc.LabelTTF.create(str,"Meiryo",28);
+      this.text.attr({
+            x: 0,
+            y: 0,
+            anchorX: 0,
+            anchorY: 0
+        });
+      this.addChild(this.text, 0);
+      this.scheduleOnce(this.removeText, 1 );
   }
 });

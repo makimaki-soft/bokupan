@@ -10,6 +10,8 @@ var res = {
     , IconAllow2 : "res/IconYajirushi2.png"
     , Yajirushi : "res/Yajirushi.png"
     , Test_png : "res/maru.png"
+    , IconCollect : "res/GetPants.png"
+    , IconCollect2 : "res/GetPants2.png"
 };
 
 var g_resources = [];

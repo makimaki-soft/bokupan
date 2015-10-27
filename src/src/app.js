@@ -31,30 +31,43 @@ var BokupanMainScene = cc.Scene.extend({
         this.addChild(enemyStatusLayer);
         position_Y += g_layout.enemystatus_height;
         
+        
+        
+        ////////////  Define Phases //////////// 
+        var actionChoicePhase  = new Mkmk_Phase();
+        var playerMovePhase    = new Mkmk_Phase();
+        var rotateAllowPhase   = new Mkmk_Phase();
+        var collectPantsPhase  = new Mkmk_Phase();
+        
+        ////////////  Define Players //////////// 
+        var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_2);
+        menuLayer.setPlayer(player1);
+        mainMapLayer.setPlayer(player1);
+        
         // sample 
         mainMapLayer.setPlayerIcon();
         menuLayer.setMapLayer(mainMapLayer);
         mainMapLayer.setMenuLayer(menuLayer);
         
-        ////////////  Define Phases //////////// 
-        var actionChoicePhase = new Mkmk_Phase();
-        var playerMovePhase   = new Mkmk_Phase();
-        var rotateAllowPhase  = new Mkmk_Phase();
-        
         //////////// ▼ActionChoicePhase▼ ////////////
         actionChoicePhase.nextPhase[0] = rotateAllowPhase;
         actionChoicePhase.nextPhase[1] = playerMovePhase;
+        actionChoicePhase.nextPhase[2] = collectPantsPhase;
         actionChoicePhase.onEnter = function(){
             cc.log("onEnter Action Choice Phase");
             menuLayer.setMoveMenuEnable(true);
             menuLayer.setRotateMenuEnable(true);
-            this.setOnClickEventListener(menuLayer.rotateIcon, this.gotoNextPhase, 0);
-            this.setOnClickEventListener(menuLayer.moveIcon,   this.gotoNextPhase, 1);
+            menuLayer.setCollectMenuEnable(isTargetHome(player1.getCurrPosition()));
+          
+            this.setOnClickEventListener(menuLayer.rotateIcon,  this.gotoNextPhase, 0);
+            this.setOnClickEventListener(menuLayer.moveIcon,    this.gotoNextPhase, 1);
+            this.setOnClickEventListener(menuLayer.CollectIcon, this.gotoNextPhase, 2);
         }
         actionChoicePhase.onExit = function(){
             cc.log("onExit Action Choice Phase");
             menuLayer.setMoveMenuEnable(false);
             menuLayer.setRotateMenuEnable(false);
+            menuLayer.setCollectMenuEnable(false);
         }
         //////////// ▲ActionChoicePhase▲ ////////////
         
@@ -117,6 +130,36 @@ var BokupanMainScene = cc.Scene.extend({
             mainMapLayer.removeCursorAllow();
         }
         //////////// ▲RotateAllowPhase▲ ////////////
+        
+        //////////// ▼CollectPantsPhase▼ ////////////
+        collectPantsPhase.nextPhase[0] = actionChoicePhase;
+        collectPantsPhase.onEnter = function(){
+            cc.log("onEnter Collect Pants Phase");
+            
+            var currPos = player1.getCurrPosition();
+            
+            if(!isTargetHome(currPos)){
+                collectPantsPhase.gotoNextPhase(0,0);
+                return;
+            }
+            if(player1.checkAcquired(currPos)){
+                
+            }
+            
+            if(!player1.checkAcquired(currPos)){
+                player1.setNewPantsToBasket(currPos);
+                mainMapLayer.textConsole("取得しました");
+            }else{
+                mainMapLayer.textConsole("取得済みです");
+            }
+            collectPantsPhase.gotoNextPhase(0,1000);
+        }
+        collectPantsPhase.onExit = function(){
+            cc.log("onExit Collect Pants Phase");
+        }
+        //////////// ▲CollectPantsPhase▲ ////////////
+        
+        
         
         //////////// Phase Entry Point ////////////
         actionChoicePhase.onEnter();

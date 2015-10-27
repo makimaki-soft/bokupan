@@ -22,5 +22,6 @@
         , "src/Position.js"
         , "src/MenuLayer.js"
         , "src/Phase.js"
+        , "src/PlayerStatus.js"
     ]
 }

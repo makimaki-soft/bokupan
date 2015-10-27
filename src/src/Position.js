@@ -74,7 +74,7 @@ var HOME_Relation = [
   [          DIR.LEFT,             DIR.UP,               null,           DIR.DOWN],   // ALLOW_4
   [POSITION_ID.HOME_1,               null, POSITION_ID.HOME_2,               null],   // ROAD_1
   [POSITION_ID.HOME_2,               null, POSITION_ID.HOME_3,               null],   // ROAD_2
-  [              null, POSITION_ID.HOME_3,               null, POSITION_ID.HOME_1],   // ROAD_3
+  [              null, POSITION_ID.HOME_4,               null, POSITION_ID.HOME_1],   // ROAD_3
   [              null, POSITION_ID.HOME_5,               null, POSITION_ID.HOME_2],   // ROAD_4
   [              null, POSITION_ID.HOME_6,               null, POSITION_ID.HOME_3],   // ROAD_5
   [POSITION_ID.HOME_4,               null, POSITION_ID.HOME_5,               null],   // ROAD_6
@@ -139,7 +139,16 @@ var getNeighber = function(pos){
   return neighber;
 }
 
-var getDirCandofAllow = function(positionID){
-  
+var isHome = function(positionID){
+  return POSITION_ID.HOME_1 <= positionID && positionID <= POSITION_ID.HOME_D;
+}
+var isTargetHome = function(positionID){
+  return POSITION_ID.HOME_1 <= positionID && positionID <= POSITION_ID.HOME_9;
+}
+var isDenHome = function(positionID){
+  return POSITION_ID.HOME_A <= positionID && positionID <= POSITION_ID.HOME_D;
+}
+var isRoad = function(positionID){
+  return POSITION_ID.ROAD_1 <= positionID && positionID <= POSITION_ID.ROAD_12;
 }
 
