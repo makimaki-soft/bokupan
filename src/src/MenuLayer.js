@@ -54,6 +54,23 @@ var MenuLayer = cc.LayerColor.extend({
         this.menuCollect.y = 0;
         this.addChild(this.menuCollect, 0);
         
+        // アイテムボタンの追加
+        this.ItemIcon = new Mkmk_MenuItemImage(
+            res.IconItem,
+            res.IconItem2);
+        this.ItemIcon.attr({
+            scaleX: this.height/this.ItemIcon.height,
+            scaleY: this.height/this.ItemIcon.height,
+            x: 200,
+            y: 0,
+            anchorX: 0,
+            anchorY: 0
+        });
+        this.menuItem = new cc.Menu(this.ItemIcon);
+        this.menuItem.x = 0;
+        this.menuItem.y = 0;
+        this.addChild(this.menuItem, 0);
+        
         return true;
     }
   , setMapLayer:function(map){
@@ -67,6 +84,9 @@ var MenuLayer = cc.LayerColor.extend({
     }
   , setCollectMenuEnable:function(bool){
       this.menuCollect.setEnabled(bool);
+    }
+  , setItemMenuEnable:function(bool){
+      this.menuItem.setEnabled(bool);
     }
   , setPlayer:function(player){
       this.player = player;

@@ -23,5 +23,6 @@
         , "src/MenuLayer.js"
         , "src/Phase.js"
         , "src/PlayerStatus.js"
+        , "src/Mkmk_Dice.js"
     ]
 }

@@ -34,10 +34,13 @@ var BokupanMainScene = cc.Scene.extend({
         
         
         ////////////  Define Phases //////////// 
-        var actionChoicePhase  = new Mkmk_Phase();
-        var playerMovePhase    = new Mkmk_Phase();
-        var rotateAllowPhase   = new Mkmk_Phase();
-        var collectPantsPhase  = new Mkmk_Phase();
+        var actionChoicePhase   = new Mkmk_Phase();
+        var playerMovePhase     = new Mkmk_Phase();
+        var rotateAllowPhase    = new Mkmk_Phase();
+        var collectPantsPhase   = new Mkmk_Phase();
+        var selectItemPhase     = new Mkmk_Phase();
+        var rotateAllAllowPhase = new Mkmk_Phase();
+        var movePolicePhase     = new Mkmk_Phase();
         
         ////////////  Define Players //////////// 
         var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_2);
@@ -53,21 +56,26 @@ var BokupanMainScene = cc.Scene.extend({
         actionChoicePhase.nextPhase[0] = rotateAllowPhase;
         actionChoicePhase.nextPhase[1] = playerMovePhase;
         actionChoicePhase.nextPhase[2] = collectPantsPhase;
+        actionChoicePhase.nextPhase[3] = selectItemPhase;
         actionChoicePhase.onEnter = function(){
             cc.log("onEnter Action Choice Phase");
+            
             menuLayer.setMoveMenuEnable(true);
             menuLayer.setRotateMenuEnable(isIntersectionWithArrow(player1.getCurrPosition()));
             menuLayer.setCollectMenuEnable(isTargetHome(player1.getCurrPosition()));
-          
+            menuLayer.setItemMenuEnable(true);
+            
             this.setOnClickEventListener(menuLayer.rotateIcon,  this.gotoNextPhase, 0);
             this.setOnClickEventListener(menuLayer.moveIcon,    this.gotoNextPhase, 1);
             this.setOnClickEventListener(menuLayer.CollectIcon, this.gotoNextPhase, 2);
+            this.setOnClickEventListener(menuLayer.ItemIcon,    this.gotoNextPhase, 3);
         }
         actionChoicePhase.onExit = function(){
             cc.log("onExit Action Choice Phase");
             menuLayer.setMoveMenuEnable(false);
             menuLayer.setRotateMenuEnable(false);
             menuLayer.setCollectMenuEnable(false);
+            menuLayer.setItemMenuEnable(false);
         }
         //////////// ▲ActionChoicePhase▲ ////////////
         
@@ -157,8 +165,64 @@ var BokupanMainScene = cc.Scene.extend({
             cc.log("onExit Collect Pants Phase");
         }
         //////////// ▲CollectPantsPhase▲ ////////////
+         
+        //////////// ▼SelectItemPhase▼ ////////////
+        selectItemPhase.nextPhase[0] = rotateAllAllowPhase;
+        selectItemPhase.nextPhase[1] = movePolicePhase;
+        selectItemPhase.onEnter = function(){
+            cc.log("onEnter Select Item Phase");
+            mainMapLayer.addItemCard();
+            
+            this.setOnClickEventListener(mainMapLayer.ItemArrowIcon,   this.gotoNextPhase, 0);
+            this.setOnClickEventListener(mainMapLayer.ItemPoliceIcon,  this.gotoNextPhase, 1);
+        }
+        selectItemPhase.onExit = function(){
+            cc.log("onExit Select Item Phase");
+            mainMapLayer.removeItemCard();
+        }
+        //////////// ▲SelectItemPhase▲ ////////////
         
+        //////////// ▼RotateAllAllowPhase▼ ////////////
+        rotateAllAllowPhase.nextPhase[0] = actionChoicePhase;
+        rotateAllAllowPhase.onEnter = function(){
+            cc.log("onEnter Rotate All Arrow Phase");
+            mainMapLayer.addCursorToAllows();
+            rotateAllowPhase.ev = cc.EventListener.create({
+                event: cc.EventListener.TOUCH_ONE_BY_ONE,
+                swallowTouches: true,
+                onTouchBegan: function (touch, event) {
+                    var touchX = touch.getLocationX();
+                    var touchY = touch.getLocationY();
+                    
+                    if(mainMapLayer.isInside(touchX, touchY)){
+                        var closestAllow = mainMapLayer.getClosestPosition(touchX,touchY);
+                        var dir = mainMapLayer.getRelativeDirectionAllow(closestAllow, touchX,touchY);
+                        var res = mainMapLayer.rotateAllow(closestAllow, dir);
+                        if(res){
+                            rotateAllowPhase.gotoNextPhase(0,1000);
+                        }
+                    }
+                }
+            });
+            cc.eventManager.addListener(rotateAllowPhase.ev,mainMapLayer);
+        }
+        rotateAllAllowPhase.onExit = function(){
+            cc.log("onExit Rotate All Arrow Phase");
+            cc.eventManager.removeListener(rotateAllAllowPhase.ev);
+            mainMapLayer.removeCursorAllow();
+        }
+        //////////// ▲RotateAllAllowPhase▲ ////////////
         
+        movePolicePhase.nextPhase[0] = actionChoicePhase;
+        movePolicePhase.onEnter = function(){
+            cc.log("onEnter Move Police Phase");
+            var num = castDice();
+            mainMapLayer.playDiceAnimation(num);
+            this.gotoNextPhase(0,2000);
+        }
+        movePolicePhase.onExit = function(){
+            cc.log("onExit Move Police Phase");
+        }
         
         //////////// Phase Entry Point ////////////
         actionChoicePhase.onEnter();

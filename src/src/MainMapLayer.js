@@ -47,7 +47,6 @@ var MainMapLayer = cc.LayerColor.extend({
           cc.log(this.allows.length, allow.dir);
         }
         
-
         return true;
     }
   , setPlayerIcon:function(){
@@ -293,5 +292,103 @@ var MainMapLayer = cc.LayerColor.extend({
         });
       this.addChild(this.text, 0);
       this.scheduleOnce(this.removeText, 1 );
+  }
+  , playDiceAnimation:function(num){
+      if(num<1 || 6<num){
+        return;
+      }
+      
+      // サイコロのSpriteを作成
+      this.dice = new cc.Sprite(res.Dice1);
+      this.dice.attr({
+          scaleX: 80/this.dice.width,
+          scaleY: 80/this.dice.height,
+          x: 50,
+          y: 50,
+          anchorX: 0,
+          anchorY: 0
+      });
+      
+      // 段々低くなっていくジャンプ
+      var jumps = [];
+      jumps[0] = cc.JumpBy.create(0.30, cc.p(30,-50), 50,1);
+      jumps[1] = cc.JumpBy.create(0.25, cc.p(30,  0), 40,1);
+      jumps[1] = cc.JumpBy.create(0.20, cc.p(20,  0), 30,1);
+      jumps[2] = cc.JumpBy.create(0.10, cc.p(10,  0),  5,1);
+      jumps[3] = cc.JumpBy.create(0.10, cc.p( 5,  0),  2,1);
+      var jumpMotion = cc.Sequence.create(jumps);
+      
+      // 回転アニメーション
+      var animation = new cc.Animation();
+      animation.addSpriteFrameWithFile(res.Dice1);
+      animation.addSpriteFrameWithFile(res.Dice2);
+      animation.addSpriteFrameWithFile(res.Dice3);
+      animation.addSpriteFrameWithFile(res.Dice4);
+      animation.addSpriteFrameWithFile(res.Dice5);
+      animation.addSpriteFrameWithFile(res.Dice6);
+      animation.setDelayPerUnit(1/30);
+      animation.setLoops(3.5);
+      var rotateMotion = new cc.Animate(animation);
+      
+      // サイコロアニメーションに合成
+      var diceAnimation = new cc.Spawn();
+      diceAnimation.initWithTwoActions(rotateMotion,jumpMotion);
+      
+      // 出目の設定
+      var dispResult = new cc.CallFunc(function(){
+          var src = [res.Dice1, res.Dice2, res.Dice3, res.Dice4, res.Dice5, res.Dice6]
+          var deme = new cc.Sprite(src[num-1]);
+          this.dice.setSpriteFrame(deme.getSpriteFrame());
+          this.scheduleOnce(function(){
+            this.removeChild(this.dice, 1);
+          }, 1 );
+      }, this)
+      
+      // アニメーション後に出目を表示するようにシーケンスを作成
+      var seqence = [];
+      seqence[0] = diceAnimation;
+      seqence[1] = dispResult;
+      var wholeMotion = new cc.Sequence(seqence);
+      
+      this.addChild(this.dice, 1);
+      this.dice.runAction(wholeMotion);
+  }
+  , removeItemCard:function(){
+      this.removeChild(this.menuItemArrow, 0);
+      this.removeChild(this.menuItemPolice, 0);
+  }
+  , addItemCard:function(){
+        // アイテムボタンの追加
+        this.ItemArrowIcon = new Mkmk_MenuItemImage(
+            res.CardArrow,
+            res.CardArrow);
+        this.ItemArrowIcon.attr({
+            scaleX: 100/this.ItemArrowIcon.height,
+            scaleY: 100/this.ItemArrowIcon.height,
+            x: 20,
+            y: 0,
+            anchorX: 0,
+            anchorY: 0
+        });
+        this.menuItemArrow = new cc.Menu(this.ItemArrowIcon);
+        this.menuItemArrow.x = 0;
+        this.menuItemArrow.y = 0;
+        this.addChild(this.menuItemArrow, 0);
+        
+        this.ItemPoliceIcon = new Mkmk_MenuItemImage(
+            res.CardPolice,
+            res.CardPolice);
+        this.ItemPoliceIcon.attr({
+            scaleX: 100/this.ItemPoliceIcon.height,
+            scaleY: 100/this.ItemPoliceIcon.height,
+            x: 120,
+            y: 0,
+            anchorX: 0,
+            anchorY: 0
+        });
+        this.menuItemPolice = new cc.Menu(this.ItemPoliceIcon);
+        this.menuItemPolice.x = 0;
+        this.menuItemPolice.y = 0;
+        this.addChild(this.menuItemPolice, 0);
   }
 });
