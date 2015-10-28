@@ -59,6 +59,41 @@ var MainMapLayer = cc.LayerColor.extend({
   , setMenuLayer:function(menuLayer){
       this.menuLayer = menuLayer;
   }
+  , addCursorToArrow:function(position_id){
+      if(!isArrow(position_id)){
+        return;
+      }
+      
+      // カーソルと標識の距離を調整
+      var offsetX = [-40, 0, 40, 0];
+      var offsetY = [0, 40, 0, -40];
+      
+      this.AllowCursors = [];
+      
+      var target = this.allows[position_id-POSITION_ID.ALLOW_1];
+      var dirCand = getNeighber(position_id);
+      
+      for (var i=0 ; i<dirCand.length ; i++) {
+        var idx = dirCand[i];
+        if( idx == target.dir){
+          // 同じ方向は選択肢に出さない
+          continue;
+        }
+        // 選択方向のSprite作成＆表示
+        var cursor = new cc.Sprite(res.Allow_png);
+        cursor.attr({
+          scaleX: 30/cursor.width,
+          scaleY: 30/cursor.height,
+          x: target.x + offsetX[idx],
+          y: target.y + offsetY[idx],
+          rotation : DIR_ANG[idx],
+          anchorX: 0.5,
+          anchorY: 0.5
+        });
+        this.AllowCursors.push(cursor);
+        this.addChild(cursor);
+      }
+    }
   , addCursorToAllows:function(){
 
       // カーソルと標識の距離を調整

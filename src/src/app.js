@@ -56,7 +56,7 @@ var BokupanMainScene = cc.Scene.extend({
         actionChoicePhase.onEnter = function(){
             cc.log("onEnter Action Choice Phase");
             menuLayer.setMoveMenuEnable(true);
-            menuLayer.setRotateMenuEnable(true);
+            menuLayer.setRotateMenuEnable(isIntersectionWithArrow(player1.getCurrPosition()));
             menuLayer.setCollectMenuEnable(isTargetHome(player1.getCurrPosition()));
           
             this.setOnClickEventListener(menuLayer.rotateIcon,  this.gotoNextPhase, 0);
@@ -104,7 +104,9 @@ var BokupanMainScene = cc.Scene.extend({
         rotateAllowPhase.nextPhase[0] = actionChoicePhase;
         rotateAllowPhase.onEnter = function(){
             cc.log("onEnter Rotate Phase");
-            mainMapLayer.addCursorToAllows();
+            // mainMapLayer.addCursorToAllows();
+            var targetArrow = getArrowByRoadPosition(player1.getCurrPosition());
+            mainMapLayer.addCursorToArrow(targetArrow);
             rotateAllowPhase.ev = cc.EventListener.create({
                 event: cc.EventListener.TOUCH_ONE_BY_ONE,
                 swallowTouches: true,
@@ -113,9 +115,9 @@ var BokupanMainScene = cc.Scene.extend({
                     var touchY = touch.getLocationY();
                     
                     if(mainMapLayer.isInside(touchX, touchY)){
-                        var closestAllow = mainMapLayer.getClosestPosition(touchX,touchY);
-                        var dir = mainMapLayer.getRelativeDirectionAllow(closestAllow, touchX,touchY);
-                        var res = mainMapLayer.rotateAllow(closestAllow, dir);
+                        // var closestAllow = mainMapLayer.getClosestPosition(touchX,touchY);
+                        var dir = mainMapLayer.getRelativeDirectionAllow(targetArrow, touchX,touchY);
+                        var res = mainMapLayer.rotateAllow(targetArrow, dir);
                         if(res){
                             rotateAllowPhase.gotoNextPhase(0,1000);
                         }
@@ -142,10 +144,7 @@ var BokupanMainScene = cc.Scene.extend({
                 collectPantsPhase.gotoNextPhase(0,0);
                 return;
             }
-            if(player1.checkAcquired(currPos)){
-                
-            }
-            
+      
             if(!player1.checkAcquired(currPos)){
                 player1.setNewPantsToBasket(currPos);
                 mainMapLayer.textConsole("取得しました");

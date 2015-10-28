@@ -151,4 +151,29 @@ var isDenHome = function(positionID){
 var isRoad = function(positionID){
   return POSITION_ID.ROAD_1 <= positionID && positionID <= POSITION_ID.ROAD_12;
 }
+var isArrow = function(positionID){
+  return POSITION_ID.ALLOW_1 <= positionID && positionID <= POSITION_ID.ALLOW_4;
+}
 
+var isIntersectionWithArrow = function(positionID){
+  return     ( positionID == POSITION_ID.HOME_2) 
+          || ( positionID == POSITION_ID.HOME_4) 
+          || ( positionID == POSITION_ID.HOME_6) 
+          || ( positionID == POSITION_ID.HOME_8);
+          
+}
+
+var getArrowByRoadPosition = function(positionID){
+  switch(positionID){
+    case POSITION_ID.HOME_2:
+      return POSITION_ID.ALLOW_2;
+    case POSITION_ID.HOME_4:
+      return POSITION_ID.ALLOW_1;
+    case POSITION_ID.HOME_6:
+      return POSITION_ID.ALLOW_4;
+    case POSITION_ID.HOME_8:
+      return POSITION_ID.ALLOW_3;
+    default:
+      return null;
+  }        
+}
