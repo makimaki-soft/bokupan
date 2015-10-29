@@ -55,6 +55,12 @@ var MainMapLayer = cc.LayerColor.extend({
       this.playerIcon.setPos(this.player.getCurrPosition());
       this.addChild(this.playerIcon, 0);
     }
+  , setPoliceIcon:function(){
+      this.policeIcon = new Mkmk_Piece(res.PoliceIcon);
+      this.policeIcon.setSize(40,40);
+      this.policeIcon.setPos(this.police.getCurrPosition());
+      this.addChild(this.policeIcon, 0);
+  }
   , setMenuLayer:function(menuLayer){
       this.menuLayer = menuLayer;
   }
@@ -174,8 +180,8 @@ var MainMapLayer = cc.LayerColor.extend({
       }
       return false;
   }
-  , isValid:function(direction){
-      var dirCand = getNeighber(this.playerIcon.getPos());
+  , isValid:function(icon, direction){
+      var dirCand = getNeighber(icon.getPos());
       for (var i in dirCand) {
         if(direction == dirCand[i]){
           return true;
@@ -197,16 +203,38 @@ var MainMapLayer = cc.LayerColor.extend({
       }
       return false;
   }
-  , movePlayer:function(direction){
-      //cc.log("movePlayer called");
-      if(this.isValid(direction)){
-        var nextHome = getNextHome(this.playerIcon.getPos(), direction);
+  , movePiece:function(icon, direction){
+      if(this.isValid(icon, direction)){
+        var nextHome = getNextHome(icon.getPos(), direction);
         var nextAdress = getCoordinate(nextHome);
         var move = cc.MoveTo.create(1,cc.p(nextAdress.x,nextAdress.y));
-        this.playerIcon.runAction(move);
-        this.playerIcon.setNextPos(nextHome);
-        this.playerIcon.scheduleOnce(this.playerIcon.updatePos,1);
-        this.player.setCurrPosition(nextHome);
+        icon.runAction(move);
+        icon.setNextPos(nextHome);
+        icon.scheduleOnce(icon.updatePos,1);
+        return true;
+      }
+      return false;
+  }
+  , movePlayer:function(direction){
+      //cc.log("movePlayer called");
+      if( this.movePiece(this.playerIcon, direction) ){
+        this.player.setCurrPosition(this.playerIcon.NextPositionID);
+        return true;
+      }
+      return false;
+  }
+  , movePolice:function(num){
+      this.movePoliceRecursive(this.police.getNextDir(), 1, num);
+  }
+  , movePoliceRecursive:function(direction, currDepth, maxDepth){
+      if( this.movePiece(this.policeIcon, direction) ){
+        this.scheduleOnce(function(){
+            this.police.setCurrPosition(this.policeIcon.NextPositionID);
+            this.police.updateDir();
+            if(currDepth< maxDepth){
+              this.movePoliceRecursive(this.police.getNextDir(), currDepth+1, maxDepth);
+            }
+        }, 1.2);
         return true;
       }
       return false;
@@ -288,7 +316,12 @@ var MainMapLayer = cc.LayerColor.extend({
   }
   , setPlayer:function(player){
       this.player = player;
+      this.setPlayerIcon();
     }
+  , setPolice:function(police){
+      this.police = police;
+      this.setPoliceIcon();
+  }
   , removeText:function(){
       this.removeChild(this.text);
   }

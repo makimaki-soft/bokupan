@@ -23,6 +23,7 @@ var res = {
     , CardArrow : "res/ItemArrow.png"
     , CardPolice : "res/ItemPolice.png"
     , CardPeople : "res/ItemPeople.png"
+    , PoliceIcon : "res/police.png"
 };
 
 var g_resources = [];

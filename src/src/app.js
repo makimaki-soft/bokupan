@@ -48,8 +48,12 @@ var BokupanMainScene = cc.Scene.extend({
         menuLayer.setPlayer(player1);
         mainMapLayer.setPlayer(player1);
         
+        //////////// Police ////////////
+        var police = new Mkmk_PoliceStatus(POSITION_ID.HOME_7);
+        mainMapLayer.setPolice(police);
+        police.setArrows(mainMapLayer.allows);
+        
         // sample 
-        mainMapLayer.setPlayerIcon();
         menuLayer.setMapLayer(mainMapLayer);
         mainMapLayer.setMenuLayer(menuLayer);
         
@@ -214,6 +218,7 @@ var BokupanMainScene = cc.Scene.extend({
             }
             var num = castDice();
             mainMapLayer.playDiceAnimation(num);
+            mainMapLayer.movePolice(num);
             player1.useItem(ITEM.POLICE);
             this.gotoNextPhase(0,2000);
         }
