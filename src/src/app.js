@@ -41,6 +41,7 @@ var BokupanMainScene = cc.Scene.extend({
         var selectItemPhase     = new Mkmk_Phase();
         var rotateAllAllowPhase = new Mkmk_Phase();
         var movePolicePhase     = new Mkmk_Phase();
+        var movePeoplePhase     = new Mkmk_Phase();
         
         ////////////  Define Players //////////// 
         var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_A);
@@ -63,7 +64,7 @@ var BokupanMainScene = cc.Scene.extend({
             menuLayer.setMoveMenuEnable(true);
             menuLayer.setRotateMenuEnable(isIntersectionWithArrow(player1.getCurrPosition()));
             menuLayer.setCollectMenuEnable(isTargetHome(player1.getCurrPosition()));
-            menuLayer.setItemMenuEnable(true);
+            menuLayer.setItemMenuEnable(!player1.isAlreadyUseAll());
             
             this.setOnClickEventListener(menuLayer.rotateIcon,  this.gotoNextPhase, 0);
             this.setOnClickEventListener(menuLayer.moveIcon,    this.gotoNextPhase, 1);
@@ -169,12 +170,14 @@ var BokupanMainScene = cc.Scene.extend({
         //////////// ▼SelectItemPhase▼ ////////////
         selectItemPhase.nextPhase[0] = rotateAllAllowPhase;
         selectItemPhase.nextPhase[1] = movePolicePhase;
+        selectItemPhase.nextPhase[2] = movePeoplePhase;
         selectItemPhase.onEnter = function(){
             cc.log("onEnter Select Item Phase");
             mainMapLayer.addItemCard();
-            
+     
             this.setOnClickEventListener(mainMapLayer.ItemArrowIcon,   this.gotoNextPhase, 0);
-            this.setOnClickEventListener(mainMapLayer.ItemPoliceIcon,  this.gotoNextPhase, 1);
+            this.setOnClickEventListener(mainMapLayer.ItemPoliceIcon,  this.gotoNextPhase, 1); 
+            this.setOnClickEventListener(mainMapLayer.ItemPeopleIcon,  this.gotoNextPhase, 2);   
         }
         selectItemPhase.onExit = function(){
             cc.log("onExit Select Item Phase");
@@ -186,7 +189,13 @@ var BokupanMainScene = cc.Scene.extend({
         rotateAllAllowPhase.nextPhase[0] = actionChoicePhase;
         rotateAllAllowPhase.onEnter = function(){
             cc.log("onEnter Rotate All Arrow Phase");
+            if(player1.isAlreadyUse(ITEM.ARROW)){
+                mainMapLayer.textConsole("使用済みです");
+                this.gotoNextPhase(0,1000);
+                return;
+            }
             mainMapLayer.rotateAllArrowClockwise();
+            player1.useItem(ITEM.ARROW);
             this.gotoNextPhase(0,1000);
         }
         rotateAllAllowPhase.onExit = function(){
@@ -194,16 +203,44 @@ var BokupanMainScene = cc.Scene.extend({
         }
         //////////// ▲RotateAllAllowPhase▲ ////////////
         
+        //////////// ▼Move Police Phase▼ ////////////
         movePolicePhase.nextPhase[0] = actionChoicePhase;
         movePolicePhase.onEnter = function(){
             cc.log("onEnter Move Police Phase");
+            if(player1.isAlreadyUse(ITEM.POLICE)){
+                mainMapLayer.textConsole("使用済みです");
+                this.gotoNextPhase(0,1000);
+                return;
+            }
             var num = castDice();
             mainMapLayer.playDiceAnimation(num);
+            player1.useItem(ITEM.POLICE);
             this.gotoNextPhase(0,2000);
         }
         movePolicePhase.onExit = function(){
             cc.log("onExit Move Police Phase");
         }
+        //////////// ▲Move Police Phase▲ ////////////
+        
+        //////////// ▼Move People Phase▼ ////////////
+        movePeoplePhase.nextPhase[0] = actionChoicePhase;
+        movePeoplePhase.onEnter = function(){
+            cc.log("onEnter Move People Phase");
+            if(player1.isAlreadyUse(ITEM.PEOPLE)){
+                mainMapLayer.textConsole("使用済みです");
+                this.gotoNextPhase(0,1000);
+                return;
+            }
+            var num = castDice();
+            mainMapLayer.playDiceAnimation(num);
+            player1.useItem(ITEM.PEOPLE);
+            this.gotoNextPhase(0,2000);
+        }
+        movePeoplePhase.onExit = function(){
+            cc.log("onExit Move People Phase");
+        }
+        
+        //////////// ▲Move People Phase▲ ////////////
         
         //////////// Phase Entry Point ////////////
         actionChoicePhase.onEnter();

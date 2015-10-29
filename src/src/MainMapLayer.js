@@ -231,7 +231,6 @@ var MainMapLayer = cc.LayerColor.extend({
     for(var i=0 ; i<this.allows.length ; i++){
       var currDir = this.allows[i].dir;
       var nextDir = (currDir+1)%4;
-      this.rotateAllow(POSITION_ID.ALLOW_1+i, nextDir);
       while(!(this.rotateAllow(POSITION_ID.ALLOW_1+i, nextDir))){
         nextDir = (nextDir+1)%4;
       }
@@ -367,6 +366,8 @@ var MainMapLayer = cc.LayerColor.extend({
   , removeItemCard:function(){
       this.removeChild(this.menuItemArrow, 0);
       this.removeChild(this.menuItemPolice, 0);
+      this.removeChild(this.menuItemPeople, 0);
+      
   }
   , addItemCard:function(){
         // アイテムボタンの追加
@@ -401,5 +402,21 @@ var MainMapLayer = cc.LayerColor.extend({
         this.menuItemPolice.x = 0;
         this.menuItemPolice.y = 0;
         this.addChild(this.menuItemPolice, 0);
+        
+        this.ItemPeopleIcon = new Mkmk_MenuItemImage(
+            res.CardPeople,
+            res.CardPeople);
+        this.ItemPeopleIcon.attr({
+            scaleX: 100/this.ItemPeopleIcon.height,
+            scaleY: 100/this.ItemPeopleIcon.height,
+            x: 240,
+            y: 0,
+            anchorX: 0,
+            anchorY: 0
+        });
+        this.menuItemPeople = new cc.Menu(this.ItemPeopleIcon);
+        this.menuItemPeople.x = 0;
+        this.menuItemPeople.y = 0;
+        this.addChild(this.menuItemPeople, 0);
   }
 });

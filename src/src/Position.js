@@ -52,6 +52,13 @@ var POSITION_ID = {
   NUM_POSISION : 29
 }
 
+var ITEM = {
+  ARROW : 0,
+  POLICE : 1,
+  PEOPLE : 2,
+  NUM : 3
+}
+
 // Positional relationship of the house to each other
 var HOME_Relation = [
   //             LEFT,              ABOVE,              RIGHT,              BELOW

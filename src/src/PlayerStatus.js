@@ -7,6 +7,7 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition){
 	// カゴ、コンテナの初期値は空
 	this.basketStatus = 0;
 	this.containerStatus = 0;
+	this.ItemAlreadyUsed = 0;
 	
 	this.setNewPantsToBasket = function(position_id){
 		if(isTargetHome(position_id)){
@@ -33,5 +34,19 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition){
 	}
 	this.setCurrPosition = function(position_id){
 		this.currPos = position_id;
+	}
+	
+	this.useItem = function(item_id){
+		if( item_id < ITEM.NUM ){
+			this.ItemAlreadyUsed |= (1 << item_id);
+		}
+	}
+	
+	this.isAlreadyUse = function(item_id){
+		return Boolean(this.ItemAlreadyUsed & (1<<item_id));
+	}
+	
+	this.isAlreadyUseAll = function(item_id){
+		return (this.ItemAlreadyUsed == 0x07);
 	}
 }
