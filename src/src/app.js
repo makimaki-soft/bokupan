@@ -43,7 +43,7 @@ var BokupanMainScene = cc.Scene.extend({
         var movePolicePhase     = new Mkmk_Phase();
         
         ////////////  Define Players //////////// 
-        var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_2);
+        var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_A);
         menuLayer.setPlayer(player1);
         mainMapLayer.setPlayer(player1);
         
@@ -186,30 +186,11 @@ var BokupanMainScene = cc.Scene.extend({
         rotateAllAllowPhase.nextPhase[0] = actionChoicePhase;
         rotateAllAllowPhase.onEnter = function(){
             cc.log("onEnter Rotate All Arrow Phase");
-            mainMapLayer.addCursorToAllows();
-            rotateAllowPhase.ev = cc.EventListener.create({
-                event: cc.EventListener.TOUCH_ONE_BY_ONE,
-                swallowTouches: true,
-                onTouchBegan: function (touch, event) {
-                    var touchX = touch.getLocationX();
-                    var touchY = touch.getLocationY();
-                    
-                    if(mainMapLayer.isInside(touchX, touchY)){
-                        var closestAllow = mainMapLayer.getClosestPosition(touchX,touchY);
-                        var dir = mainMapLayer.getRelativeDirectionAllow(closestAllow, touchX,touchY);
-                        var res = mainMapLayer.rotateAllow(closestAllow, dir);
-                        if(res){
-                            rotateAllowPhase.gotoNextPhase(0,1000);
-                        }
-                    }
-                }
-            });
-            cc.eventManager.addListener(rotateAllowPhase.ev,mainMapLayer);
+            mainMapLayer.rotateAllArrowClockwise();
+            this.gotoNextPhase(0,1000);
         }
         rotateAllAllowPhase.onExit = function(){
             cc.log("onExit Rotate All Arrow Phase");
-            cc.eventManager.removeListener(rotateAllAllowPhase.ev);
-            mainMapLayer.removeCursorAllow();
         }
         //////////// ▲RotateAllAllowPhase▲ ////////////
         

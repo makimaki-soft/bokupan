@@ -226,6 +226,17 @@ var MainMapLayer = cc.LayerColor.extend({
       }
       return false;
   }
+  , rotateAllArrowClockwise:function(){
+    
+    for(var i=0 ; i<this.allows.length ; i++){
+      var currDir = this.allows[i].dir;
+      var nextDir = (currDir+1)%4;
+      this.rotateAllow(POSITION_ID.ALLOW_1+i, nextDir);
+      while(!(this.rotateAllow(POSITION_ID.ALLOW_1+i, nextDir))){
+        nextDir = (nextDir+1)%4;
+      }
+    }
+  }
   , getRelativeDirection(x,y){
       var relativeX =  x - this.x - this.playerIcon.x;
       var relativeY =  y - this.y - this.playerIcon.y;
