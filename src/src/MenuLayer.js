@@ -2,13 +2,7 @@ var MenuLayer = cc.LayerColor.extend({
     sprite:null,
     ctor:function (color,w,h) {
         this._super(color,w,h);
-        return true;
-    }
-  , setMoveFunction:function(map){
-      this.map = map;
-      
-      //menuMove
-      this.moveIcon = new Mkmk_MenuItemImage(
+        this.moveIcon = new Mkmk_MenuItemImage(
             res.IconMove,
             res.IconMove);
         this.moveIcon.attr({

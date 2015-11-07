@@ -49,8 +49,8 @@ var MainMapLayer = cc.LayerColor.extend({
         
         return true;
     }
-  , serPlayerIcon:function(){
-      this.playerIcon = new Avatar(res.Player1_png);
+  , setPlayerIcon:function(){
+      this.playerIcon = new Mkmk_Piece(res.DummyObj);
       this.playerIcon.setSize(40,40);
       this.playerIcon.setPos(this.player.getCurrPosition());
       this.addChild(this.playerIcon, 0);
