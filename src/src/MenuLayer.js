@@ -19,8 +19,8 @@ var MenuLayer = cc.LayerColor.extend({
         this.addChild(this.menuMove, 0);
         // 矢印回転ボタンの作成＆表示
         this.rotateIcon = new Mkmk_MenuItemImage(
-            res.IconAllow,
-            res.IconAllow2);
+            res.IconChange,
+            res.IconChange);
         this.rotateIcon.attr({
             scaleX: this.height/this.rotateIcon.height,
             scaleY: this.height/this.rotateIcon.height,
@@ -36,8 +36,8 @@ var MenuLayer = cc.LayerColor.extend({
         
         // 採取ボタンの追加
         this.CollectIcon = new Mkmk_MenuItemImage(
-            res.IconCollect,
-            res.IconCollect2);
+            res.IconGet,
+            res.IconGet);
         this.CollectIcon.attr({
             scaleX: this.height/this.CollectIcon.height,
             scaleY: this.height/this.CollectIcon.height,
@@ -54,7 +54,7 @@ var MenuLayer = cc.LayerColor.extend({
         // アイテムボタンの追加
         this.ItemIcon = new Mkmk_MenuItemImage(
             res.IconItem,
-            res.IconItem2);
+            res.IconItem);
         this.ItemIcon.attr({
             scaleX: this.height/this.ItemIcon.height,
             scaleY: this.height/this.ItemIcon.height,
