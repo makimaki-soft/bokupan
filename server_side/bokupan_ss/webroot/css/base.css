@@ -1,0 +1,142 @@
+li {
+  list-style-type: none;
+}
+
+.header-right {
+  display: flex;
+  justify-content: flex-end;
+
+  margin-top: 10px;
+  padding-left: 10px;
+}
+
+.header-right li {
+  padding-right: 10px;
+}
+
+.header-right li:first-child {
+  margin-right: auto;
+}
+
+
+.logo {
+  width: 30px;
+}
+
+
+.menu {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.menu li {
+  width: 80%;
+}
+
+.btn {
+  width: 90%;
+  margin-top: 5px;
+  margin-right: auto;
+}
+
+/* main */
+.main_img {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.main_img img{
+  width: 80%;
+  height:80%;
+}
+
+
+/* footer*/
+
+footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #D6D6D6;
+  text-align:center;
+}
+
+footer > span {
+  height: 120%;
+}
+
+/*
+ * ルール一覧ページ
+ */
+.navbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+  padding-left: 10px;
+}
+
+.navbar li:first-child {
+  margin-right: auto;
+}
+
+.navbar li {
+  margin-right: 15px;
+}
+
+.rooms {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
+.help {
+  width: 90%;
+}
+
+.help h2 {
+  width: 100%;
+  border-left: 10px solid;
+  border-bottom: 2px solid;
+  padding-left: 5px;
+  margin-left: 20px;
+}
+
+/*
+ * 部屋一覧
+ */
+.paginator {
+  display: flex;
+  justify-content: center;
+}
+
+.add-form {
+  padding-right: 10px;
+  padding-left: 10px;
+}
+
+.add-form fieldset {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding-bottom: 20px;
+}
+
+.add-form fieldset label{
+  width: 30%;
+}
+
+.add-form fieldset input{
+  width: 70%;
+}
+
+.add-form div.btn {
+  text-align:center;
+  width: 100%
+}
+
+.add-form div.btn button{
+  width: 70%
+}
