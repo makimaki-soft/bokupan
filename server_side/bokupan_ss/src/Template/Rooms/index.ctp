@@ -25,8 +25,10 @@
             <td><?= h($room->message) ?></td>
             <td class="actions">
                 <?= $this->Html->link(__('入室'), ['action' => 'enter', $room->id, $room->name]) ?>
+                <!-- 
                 <?= $this->Html->link(__('Edit'), ['action' => 'edit', $room->id]) ?>
                 <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $room->id], ['confirm' => __('Are you sure you want to delete # {0}?', $room->id)]) ?>
+                -->
             </td>
         </tr>
 
@@ -39,6 +41,8 @@
             <?= $this->Paginator->numbers() ?>
             <?= $this->Paginator->next(__('next') . ' >') ?>
         </ul>
+        <!--
         <p><?= $this->Paginator->counter() ?></p>
+        -->
     </div>
 </div>

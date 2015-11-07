@@ -1,13 +1,7 @@
-<div class="actions columns large-2 medium-3">
-    <h3><?= __('Actions') ?></h3>
-    <ul class="side-nav">
-        <li><?= $this->Html->link(__('List Rooms'), ['action' => 'index']) ?></li>
-    </ul>
-</div>
 <div class="rooms form large-10 medium-9 columns">
-    <?= $this->Form->create($room) ?>
+    <?= $this->Form->create($room, ["class" => "add-form"]) ?>
     <fieldset>
-        <legend><?= __('Add Room') ?></legend>
+        <legend><?= __('部屋を作る') ?></legend>
         <?php
             echo $this->Form->input('name');
             echo $this->Form->input('host_user');
@@ -15,6 +9,8 @@
             echo $this->Form->input('message');
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <div class="btn">
+    <?= $this->Form->button('OK', ["class" => "btn btn-primary"]) ?>
+    </div>
     <?= $this->Form->end() ?>
 </div>

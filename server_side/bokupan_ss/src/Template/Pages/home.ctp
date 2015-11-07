@@ -20,14 +20,16 @@ use Cake\Network\Exception\NotFoundException;
 
 $this->layout = false;
 
-$cakeDescription = Configure::read('Common.title');
+$my_title = Configure::read('Common.title');
+$my_copyright = Configure::read('Common.copyright');
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $cakeDescription ?></title>
+    <title><?= $my_title ?></title>
     <?= $this->Html->meta('icon') ?>
     <?= $this->element('css'); ?>
 </head>
@@ -42,15 +44,18 @@ $cakeDescription = Configure::read('Common.title');
     </header>
     <div id="content">
         <div class="main_img">
-            <?= $this->Html->image('game_logo.png', ['alt' => 'CakePHP']); ?>
+            <?= $this->Html->image('game_logo.png', ['alt' => 'ぼくばん']); ?>
         </div>
-        <ul>
-        <li><?= $this->Html->link("ゲームを始める", ["controller" => "Rooms", "action" => "index"]) ?></li>
-        <li><?= $this->Html->link("説明書を読む", ["controller" => "Rooms", "action" => "index"]) ?></li>
+        <ul class="menu">
+        <li><?= $this->Form->button("ゲームを始める",["class" => "btn btn-primary a-btn", "data-url" => "/bokupan-ss/rooms"]) ?></li>
+        <li><?= $this->Form->button("説明書を読む",["class" => "btn btn-success a-btn", "data-url" => "/bokupan-ss/help"]) ?></li>
         </ul>
     </div>
     <footer>
-        <span>copy right</span>
+        <span>Copyright (C) 2015 <?= $my_copyright ?> All Rights Reserved.</span>
     </footer>
+
+    <?= $this->Html->script('jquery-2.0.3.min.js') ?>
+    <?= $this->Html->script('action.js') ?>
 </body>
 </html>

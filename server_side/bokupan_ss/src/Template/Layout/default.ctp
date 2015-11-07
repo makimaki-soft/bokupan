@@ -33,13 +33,15 @@ $cakeDescription = Configure::read('Common.title');
     <?= $this->fetch('css') ?>
     <?= $this->fetch('script') ?>
 </head>
+
 <body>
     <header>
         <nav >
             <ul class="navbar">
                 <li><?= $this->Html->link("", ["controller" => "Pages", "action" => "display"], ["class"=>"glyphicon glyphicon-home"]) ?></li>
-                <li><?= $this->Html->link("ルームを作成する", ["controller" => "Rooms", "action" => "add"]) ?></li>
-                <li><?= $this->Html->link("説明書を読む", ["controller" => "Pages", "action" => "display"]) ?></li>
+                <li><?= $this->Html->link("部屋一覧を見る", ["controller" => "Rooms", "action" => "index"]) ?></li>
+                <li><?= $this->Html->link("部屋を作成する", ["controller" => "Rooms", "action" => "add"]) ?></li>
+                <li><?= $this->Html->link("説明書を読む", ["controller" => "Pages", "action" => "display", 'help']) ?></li>
             </ul>
         </nav>
     </header>
