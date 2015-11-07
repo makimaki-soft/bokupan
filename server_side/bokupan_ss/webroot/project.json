@@ -1,0 +1,28 @@
+{
+    "project_type": "javascript",
+
+    "debugMode" : 1,
+    "showFPS" : false,
+    "frameRate" : 30,
+    "id" : "gameCanvas",
+    "renderMode" : 0,
+    "engineDir":"frameworks/cocos2d-html5",
+
+    "modules" : ["cocos2d"],
+
+    "jsList" : [
+          "src/resource.js"
+        , "src/app.js"
+        , "res/loading_image.js"
+        , "src/layout.js"
+        , "src/MainMapLayer.js"
+        , "src/DummyLayer.js"
+        , "src/DebugInfoLayer.js"
+        , "src/Mkmk_Piece.js"
+        , "src/Position.js"
+        , "src/MenuLayer.js"
+        , "src/Phase.js"
+        , "src/PlayerStatus.js"
+        , "src/Mkmk_Dice.js"
+    ]
+}

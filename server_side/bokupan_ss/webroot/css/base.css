@@ -140,3 +140,14 @@ footer > span {
 .add-form div.btn button{
   width: 70%
 }
+
+/*
+ * ゲーム画面
+ */
+canvas {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
