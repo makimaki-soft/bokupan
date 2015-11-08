@@ -410,7 +410,7 @@ var MainMapLayer = cc.LayerColor.extend({
         this.ItemArrowIcon.attr({
             scaleX: 100/this.ItemArrowIcon.height,
             scaleY: 100/this.ItemArrowIcon.height,
-            x: 20,
+            x: 0,
             y: 0,
             anchorX: 0,
             anchorY: 0
@@ -426,9 +426,9 @@ var MainMapLayer = cc.LayerColor.extend({
         this.ItemPoliceIcon.attr({
             scaleX: 100/this.ItemPoliceIcon.height,
             scaleY: 100/this.ItemPoliceIcon.height,
-            x: 120,
+            x: 0,
             y: 0,
-            anchorX: 0,
+            anchorX: -1,
             anchorY: 0
         });
         this.menuItemPolice = new cc.Menu(this.ItemPoliceIcon);
@@ -442,9 +442,9 @@ var MainMapLayer = cc.LayerColor.extend({
         this.ItemPeopleIcon.attr({
             scaleX: 100/this.ItemPeopleIcon.height,
             scaleY: 100/this.ItemPeopleIcon.height,
-            x: 240,
+            x: 0,
             y: 0,
-            anchorX: 0,
+            anchorX: -2,
             anchorY: 0
         });
         this.menuItemPeople = new cc.Menu(this.ItemPeopleIcon);
