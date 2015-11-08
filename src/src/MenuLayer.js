@@ -2,8 +2,6 @@ var MenuLayer = cc.LayerColor.extend({
     sprite:null,
     ctor:function (color,w,h) {
         this._super(color,w,h);
-        
-        // 移動ボタンの作成＆表示
         this.moveIcon = new Mkmk_MenuItemImage(
             res.IconMove,
             res.IconMove);
@@ -19,17 +17,16 @@ var MenuLayer = cc.LayerColor.extend({
         this.menuMove.x = 0;
         this.menuMove.y = 0;
         this.addChild(this.menuMove, 0);
-        
         // 矢印回転ボタンの作成＆表示
         this.rotateIcon = new Mkmk_MenuItemImage(
-            res.IconAllow,
-            res.IconAllow2);
+            res.IconChange,
+            res.IconChange);
         this.rotateIcon.attr({
             scaleX: this.height/this.rotateIcon.height,
             scaleY: this.height/this.rotateIcon.height,
-            x: 100,
+            x: 0,
             y: 0,
-            anchorX: 0,
+            anchorX: -1,
             anchorY: 0
         });
         this.menuRotate = new cc.Menu(this.rotateIcon);
@@ -39,14 +36,14 @@ var MenuLayer = cc.LayerColor.extend({
         
         // 採取ボタンの追加
         this.CollectIcon = new Mkmk_MenuItemImage(
-            res.IconCollect,
-            res.IconCollect2);
+            res.IconGet,
+            res.IconGet);
         this.CollectIcon.attr({
             scaleX: this.height/this.CollectIcon.height,
             scaleY: this.height/this.CollectIcon.height,
-            x: 150,
+            x: 0,
             y: 0,
-            anchorX: 0,
+            anchorX: -2,
             anchorY: 0
         });
         this.menuCollect = new cc.Menu(this.CollectIcon);
@@ -57,13 +54,13 @@ var MenuLayer = cc.LayerColor.extend({
         // アイテムボタンの追加
         this.ItemIcon = new Mkmk_MenuItemImage(
             res.IconItem,
-            res.IconItem2);
+            res.IconItem);
         this.ItemIcon.attr({
             scaleX: this.height/this.ItemIcon.height,
             scaleY: this.height/this.ItemIcon.height,
-            x: 200,
+            x: 0,
             y: 0,
-            anchorX: 0,
+            anchorX: -3,
             anchorY: 0
         });
         this.menuItem = new cc.Menu(this.ItemIcon);
