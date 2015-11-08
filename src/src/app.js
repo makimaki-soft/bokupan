@@ -10,10 +10,10 @@ var BokupanMainScene = cc.Scene.extend({
         
         var position_Y = 0;
         
-        var　playerStatusLayer = new DummyLayer      (cc.color(200,200, 50,100), g_layout.playerstatus_width, g_layout.playerstatus_height);
-        var　menuLayer         = new MenuLayer       (cc.color(255,200,100,100), g_layout.        menu_width, g_layout.        menu_height);
-        var　mainMapLayer      = new MainMapLayer    (cc.color(100,255,140,100), g_layout.         map_width, g_layout.         map_height);
-        var　enemyStatusLayer  = new DummyLayer      (cc.color( 70,200, 70,100), g_layout. enemystatus_width, g_layout. enemystatus_height);
+        var　playerStatusLayer = new PlayerStatusLayer (cc.color(200,200, 50,100), g_layout.playerstatus_width, g_layout.playerstatus_height);
+        var　menuLayer         = new MenuLayer         (cc.color(255,200,100,100), g_layout.        menu_width, g_layout.        menu_height);
+        var　mainMapLayer      = new MainMapLayer      (cc.color(100,255,140,100), g_layout.         map_width, g_layout.         map_height);
+        var　enemyStatusLayer  = new DummyLayer        (cc.color( 70,200, 70,100), g_layout. enemystatus_width, g_layout. enemystatus_height);
 
         playerStatusLayer.setPosition(cc.p(0,0));
         this.addChild(playerStatusLayer);
@@ -44,9 +44,10 @@ var BokupanMainScene = cc.Scene.extend({
         var movePeoplePhase     = new Mkmk_Phase();
         
         ////////////  Define Players //////////// 
-        var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_A);
+        var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_A, playerStatusLayer);
         menuLayer.setPlayer(player1);
         mainMapLayer.setPlayer(player1);
+        playerStatusLayer.setPlayer(player1);
         
         //////////// Police ////////////
         var police = new Mkmk_PoliceStatus(POSITION_ID.HOME_7);

@@ -1,8 +1,9 @@
-function Mkmk_PlayerStatus(playerID, playerName, initialPosition){
+function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view){
 	this.playerID   = playerID;
 	this.PlayerName = playerName;
 	this.currPos = initialPosition;
 	this.initialPosition = initialPosition;
+	this.view = view;
 	
 	// カゴ、コンテナの初期値は空
 	this.basketStatus = 0;
@@ -13,11 +14,13 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition){
 		if(isTargetHome(position_id)){
 			this.basketStatus |= (1 << position_id);
 		}
+		view.statusChanged();
 	}
 	
 	this.setBasketToContainer = function(){
 		this.containerStatus |= this.basketStatus;
 		this.basketStatus = 0;
+		view.statusChanged();
 	}
 	
 	this.checkAcquired = function(position_id){

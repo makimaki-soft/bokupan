@@ -1,5 +1,5 @@
-
-var MenuLayer = cc.LayerColor.extend({
+//menuLayerからコピペッタだけ
+var PlayerStatusLayer = cc.LayerColor.extend({
     sprite:null,
     ctor:function (color,w,h) {
         this._super(color,w,h);
@@ -71,23 +71,8 @@ var MenuLayer = cc.LayerColor.extend({
 
         return true;
     }
-  , setMapLayer:function(map){
-      this.map = map;
-    }
-  , setStatusLayer:function(statusLayer){
-      this.statusLayer = statusLayer;
-    }
-  , setMoveMenuEnable:function(bool){
-      this.menuMove.setEnabled(bool);
-    }
-  , setRotateMenuEnable:function(bool){
-      this.menuRotate.setEnabled(bool);
-    }
-  , setCollectMenuEnable:function(bool){
-      this.menuCollect.setEnabled(bool);
-    }
-  , setItemMenuEnable:function(bool){
-      this.menuItem.setEnabled(bool);
+  , statusChanged:function(){
+      alert();
     }
   , setPlayer:function(player){
       this.player = player;

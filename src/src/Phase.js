@@ -1,5 +1,3 @@
-
-
 var Mkmk_MenuItemImage = cc.MenuItemImage.extend({
     ctor:function (normalImage, selectedImage, callback, target) {
         this.target = target;
@@ -41,4 +39,7 @@ function Mkmk_Phase() {
         nextPhase.onEnter();
       }, delay_msec);
     }
+
+    //ステータスを更新
+
 }
