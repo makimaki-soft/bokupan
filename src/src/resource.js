@@ -1,5 +1,5 @@
 var res = {
-    MainMap_png : "res/map_ver3_nightscape.png"
+    MainMap_png : "res/map_ver3_noon.png"
     , Allow_png : "res/arrow.png"
     , IconMove : "res/IconMove.png"
     , Yajirushi : "res/Yajirushi.png"
