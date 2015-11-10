@@ -42,6 +42,11 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view){
 		return (this.containerStatus == 0x1FF);
 	}
 	
+	this.clearBasket = function(){
+		this.basketStatus = 0;
+		view.statusChanged(this);
+	}
+	
 	this.getCurrPosition = function(){
 		return this.currPos;
 	}
@@ -67,6 +72,11 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view){
 	this.checkIfUpdateContainer = function(){
 		if( this.initialPosition == this.currPos ){
 			this.setBasketToContainer();
+		}
+	}
+	this.checkIfForfeitPosition = function(pos){
+		if( pos == this.currPos ){
+			this.clearBasket();
 		}
 	}
 }

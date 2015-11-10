@@ -43,6 +43,9 @@ var BokupanMainScene = cc.Scene.extend({
         var movePolicePhase     = new Mkmk_Phase();
         var movePeoplePhase     = new Mkmk_Phase();
         
+        var comPhase            = new Mkmk_Phase();
+        var playerPhase         = new Mkmk_Phase();
+        
         ////////////  Define Players //////////// 
         var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_A, playerStatusLayer);
         menuLayer.setPlayer(player1);
@@ -102,7 +105,7 @@ var BokupanMainScene = cc.Scene.extend({
                         var dir = mainMapLayer.getRelativeDirection(touchX,touchY);
                         var res = mainMapLayer.movePlayer(dir);
                         if(res){
-                            playerMovePhase.gotoNextPhase(0, 1000);
+                            playerMovePhase.gotoNextPhase(0, 1000, true);
                         }
                     }
                 }
@@ -135,7 +138,7 @@ var BokupanMainScene = cc.Scene.extend({
                         var dir = mainMapLayer.getRelativeDirectionAllow(targetArrow, touchX,touchY);
                         var res = mainMapLayer.rotateAllow(targetArrow, dir);
                         if(res){
-                            rotateAllowPhase.gotoNextPhase(0,1000);
+                            rotateAllowPhase.gotoNextPhase(0,1000, true);
                         }
                     }
                 }
@@ -157,17 +160,18 @@ var BokupanMainScene = cc.Scene.extend({
             var currPos = player1.getCurrPosition();
             
             if(!isTargetHome(currPos)){
-                collectPantsPhase.gotoNextPhase(0,0);
+                collectPantsPhase.gotoNextPhase(0,0, false);
                 return;
             }
       
             if(!player1.checkAcquired(currPos)){
                 player1.setNewPantsToBasket(currPos);
                 mainMapLayer.textConsole("取得しました");
+                collectPantsPhase.gotoNextPhase(0,1000, true);
             }else{
                 mainMapLayer.textConsole("取得済みです");
+                collectPantsPhase.gotoNextPhase(0,1000, false);
             }
-            collectPantsPhase.gotoNextPhase(0,1000);
         }
         collectPantsPhase.onExit = function(){
             cc.log("onExit Collect Pants Phase");
@@ -198,12 +202,12 @@ var BokupanMainScene = cc.Scene.extend({
             cc.log("onEnter Rotate All Arrow Phase");
             if(player1.isAlreadyUse(ITEM.ARROW)){
                 mainMapLayer.textConsole("使用済みです");
-                this.gotoNextPhase(0,1000);
+                this.gotoNextPhase(0,1000, false);
                 return;
             }
             mainMapLayer.rotateAllArrowClockwise();
             player1.useItem(ITEM.ARROW);
-            this.gotoNextPhase(0,1000);
+            this.gotoNextPhase(0,1000, true);
         }
         rotateAllAllowPhase.onExit = function(){
             cc.log("onExit Rotate All Arrow Phase");
@@ -216,14 +220,16 @@ var BokupanMainScene = cc.Scene.extend({
             cc.log("onEnter Move Police Phase");
             if(player1.isAlreadyUse(ITEM.POLICE)){
                 mainMapLayer.textConsole("使用済みです");
-                this.gotoNextPhase(0,1000);
+                this.gotoNextPhase(0,1000, false);
                 return;
             }
             var num = castDice();
             mainMapLayer.playDiceAnimation(num);
-            mainMapLayer.movePolice(num);
+            mainMapLayer.movePolice(num, function(currPos){
+                this.checkIfForfeitPosition(currPos);
+            }, player1);
             player1.useItem(ITEM.POLICE);
-            this.gotoNextPhase(0,2000);
+            this.gotoNextPhase(0,1200*num, true);
         }
         movePolicePhase.onExit = function(){
             cc.log("onExit Move Police Phase");
@@ -236,13 +242,13 @@ var BokupanMainScene = cc.Scene.extend({
             cc.log("onEnter Move People Phase");
             if(player1.isAlreadyUse(ITEM.PEOPLE)){
                 mainMapLayer.textConsole("使用済みです");
-                this.gotoNextPhase(0,1000);
+                this.gotoNextPhase(0,1000, false);
                 return;
             }
             var num = castDice();
             mainMapLayer.playDiceAnimation(num);
             player1.useItem(ITEM.PEOPLE);
-            this.gotoNextPhase(0,2000);
+            this.gotoNextPhase(0,1000, true);
         }
         movePeoplePhase.onExit = function(){
             cc.log("onExit Move People Phase");
@@ -250,7 +256,38 @@ var BokupanMainScene = cc.Scene.extend({
         
         //////////// ▲Move People Phase▲ ////////////
         
+        //////////// ▼Player Phase▼ ////////////
+        playerPhase.nextPhase[0] = comPhase;
+        playerPhase.setchildEntryPoint( actionChoicePhase );
+        playerPhase.onEnter = function(){
+            cc.log("onEnter Player Phase");
+            
+            this.gotoChildPhase(0);
+        }
+        playerPhase.onExit = function(){
+            cc.log("onExit Player Phase");
+        }
+        //////////// ▲Player Phase▲ ////////////
+        
+        //////////// ▼Com Phase▼ ////////////
+        comPhase.nextPhase[0]  = playerPhase;
+        comPhase.onEnter = function(){
+            cc.log("onEnter Com Phase");
+            mainMapLayer.textConsole("警察が動きます。");
+            
+            var num = castDice();
+            mainMapLayer.playDiceAnimation(num);
+            mainMapLayer.movePolice(num, function(currPos){
+                this.checkIfForfeitPosition(currPos);
+            }, player1);
+            this.gotoNextPhase(0,1200*num, false);
+        }
+        comPhase.onExit = function(){
+            cc.log("onExit Com Phase");
+        }
+        //////////// ▲Com Phase▲ ////////////
+        
         //////////// Phase Entry Point ////////////
-        actionChoicePhase.onEnter();
+        playerPhase.onEnter();
     }
 });

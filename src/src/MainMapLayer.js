@@ -223,16 +223,24 @@ var MainMapLayer = cc.LayerColor.extend({
       }
       return false;
   }
-  , movePolice:function(num){
-      this.movePoliceRecursive(this.police.getNextDir(), 1, num);
+  , movePolice:function(num, callback, target){
+      this.movePoliceRecursive(this.police.getNextDir(), 1, num, callback, target);
   }
-  , movePoliceRecursive:function(direction, currDepth, maxDepth){
+  , movePoliceRecursive:function(direction, currDepth, maxDepth, callback, target){
       if( this.movePiece(this.policeIcon, direction) ){
         this.scheduleOnce(function(){
             this.police.setCurrPosition(this.policeIcon.NextPositionID);
             this.police.updateDir();
+            if(callback){
+              cc.log("callback");
+              if( target ){ 
+                callback.call(target, this.police.getCurrPosition());
+              }else{
+                callback.call(this, this.police.getCurrPosition());
+              }
+            }
             if(currDepth< maxDepth){
-              this.movePoliceRecursive(this.police.getNextDir(), currDepth+1, maxDepth);
+              this.movePoliceRecursive(this.police.getNextDir(), currDepth+1, maxDepth, callback, target);
             }
         }, 1.2);
         return true;
