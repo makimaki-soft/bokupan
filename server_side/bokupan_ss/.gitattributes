@@ -34,3 +34,9 @@
 *.mo binary
 *.pdf binary
 *.phar binary
+
+# for cocos
+*.so binary
+*.dll binary
+*.exe binary
+*.dylib binary
