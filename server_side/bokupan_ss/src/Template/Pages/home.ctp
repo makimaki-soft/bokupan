@@ -51,11 +51,13 @@ $my_copyright = Configure::read('Common.copyright');
         <li><?= $this->Form->button("説明書を読む",["class" => "btn btn-success a-btn", "data-url" => "/bokupan-ss/help"]) ?></li>
         </ul>
     </div>
+
     <footer>
         <span>Copyright (C) 2015 <?= $my_copyright ?> All Rights Reserved.</span>
     </footer>
 
     <?= $this->Html->script('jquery-2.0.3.min.js') ?>
     <?= $this->Html->script('action.js') ?>
+    <?= $this->Html->script('sakura.js') ?>
 </body>
 </html>

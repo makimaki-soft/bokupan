@@ -10,7 +10,12 @@
 </span>
 人数: <?= h($room->member_num) ?>
 
+<canvas id="gameCanvas" width="375" height="667"></canvas>
+
 <?= $this->Html->script('https://skyway.io/dist/0.3/peer.min.js'); ?>
 <?= $this->Html->script('https://code.jquery.com/jquery-2.1.4.min.js'); ?>
 <?= $this->Html->script('rtc'); ?>
+<?= $this->Html->script('/res/loading.js'); ?>
+<?= $this->Html->script('/frameworks/cocos2d-html5/CCBoot.js', ["cocos"]); ?>
 <?= $this->Html->script('main'); ?>
+

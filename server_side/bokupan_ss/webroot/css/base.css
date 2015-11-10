@@ -52,15 +52,14 @@ li {
   height:80%;
 }
 
-
 /* footer*/
 
 footer {
   position: fixed;
   bottom: 0;
   width: 100%;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
   background-color: #D6D6D6;
   text-align:center;
 }
@@ -93,15 +92,56 @@ footer > span {
 }
 
 .help {
-  width: 90%;
+  padding-bottom: 50px;
 }
 
 .help h2 {
-  width: 100%;
   border-left: 10px solid;
   border-bottom: 2px solid;
   padding-left: 5px;
   margin-left: 20px;
+}
+
+
+.help .center_img{
+  text-align: center;
+}
+
+.help .center_img>img{
+  width: 200px;
+}
+
+
+.help section {
+  width: 90%;
+  padding-left: 25px;
+  padding-right: 15px;
+}
+
+.help .box-001 {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.help .box-001>img{
+  width: 50px;
+  height: 50px;
+}
+
+.help .box-001>span{
+  vertical-align: bottom;
+  padding-left: 5px;
+}
+
+.help section h4 {
+  color: #A94442;
+  border-bottom: 1px dashed #A94442;
+  padding-top: 10px;
+}
+
+.help section span.turn {
+  color: #3F51B5;
+  border-bottom: 1px ridge #3F51B5;
 }
 
 /*
@@ -139,4 +179,15 @@ footer > span {
 
 .add-form div.btn button{
   width: 70%
+}
+
+/*
+ * ゲーム画面
+ */
+canvas {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -khtml-user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
