@@ -40,3 +40,4 @@
 *.dll binary
 *.exe binary
 *.dylib binary
+*.icns binary
