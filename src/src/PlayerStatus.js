@@ -63,6 +63,12 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view){
 	this.isAlreadyUseAll = function(item_id){
 		return (this.ItemAlreadyUsed == 0x07);
 	}
+	
+	this.checkIfUpdateContainer = function(){
+		if( this.initialPosition == this.currPos ){
+			this.setBasketToContainer();
+		}
+	}
 }
 
 function Mkmk_PoliceStatus(initialPosition){

@@ -66,6 +66,8 @@ var BokupanMainScene = cc.Scene.extend({
         actionChoicePhase.onEnter = function(){
             cc.log("onEnter Action Choice Phase");
             
+            player1.checkIfUpdateContainer();
+            
             menuLayer.setMoveMenuEnable(true);
             menuLayer.setRotateMenuEnable(isIntersectionWithArrow(player1.getCurrPosition()));
             menuLayer.setCollectMenuEnable(isTargetHome(player1.getCurrPosition()));

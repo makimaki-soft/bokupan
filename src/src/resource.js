@@ -1,7 +1,6 @@
 var res = {
     MainMap_png : "res/map_ver3_noon.png"
     , Allow_png : "res/arrow.png"
-    , IconMove : "res/IconMove.png"
     , Yajirushi : "res/Yajirushi.png"
     , IconMove : "res/command_move.png"
     , IconGet : "res/command_get.png"
