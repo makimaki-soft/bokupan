@@ -52,6 +52,11 @@ $my_copyright = Configure::read('Common.copyright');
         </ul>
     </div>
 
+    <audio autoplay loop>
+        <source src="/bokupan-ss/audio/bokupan_opening.mp3">
+        <p style="color: red">HTML5のaudioに対応していないブラウザのためサンプルは表示されません。</p>
+    </audio>
+
     <footer>
         <span>Copyright (C) 2015 <?= $my_copyright ?> All Rights Reserved.</span>
     </footer>
