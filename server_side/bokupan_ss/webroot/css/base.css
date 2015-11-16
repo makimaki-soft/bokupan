@@ -113,9 +113,8 @@ footer > span {
 
 
 .help section {
-  width: 90%;
   padding-left: 25px;
-  padding-right: 15px;
+  padding-right: 25px;
 }
 
 .help .box-001 {
@@ -179,6 +178,10 @@ footer > span {
 
 .add-form div.btn button{
   width: 70%
+}
+
+.panel-body span {
+  font-weight: bold;
 }
 
 /*

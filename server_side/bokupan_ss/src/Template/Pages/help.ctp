@@ -126,9 +126,9 @@ $my_copyright = Configure::read('Common.copyright');
              <div class="panel-body">
                 ターンの最初に、マップに以下のいずれかの変更が起こります。
                 <ul>
-                    <li>警察官の移動</li>
-                    <li>住人の帰宅</li>
-                    <li>巡回ルートの変更</li>
+                    <li>- 警察官の移動</li>
+                    <li>- 住人の帰宅</li>
+                    <li>- 巡回ルートの変更</li>
                 </ul>
                 <span>警察官の移動について</span>
                 <p>
@@ -154,10 +154,10 @@ $my_copyright = Configure::read('Common.copyright');
             <p>
             各プレイヤは自分の番に、次のうちどれかを２回行わなければなりません。
             <ul>
-                <li>移動する</li>
-                <li>パンツを得る</li>
-                <li>巡回ルートの矢印の向きを変える</li>
-                <li>アイテムを使う</li>
+                <li>- 移動する</li>
+                <li>- パンツを得る</li>
+                <li>- 巡回ルートの矢印の向きを変える</li>
+                <li>- アイテムを使う</li>
             </ul>
             <span>移動する</span>
             <p>
@@ -175,9 +175,9 @@ $my_copyright = Configure::read('Common.copyright');
             <p>
             プレイヤはコンテスト中に以下のアイテムをそれぞれ一回ずつ使用することができます。
             <ul>
-                <li>警察官に巡回させる</li>
-                <li>ランダムに住人を帰宅させる</li>
-                <li>巡回ルートの矢印の向きをランダムに変える</li>
+                <li>- 警察官に巡回させる</li>
+                <li>- ランダムに住人を帰宅させる</li>
+                <li>- 巡回ルートの矢印の向きをランダムに変える</li>
             </ul>
            </p>
              </div>
