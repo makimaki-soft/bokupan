@@ -3,9 +3,9 @@
     <fieldset>
         <legend><?= __('部屋を作る') ?></legend>
         <?php
-            echo $this->Form->input('部屋名', ["required"=>"true"]);
-            echo $this->Form->input('ホスト', ["required"=>"true"]);
-            echo $this->Form->input('メッセージ', ["required"=>"true"]);
+            echo $this->Form->input('name', ['label' => '部屋名', "required"=>"true"]);
+            echo $this->Form->input('host_user', ['label' => 'ホスト', "required"=>"true"]);
+            echo $this->Form->input('message', ['label' => 'メッセージ', "required"=>"true"]);
         ?>
     </fieldset>
     <div class="btn">
