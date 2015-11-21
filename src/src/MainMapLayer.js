@@ -223,16 +223,24 @@ var MainMapLayer = cc.LayerColor.extend({
       }
       return false;
   }
-  , movePolice:function(num){
-      this.movePoliceRecursive(this.police.getNextDir(), 1, num);
+  , movePolice:function(num, callback, target){
+      this.movePoliceRecursive(this.police.getNextDir(), 1, num, callback, target);
   }
-  , movePoliceRecursive:function(direction, currDepth, maxDepth){
+  , movePoliceRecursive:function(direction, currDepth, maxDepth, callback, target){
       if( this.movePiece(this.policeIcon, direction) ){
         this.scheduleOnce(function(){
             this.police.setCurrPosition(this.policeIcon.NextPositionID);
             this.police.updateDir();
+            if(callback){
+              cc.log("callback");
+              if( target ){ 
+                callback.call(target, this.police.getCurrPosition());
+              }else{
+                callback.call(this, this.police.getCurrPosition());
+              }
+            }
             if(currDepth< maxDepth){
-              this.movePoliceRecursive(this.police.getNextDir(), currDepth+1, maxDepth);
+              this.movePoliceRecursive(this.police.getNextDir(), currDepth+1, maxDepth, callback, target);
             }
         }, 1.2);
         return true;
@@ -410,7 +418,7 @@ var MainMapLayer = cc.LayerColor.extend({
         this.ItemArrowIcon.attr({
             scaleX: 100/this.ItemArrowIcon.height,
             scaleY: 100/this.ItemArrowIcon.height,
-            x: 20,
+            x: 0,
             y: 0,
             anchorX: 0,
             anchorY: 0
@@ -426,9 +434,9 @@ var MainMapLayer = cc.LayerColor.extend({
         this.ItemPoliceIcon.attr({
             scaleX: 100/this.ItemPoliceIcon.height,
             scaleY: 100/this.ItemPoliceIcon.height,
-            x: 120,
+            x: 0,
             y: 0,
-            anchorX: 0,
+            anchorX: -1,
             anchorY: 0
         });
         this.menuItemPolice = new cc.Menu(this.ItemPoliceIcon);
@@ -442,9 +450,9 @@ var MainMapLayer = cc.LayerColor.extend({
         this.ItemPeopleIcon.attr({
             scaleX: 100/this.ItemPeopleIcon.height,
             scaleY: 100/this.ItemPeopleIcon.height,
-            x: 240,
+            x: 0,
             y: 0,
-            anchorX: 0,
+            anchorX: -2,
             anchorY: 0
         });
         this.menuItemPeople = new cc.Menu(this.ItemPeopleIcon);
