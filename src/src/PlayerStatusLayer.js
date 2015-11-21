@@ -451,15 +451,12 @@ var PlayerStatusLayer = cc.LayerColor.extend({
     }
   , statusChanged:function(player){
       for (var i = this.pocketList.length - 1; i >= 0; i--) {
-          // this.pocketList[i].setVisible((player.basketStatus && (1 << i))!=0)
           this.pocketList[i].setVisible(player.isBasket(i));
       };
       for (var i = this.collectedList.length - 1; i >= 0; i--) {
-          // this.pocketList[i].setVisible((player.basketStatus && (1 << i))!=0)
           this.collectedList[i].setVisible(player.isCollected(i));
       };
       for (var i = this.usedList.length - 1; i >= 0; i--) {
-          // this.pocketList[i].setVisible((player.basketStatus && (1 << i))!=0)
           this.usedList[i].setVisible(player.isAlreadyUse(i));
       };
     }
