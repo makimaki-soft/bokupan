@@ -69,14 +69,23 @@ var BokupanMainScene = cc.Scene.extend({
                 menuLayer.setItemMenuEnable(!currPlayer.isAlreadyUseAll());
             }
             
+            cc.eventManager.addCustomListener(LABEL.ARROW_BUTTON ,function (event) {
+                    cc.log(event.getUserData());  
+                    actionChoicePhase.gotoNextPhase(0);
+                });
+            
             cc.eventManager.addCustomListener(LABEL.MOVE_BUTTON,function (event) {
                     cc.log(event.getUserData());  
                     actionChoicePhase.gotoNextPhase(1);
                 });
+            cc.eventManager.addCustomListener(LABEL.GET_BUTTON,function (event) {
+                    cc.log(event.getUserData());  
+                    actionChoicePhase.gotoNextPhase(2);
+                });
                 
-            this.setOnClickEventListener(menuLayer.rotateIcon,  this.gotoNextPhase, 0);
+            // this.setOnClickEventListener(menuLayer.rotateIcon,  this.gotoNextPhase, 0);
             // this.setOnClickEventListener(menuLayer.moveIcon,    this.gotoNextPhase, 1);
-            this.setOnClickEventListener(menuLayer.CollectIcon, this.gotoNextPhase, 2);
+            // this.setOnClickEventListener(menuLayer.CollectIcon, this.gotoNextPhase, 2);
             this.setOnClickEventListener(menuLayer.ItemIcon,    this.gotoNextPhase, 3);
         }
         actionChoicePhase.onExit = function(){
@@ -86,7 +95,9 @@ var BokupanMainScene = cc.Scene.extend({
             menuLayer.setCollectMenuEnable(false);
             menuLayer.setItemMenuEnable(false);
             
+            cc.eventManager.removeCustomListeners(LABEL.ARROW_BUTTON);
             cc.eventManager.removeCustomListeners(LABEL.MOVE_BUTTON);
+            cc.eventManager.removeCustomListeners(LABEL.GET_BUTTON);
         }
         //////////// ▲ActionChoicePhase▲ ////////////
         
@@ -147,12 +158,31 @@ var BokupanMainScene = cc.Scene.extend({
             
             var targetArrow = getArrowByRoadPosition(currPlayer.getCurrPosition());
             mainMapLayer.addCursorToArrow(targetArrow);
-            rotateAllowPhase.ev = cc.EventListener.create({
-                event: cc.EventListener.TOUCH_ONE_BY_ONE,
-                swallowTouches: true,
-                onTouchBegan: function (touch, event) {
-                    var touchX = touch.getLocationX();
-                    var touchY = touch.getLocationY();
+            
+            if(currPlayer.isMe()){
+                rotateAllowPhase.ev = cc.EventListener.create({
+                    event: cc.EventListener.TOUCH_ONE_BY_ONE,
+                    swallowTouches: true,
+                    onTouchBegan: function (touch, event) {
+                        
+                        rtc_manager.send({"label":LABEL.TOUCH,
+                                            "touchX" :touch.getLocationX(),
+                                            "touchY" :touch.getLocationY()
+                                            });
+                                            
+                        cc.eventManager.dispatchCustomEvent(LABEL.TOUCH,{
+                                                        "touchX" :touch.getLocationX(),
+                                                        "touchY" :touch.getLocationY()});
+                    }
+                });
+                cc.eventManager.addListener(rotateAllowPhase.ev,mainMapLayer);
+            }
+            
+            cc.eventManager.addCustomListener(LABEL.TOUCH,function (event) {
+                    cc.log(event.getUserData());
+                    var touch = event.getUserData();
+                    var touchX = touch.touchX;
+                    var touchY = touch.touchY;
                     
                     if(mainMapLayer.isInside(touchX, touchY)){
                         // var closestAllow = mainMapLayer.getClosestPosition(touchX,touchY);
@@ -162,12 +192,12 @@ var BokupanMainScene = cc.Scene.extend({
                             rotateAllowPhase.gotoNextPhase(0,1000);
                         }
                     }
-                }
-            });
-            cc.eventManager.addListener(rotateAllowPhase.ev,mainMapLayer);
+                    
+                });
         }
         rotateAllowPhase.onExit = function(){
             cc.log("onExit Rotate Phase");
+            cc.eventManager.removeCustomListeners(LABEL.TOUCH);
             cc.eventManager.removeListener(rotateAllowPhase.ev);
             mainMapLayer.removeCursorAllow();
         }
