@@ -1,8 +1,9 @@
-function Mkmk_PlayerStatus(playerID, playerName, initialPosition, peerID){
+function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 	this.playerID   = playerID;
 	this.PlayerName = playerName;
 	this.currPos = initialPosition;
 	this.initialPosition = initialPosition;
+	this.view = view;
 	this.myPeerID = peerID;
 	
 	// カゴ、コンテナの初期値は空
@@ -14,11 +15,23 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, peerID){
 		if(isTargetHome(position_id)){
 			this.basketStatus |= (1 << position_id);
 		}
+		view.statusChanged(this);
 	}
 	
 	this.setBasketToContainer = function(){
 		this.containerStatus |= this.basketStatus;
 		this.basketStatus = 0;
+		view.statusChanged(this);
+	}
+
+	this.isBasket = function(position_id){
+		var usage = this.basketStatus;
+		return Boolean(usage & (1<<position_id));
+	}
+
+	this.isCollected = function(position_id){
+		var usage = this.containerStatus;
+		return Boolean(usage & (1<<position_id));
 	}
 	
 	this.checkAcquired = function(position_id){
@@ -28,6 +41,11 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, peerID){
 	
 	this.checkContainerFull = function(){
 		return (this.containerStatus == 0x1FF);
+	}
+	
+	this.clearBasket = function(){
+		this.basketStatus = 0;
+		view.statusChanged(this);
 	}
 	
 	this.getCurrPosition = function(){
@@ -41,6 +59,7 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, peerID){
 		if( item_id < ITEM.NUM ){
 			this.ItemAlreadyUsed |= (1 << item_id);
 		}
+		view.statusChanged(this);
 	}
 	
 	this.isAlreadyUse = function(item_id){
@@ -52,6 +71,16 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, peerID){
 	}
 	this.isMe = function(){
 		return (this.myPeerID == rtc_manager.getmyid());
+	}
+	this.checkIfUpdateContainer = function(){
+		if( this.initialPosition == this.currPos ){
+			this.setBasketToContainer();
+		}
+	}
+	this.checkIfForfeitPosition = function(pos){
+		if( pos == this.currPos ){
+			this.clearBasket();
+		}
 	}
 }
 

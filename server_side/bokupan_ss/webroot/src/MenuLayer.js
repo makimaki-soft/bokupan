@@ -1,10 +1,11 @@
+
 var MenuLayer = cc.LayerColor.extend({
     sprite:null,
     ctor:function (color,w,h) {
         this._super(color,w,h);
         this.moveIcon = new Mkmk_MenuItemImage(
             res.IconMove,
-            res.IconMove,
+            res.IconMove2,
             LABEL.MOVE_BUTTON);
         this.moveIcon.attr({
             scaleX: this.height/this.moveIcon.height,
@@ -21,7 +22,7 @@ var MenuLayer = cc.LayerColor.extend({
         // 矢印回転ボタンの作成＆表示
         this.rotateIcon = new Mkmk_MenuItemImage(
             res.IconChange,
-            res.IconChange,
+            res.IconChange2,
             LABEL.ARROW_BUTTON);
         this.rotateIcon.attr({
             scaleX: this.height/this.rotateIcon.height,
@@ -39,7 +40,7 @@ var MenuLayer = cc.LayerColor.extend({
         // 採取ボタンの追加
         this.CollectIcon = new Mkmk_MenuItemImage(
             res.IconGet,
-            res.IconGet,
+            res.IconGet2,
             LABEL.GET_BUTTON);
         this.CollectIcon.attr({
             scaleX: this.height/this.CollectIcon.height,
@@ -57,7 +58,7 @@ var MenuLayer = cc.LayerColor.extend({
         // アイテムボタンの追加
         this.ItemIcon = new Mkmk_MenuItemImage(
             res.IconItem,
-            res.IconItem,
+            res.IconItem2,
             LABEL.ITEM_BUTTON);
         this.ItemIcon.attr({
             scaleX: this.height/this.ItemIcon.height,
@@ -81,6 +82,9 @@ var MenuLayer = cc.LayerColor.extend({
     }
   , setMapLayer:function(map){
       this.map = map;
+    }
+  , setStatusLayer:function(statusLayer){
+      this.statusLayer = statusLayer;
     }
   , setMoveMenuEnable:function(bool){
       this.menuMove.setEnabled(bool);

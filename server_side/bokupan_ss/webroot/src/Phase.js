@@ -33,8 +33,12 @@ var Mkmk_MenuItemImage = cc.MenuItemImage.extend({
   } 
 });
 
+var playCnt = 2;
+
 function Mkmk_Phase() {
     this.nextPhase = [];
+    this.childPhase = null;
+    this.parentPhase = null;
     this.onEnter = function(){
       cc.log("onEnter");
     };
@@ -44,11 +48,38 @@ function Mkmk_Phase() {
     this.setOnClickEventListener = function(mkmk_menuitem,fnc, id){
         mkmk_menuitem.addCallbackFunc(fnc,this, id);
     };
-    this.gotoNextPhase = function(id, delay_msec){
+    this.gotoNextPhase = function(id, delay_msec, bDec){
       this.onExit();
       var nextPhase = this.nextPhase[id];
+      nextPhase.setParentEntoryPoint(this.parentPhase);
+      
+      if(bDec){
+        playCnt--;
+      }
+      
+      if( playCnt == 0 ){
+        playCnt = 2;
+        var parentPhase = this.parentPhase;
+        parentPhase.gotoNextPhase(0, delay_msec+1500, false);
+      } else{ 
+        setTimeout(function(){
+          nextPhase.onEnter();
+        }, delay_msec);
+      }
+    }
+    this.setchildEntryPoint = function(childPhase){
+        this.childPhase = childPhase;
+    };
+    this.setParentEntoryPoint = function(parentPhase){
+        this.parentPhase = parentPhase;
+    };
+    this.gotoChildPhase = function(delay_msec){
+      var nextPhase = this.childPhase;
+      nextPhase.setParentEntoryPoint(this);
       setTimeout(function(){
         nextPhase.onEnter();
       }, delay_msec);
-    }
+    };
+    //ステータスを更新
+
 }
