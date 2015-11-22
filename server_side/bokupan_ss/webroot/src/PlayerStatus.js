@@ -1,8 +1,9 @@
-function Mkmk_PlayerStatus(playerID, playerName, initialPosition){
+function Mkmk_PlayerStatus(playerID, playerName, initialPosition, peerID){
 	this.playerID   = playerID;
 	this.PlayerName = playerName;
 	this.currPos = initialPosition;
 	this.initialPosition = initialPosition;
+	this.myPeerID = peerID;
 	
 	// カゴ、コンテナの初期値は空
 	this.basketStatus = 0;
@@ -48,6 +49,9 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition){
 	
 	this.isAlreadyUseAll = function(item_id){
 		return (this.ItemAlreadyUsed == 0x07);
+	}
+	this.isMe = function(){
+		return (this.myPeerID == rtc_manager.getmyid());
 	}
 }
 
@@ -121,3 +125,44 @@ function Mkmk_PoliceStatus(initialPosition){
 		this.currDir = this.getNextDir();
 	}
 }
+
+function Mkmk_GameStatus(){
+	
+	this.players = [];
+	this.currPlayerIdx = 0;
+	
+	this.addPlayer = function(newPlayer){
+		
+		this.players.push(newPlayer);
+		this.players.sort(function(a,b){
+    		if(a.playerID<b.playerID) return -1;
+    		if(a.playerID > b.playerID) return 1;
+    		return 0;
+		});
+	}
+	this.getCurrPlayer = function(){
+		return this.players[this.currPlayerIdx];
+	}
+	this.getPlayer = function(playerIdx){
+		return this.players[playerIdx];
+	}
+	this.chengePlayer = function(){
+		var idx = this.currPlayerIdx;
+		var nextIdx = (++idx)%this.players.length;
+		this.currPlayerIdx = nextIdx;
+	}
+	this.getNewPlayerID = function(){
+		return this.players.length;
+	}
+	this.findPlayerByPeerID = function(peerID){
+		for(var i=0 ; i<this.players.length; i++){
+			if( this.players[i].myPeerID == peerID ){
+				return this.players[i];
+			}
+		}
+		
+		return null;
+	}
+}
+
+var gameStatus = new Mkmk_GameStatus();

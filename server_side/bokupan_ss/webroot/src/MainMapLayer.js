@@ -4,6 +4,8 @@ var MainMapLayer = cc.LayerColor.extend({
   , ctor:function (color,w,h) {
         this._super(color,w,h);
 
+        this.playerIcons = [null, null, null, null];
+
         // マップSpriteを作成＆表示
         this.sprite = new cc.Sprite(res.MainMap_png);
         this.sprite.attr({
@@ -49,11 +51,13 @@ var MainMapLayer = cc.LayerColor.extend({
         
         return true;
     }
-  , setPlayerIcon:function(){
-      this.playerIcon = new Mkmk_Piece(res.Player1_png);
-      this.playerIcon.setSize(40,40);
-      this.playerIcon.setPos(this.player.getCurrPosition());
-      this.addChild(this.playerIcon, 0);
+  , setPlayerIcon:function(player){
+      var newIcon =  new Mkmk_Piece(res.Player1_png);
+      var id = player.playerID;
+      newIcon.setSize(40,40);
+      newIcon.setPos(player.getCurrPosition());
+      this.playerIcons[id] = newIcon;
+      this.addChild(newIcon, 0);
     }
   , setPoliceIcon:function(){
       this.policeIcon = new Mkmk_Piece(res.PoliceIcon);
@@ -137,11 +141,11 @@ var MainMapLayer = cc.LayerColor.extend({
         }
       }
   }
-  , addCursorToPlayer:function(){
+  , addCursorToPlayer:function(id){
       var offsetX = [-40, 0, 40, 0];
       var offsetY = [0, 40, 0, -40];
       var ratate  = [-90, 0, 90, 180];
-      var target = this.playerIcon;
+      var target = this.playerIcons[id];
       this.cursors = [];
       var mvChoices = getNeighber(target.getPos());
 
@@ -215,10 +219,11 @@ var MainMapLayer = cc.LayerColor.extend({
       }
       return false;
   }
-  , movePlayer:function(direction){
+  , movePlayer:function(id, direction){
       //cc.log("movePlayer called");
-      if( this.movePiece(this.playerIcon, direction) ){
-        this.player.setCurrPosition(this.playerIcon.NextPositionID);
+      if( this.movePiece(this.playerIcons[id], direction) ){
+        var player = gameStatus.getPlayer(id);
+        player.setCurrPosition(this.playerIcons[id].NextPositionID);
         return true;
       }
       return false;
@@ -264,9 +269,9 @@ var MainMapLayer = cc.LayerColor.extend({
       }
     }
   }
-  , getRelativeDirection(x,y){
-      var relativeX =  x - this.x - this.playerIcon.x;
-      var relativeY =  y - this.y - this.playerIcon.y;
+  , getRelativeDirection(id,x,y){
+      var relativeX =  x - this.x - this.playerIcons[id].x;
+      var relativeY =  y - this.y - this.playerIcons[id].y;
 
       if(relativeX > 0 && relativeX-Math.abs(relativeY) > 0){
         return NEIGHBER.RIGHT;
@@ -315,8 +320,7 @@ var MainMapLayer = cc.LayerColor.extend({
       }
   }
   , setPlayer:function(player){
-      this.player = player;
-      this.setPlayerIcon();
+      this.setPlayerIcon(player);
     }
   , setPolice:function(police){
       this.police = police;

@@ -31,8 +31,6 @@ var BokupanMainScene = cc.Scene.extend({
         this.addChild(enemyStatusLayer);
         position_Y += g_layout.enemystatus_height;
         
-        
-        
         ////////////  Define Phases //////////// 
         var actionChoicePhase   = new Mkmk_Phase();
         var playerMovePhase     = new Mkmk_Phase();
@@ -43,10 +41,7 @@ var BokupanMainScene = cc.Scene.extend({
         var movePolicePhase     = new Mkmk_Phase();
         var movePeoplePhase     = new Mkmk_Phase();
         
-        ////////////  Define Players //////////// 
-        var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_A);
-        menuLayer.setPlayer(player1);
-        mainMapLayer.setPlayer(player1);
+        
         
         //////////// Police ////////////
         var police = new Mkmk_PoliceStatus(POSITION_ID.HOME_7);
@@ -65,13 +60,22 @@ var BokupanMainScene = cc.Scene.extend({
         actionChoicePhase.onEnter = function(){
             cc.log("onEnter Action Choice Phase");
             
-            menuLayer.setMoveMenuEnable(true);
-            menuLayer.setRotateMenuEnable(isIntersectionWithArrow(player1.getCurrPosition()));
-            menuLayer.setCollectMenuEnable(isTargetHome(player1.getCurrPosition()));
-            menuLayer.setItemMenuEnable(!player1.isAlreadyUseAll());
+            var currPlayer = gameStatus.getCurrPlayer();
             
+            if(currPlayer.isMe()){
+                menuLayer.setMoveMenuEnable(true);
+                menuLayer.setRotateMenuEnable(isIntersectionWithArrow(currPlayer.getCurrPosition()));
+                menuLayer.setCollectMenuEnable(isTargetHome(currPlayer.getCurrPosition()));
+                menuLayer.setItemMenuEnable(!currPlayer.isAlreadyUseAll());
+            }
+            
+            cc.eventManager.addCustomListener(LABEL.MOVE_BUTTON,function (event) {
+                    cc.log(event.getUserData());  
+                    actionChoicePhase.gotoNextPhase(1);
+                });
+                
             this.setOnClickEventListener(menuLayer.rotateIcon,  this.gotoNextPhase, 0);
-            this.setOnClickEventListener(menuLayer.moveIcon,    this.gotoNextPhase, 1);
+            // this.setOnClickEventListener(menuLayer.moveIcon,    this.gotoNextPhase, 1);
             this.setOnClickEventListener(menuLayer.CollectIcon, this.gotoNextPhase, 2);
             this.setOnClickEventListener(menuLayer.ItemIcon,    this.gotoNextPhase, 3);
         }
@@ -81,6 +85,8 @@ var BokupanMainScene = cc.Scene.extend({
             menuLayer.setRotateMenuEnable(false);
             menuLayer.setCollectMenuEnable(false);
             menuLayer.setItemMenuEnable(false);
+            
+            cc.eventManager.removeCustomListeners(LABEL.MOVE_BUTTON);
         }
         //////////// ▲ActionChoicePhase▲ ////////////
         
@@ -88,27 +94,46 @@ var BokupanMainScene = cc.Scene.extend({
         playerMovePhase.nextPhase[0] = actionChoicePhase;
         playerMovePhase.onEnter = function(){
             cc.log("onEnter Move Phase");
-            mainMapLayer.addCursorToPlayer();
-            this.ev = cc.EventListener.create({
-                event: cc.EventListener.TOUCH_ONE_BY_ONE,
-                swallowTouches: true,
-                onTouchBegan: function (touch, event) {
-                    var touchX = touch.getLocationX();
-                    var touchY = touch.getLocationY();
+            var currPlayer = gameStatus.getCurrPlayer();
+            var currID = currPlayer.playerID;
+            mainMapLayer.addCursorToPlayer(currID);
+            if(currPlayer.isMe()){
+                this.ev = cc.EventListener.create({
+                    event: cc.EventListener.TOUCH_ONE_BY_ONE,
+                    swallowTouches: true,
+                    onTouchBegan: function (touch, event) {
+                        
+                        rtc_manager.send({"label":LABEL.TOUCH,
+                                          "touchX" :touch.getLocationX(),
+                                          "touchY" :touch.getLocationY()
+                                          });
+                                          
+                        cc.eventManager.dispatchCustomEvent(LABEL.TOUCH,{
+                                                        "touchX" :touch.getLocationX(),
+                                                        "touchY" :touch.getLocationY()});
+                    }
+                });
+                cc.eventManager.addListener(playerMovePhase.ev,mainMapLayer);
+            }
+            
+            cc.eventManager.addCustomListener(LABEL.TOUCH,function (event) {
+                    cc.log(event.getUserData());
+                    var touch = event.getUserData();
+                    var touchX = touch.touchX;
+                    var touchY = touch.touchY;
                     if(mainMapLayer.isInside(touchX, touchY)){
-                        var dir = mainMapLayer.getRelativeDirection(touchX,touchY);
-                        var res = mainMapLayer.movePlayer(dir);
+                        var dir = mainMapLayer.getRelativeDirection(currID, touchX,touchY);
+                        var res = mainMapLayer.movePlayer(currID, dir);
                         if(res){
                             playerMovePhase.gotoNextPhase(0, 1000);
                         }
                     }
-                }
-            });
-            cc.eventManager.addListener(playerMovePhase.ev,mainMapLayer);
+                });
         };
         playerMovePhase.onExit = function(){
             cc.log("onExit Move Phase");
             cc.eventManager.removeListener(playerMovePhase.ev);
+            cc.eventManager.removeCustomListeners(LABEL.TOUCH);
             mainMapLayer.removeCursor();
         }
         //////////// ▲playerMovePhase▲ ////////////
@@ -118,7 +143,9 @@ var BokupanMainScene = cc.Scene.extend({
         rotateAllowPhase.onEnter = function(){
             cc.log("onEnter Rotate Phase");
             // mainMapLayer.addCursorToAllows();
-            var targetArrow = getArrowByRoadPosition(player1.getCurrPosition());
+            var currPlayer = gameStatus.getCurrPlayer();
+            
+            var targetArrow = getArrowByRoadPosition(currPlayer.getCurrPosition());
             mainMapLayer.addCursorToArrow(targetArrow);
             rotateAllowPhase.ev = cc.EventListener.create({
                 event: cc.EventListener.TOUCH_ONE_BY_ONE,
@@ -151,15 +178,16 @@ var BokupanMainScene = cc.Scene.extend({
         collectPantsPhase.onEnter = function(){
             cc.log("onEnter Collect Pants Phase");
             
-            var currPos = player1.getCurrPosition();
+            var currPlayer = gameStatus.getCurrPlayer();
+            var currPos = currPlayer.getCurrPosition();
             
             if(!isTargetHome(currPos)){
                 collectPantsPhase.gotoNextPhase(0,0);
                 return;
             }
       
-            if(!player1.checkAcquired(currPos)){
-                player1.setNewPantsToBasket(currPos);
+            if(!currPlayer.checkAcquired(currPos)){
+                currPlayer.setNewPantsToBasket(currPos);
                 mainMapLayer.textConsole("取得しました");
             }else{
                 mainMapLayer.textConsole("取得済みです");
@@ -193,13 +221,16 @@ var BokupanMainScene = cc.Scene.extend({
         rotateAllAllowPhase.nextPhase[0] = actionChoicePhase;
         rotateAllAllowPhase.onEnter = function(){
             cc.log("onEnter Rotate All Arrow Phase");
-            if(player1.isAlreadyUse(ITEM.ARROW)){
+            
+            var currPlayer = gameStatus.getCurrPlayer();
+            
+            if(currPlayer.isAlreadyUse(ITEM.ARROW)){
                 mainMapLayer.textConsole("使用済みです");
                 this.gotoNextPhase(0,1000);
                 return;
             }
             mainMapLayer.rotateAllArrowClockwise();
-            player1.useItem(ITEM.ARROW);
+            currPlayer.useItem(ITEM.ARROW);
             this.gotoNextPhase(0,1000);
         }
         rotateAllAllowPhase.onExit = function(){
@@ -211,7 +242,10 @@ var BokupanMainScene = cc.Scene.extend({
         movePolicePhase.nextPhase[0] = actionChoicePhase;
         movePolicePhase.onEnter = function(){
             cc.log("onEnter Move Police Phase");
-            if(player1.isAlreadyUse(ITEM.POLICE)){
+            
+            var currPlayer = gameStatus.getCurrPlayer();
+            
+            if(currPlayer.isAlreadyUse(ITEM.POLICE)){
                 mainMapLayer.textConsole("使用済みです");
                 this.gotoNextPhase(0,1000);
                 return;
@@ -219,7 +253,7 @@ var BokupanMainScene = cc.Scene.extend({
             var num = castDice();
             mainMapLayer.playDiceAnimation(num);
             mainMapLayer.movePolice(num);
-            player1.useItem(ITEM.POLICE);
+            currPlayer.useItem(ITEM.POLICE);
             this.gotoNextPhase(0,2000);
         }
         movePolicePhase.onExit = function(){
@@ -231,14 +265,17 @@ var BokupanMainScene = cc.Scene.extend({
         movePeoplePhase.nextPhase[0] = actionChoicePhase;
         movePeoplePhase.onEnter = function(){
             cc.log("onEnter Move People Phase");
-            if(player1.isAlreadyUse(ITEM.PEOPLE)){
+            
+            var currPlayer = gameStatus.getCurrPlayer();
+            
+            if(currPlayer.isAlreadyUse(ITEM.PEOPLE)){
                 mainMapLayer.textConsole("使用済みです");
                 this.gotoNextPhase(0,1000);
                 return;
             }
             var num = castDice();
             mainMapLayer.playDiceAnimation(num);
-            player1.useItem(ITEM.PEOPLE);
+            currPlayer.useItem(ITEM.PEOPLE);
             this.gotoNextPhase(0,2000);
         }
         movePeoplePhase.onExit = function(){
@@ -248,6 +285,65 @@ var BokupanMainScene = cc.Scene.extend({
         //////////// ▲Move People Phase▲ ////////////
         
         //////////// Phase Entry Point ////////////
-        actionChoicePhase.onEnter();
+        
+        // 
+        
+        rtc_manager.setReceiveAction(function(peerID, data){
+            // cc.log(peerID,data);
+            switch(data.label){
+                case "NEW_PLAYER":
+                    // プレイヤーが参加する。
+                    if( rtc_manager.isHost ){
+                        var newID = gameStatus.getNewPlayerID();
+                        var firstPos = [POSITION_ID.HOME_A, POSITION_ID.HOME_B, POSITION_ID.HOME_C, POSITION_ID.HOME_D];
+                        var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], peerID);
+                        mainMapLayer.setPlayer(newPlayer);
+                        gameStatus.addPlayer(newPlayer);
+                        mainMapLayer.textConsole("プレイヤーが参加しました。");
+                        
+                        // 相手のIDを教えてやる。
+                        rtc_manager.send({  "label"  : "NEW_PLAYER",
+                                            "id"     : newID,
+                                            "peerID" : peerID
+                                    });
+                   　}else{
+                       var newID = data.id;
+                       var firstPos = [POSITION_ID.HOME_A, POSITION_ID.HOME_B, POSITION_ID.HOME_C, POSITION_ID.HOME_D];
+                       var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], data.peerID);
+                       mainMapLayer.setPlayer(newPlayer);
+                       gameStatus.addPlayer(newPlayer);
+                       mainMapLayer.textConsole("プレイヤーが参加しました。");
+                       
+                       var hostPlayer = new Mkmk_PlayerStatus(0 , "Tezuka", firstPos[0], peerID);
+                       mainMapLayer.setPlayer(hostPlayer);
+                       gameStatus.addPlayer(hostPlayer);
+                    }
+                    
+                    // 人数が集まったらゲームを開始する。
+                    if( gameStatus.players.length == 2 ){
+                        actionChoicePhase.onEnter();
+                    }
+                    break;
+                case LABEL.TOUCH:
+                    cc.eventManager.dispatchCustomEvent(LABEL.TOUCH,{
+                                                        "touchX" :data.touchX,
+                                                        "touchY" :data.touchY});
+                    break;
+                default:
+                    cc.eventManager.dispatchCustomEvent(data.label);
+                    cc.log(data);
+                    break;
+            }    
+        });
+        
+        ////////////  Define Players //////////// 
+        if(rtc_manager.isHost){
+            var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_A, rtc_manager.getmyid());
+            menuLayer.setPlayer(player1);
+            mainMapLayer.setPlayer(player1);
+            gameStatus.addPlayer(player1);
+        }else{
+            rtc_manager.send({ "label":"NEW_PLAYER" });
+        }
     }
 });

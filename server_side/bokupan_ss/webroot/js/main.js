@@ -6,6 +6,7 @@ var open_callback_handler = function(peer_id) {
 	var host_pid = $("#info").data("room-hpid");
 	var member_num = parseInt($("#info").data("room-member"));
 	var is_host = (host_pid == "") ? true : false;
+    rtc_manager.isHost = is_host;
 	if(is_host) { // ホストユーザの場合(部屋人数が1の時)はサーバにpeer_idを送る
 		console.log("I am host");
 		$.ajax({
