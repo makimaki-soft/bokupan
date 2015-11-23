@@ -18,6 +18,7 @@
         , "src/MainMapLayer.js"
         , "src/DummyLayer.js"
         , "src/DebugInfoLayer.js"
+        , "src/PlayerStatusLayer.js"
         , "src/Mkmk_Piece.js"
         , "src/Position.js"
         , "src/MenuLayer.js"

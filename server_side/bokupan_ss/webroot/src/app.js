@@ -336,11 +336,13 @@ var BokupanMainScene = cc.Scene.extend({
             cc.log("onEnter Com Phase");
             mainMapLayer.textConsole("警察が動きます。");
             
+            var currPlayer = gameStatus.getCurrPlayer();
+            
             var num = castDice();
             mainMapLayer.playDiceAnimation(num);
             mainMapLayer.movePolice(num, function(currPos){
                 this.checkIfForfeitPosition(currPos);
-            }, player1);
+            }, currPlayer);
             this.gotoNextPhase(0,1200*num, false);
         }
         comPhase.onExit = function(){
@@ -361,7 +363,7 @@ var BokupanMainScene = cc.Scene.extend({
                     if( rtc_manager.isHost ){
                         var newID = gameStatus.getNewPlayerID();
                         var firstPos = [POSITION_ID.HOME_A, POSITION_ID.HOME_B, POSITION_ID.HOME_C, POSITION_ID.HOME_D];
-                        var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], peerID);
+                        var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], playerStatusLayer, peerID);
                         mainMapLayer.setPlayer(newPlayer);
                         gameStatus.addPlayer(newPlayer);
                         mainMapLayer.textConsole("プレイヤーが参加しました。");
@@ -374,12 +376,12 @@ var BokupanMainScene = cc.Scene.extend({
                    　}else{
                        var newID = data.id;
                        var firstPos = [POSITION_ID.HOME_A, POSITION_ID.HOME_B, POSITION_ID.HOME_C, POSITION_ID.HOME_D];
-                       var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], data.peerID);
+                       var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], playerStatusLayer, data.peerID);
                        mainMapLayer.setPlayer(newPlayer);
                        gameStatus.addPlayer(newPlayer);
                        mainMapLayer.textConsole("プレイヤーが参加しました。");
                        
-                       var hostPlayer = new Mkmk_PlayerStatus(0 , "Tezuka", firstPos[0], peerID);
+                       var hostPlayer = new Mkmk_PlayerStatus(0 , "Tezuka", firstPos[0], playerStatusLayer, peerID);
                        mainMapLayer.setPlayer(hostPlayer);
                        gameStatus.addPlayer(hostPlayer);
                     }
@@ -403,7 +405,7 @@ var BokupanMainScene = cc.Scene.extend({
         
         ////////////  Define Players //////////// 
         if(rtc_manager.isHost){
-            var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_A, rtc_manager.getmyid());
+            var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_A, playerStatusLayer, rtc_manager.getmyid());
             menuLayer.setPlayer(player1);
             mainMapLayer.setPlayer(player1);
             gameStatus.addPlayer(player1);
