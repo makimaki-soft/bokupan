@@ -6,7 +6,7 @@ var MenuLayer = cc.LayerColor.extend({
         this.moveIcon = new Mkmk_MenuItemImage(
             res.IconMove,
             res.IconMove2,
-            LABEL.MOVE_BUTTON);
+            Helper.LABEL.MOVE_BUTTON);
         this.moveIcon.attr({
             scaleX: this.height/this.moveIcon.height,
             scaleY: this.height/this.moveIcon.height,
@@ -23,7 +23,7 @@ var MenuLayer = cc.LayerColor.extend({
         this.rotateIcon = new Mkmk_MenuItemImage(
             res.IconChange,
             res.IconChange2,
-            LABEL.ARROW_BUTTON);
+            Helper.LABEL.ARROW_BUTTON);
         this.rotateIcon.attr({
             scaleX: this.height/this.rotateIcon.height,
             scaleY: this.height/this.rotateIcon.height,
@@ -41,7 +41,7 @@ var MenuLayer = cc.LayerColor.extend({
         this.CollectIcon = new Mkmk_MenuItemImage(
             res.IconGet,
             res.IconGet2,
-            LABEL.GET_BUTTON);
+            Helper.LABEL.GET_BUTTON);
         this.CollectIcon.attr({
             scaleX: this.height/this.CollectIcon.height,
             scaleY: this.height/this.CollectIcon.height,
@@ -59,7 +59,7 @@ var MenuLayer = cc.LayerColor.extend({
         this.ItemIcon = new Mkmk_MenuItemImage(
             res.IconItem,
             res.IconItem2,
-            LABEL.ITEM_BUTTON);
+            Helper.LABEL.ITEM_BUTTON);
         this.ItemIcon.attr({
             scaleX: this.height/this.ItemIcon.height,
             scaleY: this.height/this.ItemIcon.height,

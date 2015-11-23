@@ -1,16 +1,8 @@
-var LABEL = {
-  MOVE_BUTTON : "MOVE_BUTTON",
-  ARROW_BUTTON : "ARROW_BUTTON",
-  GET_BUTTON : "GET_BUTTON",
-  ITEM_BUTTON : "ITEM_BUTTON", 
-  TOUCH : "TOUCH"
-}
-
 var Mkmk_MenuItemImage = cc.MenuItemImage.extend({
     ctor:function (normalImage, selectedImage, label, callback, target) {
         this.target = target;
         this.CallBackOrg = function(){
-          rtc_manager.send({"label":label});
+          rtc_manager.send(rtc_helper.encode(label, {}));
           cc.eventManager.dispatchCustomEvent(label);
         };
         

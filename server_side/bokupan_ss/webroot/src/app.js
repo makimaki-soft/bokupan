@@ -1,3 +1,5 @@
+var rtc_helper = new Helper();
+
 var BokupanMainScene = cc.Scene.extend({
     onEnter:function () {
         this._super();
@@ -72,16 +74,16 @@ var BokupanMainScene = cc.Scene.extend({
             }
             currPlayer.checkIfUpdateContainer();
             
-            cc.eventManager.addCustomListener(LABEL.ARROW_BUTTON ,function (event) {
+            cc.eventManager.addCustomListener(Helper.LABEL.ARROW_BUTTON ,function (event) {
                     cc.log(event.getUserData());  
                     actionChoicePhase.gotoNextPhase(0);
                 });
             
-            cc.eventManager.addCustomListener(LABEL.MOVE_BUTTON,function (event) {
+            cc.eventManager.addCustomListener(Helper.LABEL.MOVE_BUTTON,function (event) {
                     cc.log(event.getUserData());  
                     actionChoicePhase.gotoNextPhase(1);
                 });
-            cc.eventManager.addCustomListener(LABEL.GET_BUTTON,function (event) {
+            cc.eventManager.addCustomListener(Helper.LABEL.GET_BUTTON,function (event) {
                     cc.log(event.getUserData());  
                     actionChoicePhase.gotoNextPhase(2);
                 });
@@ -98,9 +100,9 @@ var BokupanMainScene = cc.Scene.extend({
             menuLayer.setCollectMenuEnable(false);
             menuLayer.setItemMenuEnable(false);
             
-            cc.eventManager.removeCustomListeners(LABEL.ARROW_BUTTON);
-            cc.eventManager.removeCustomListeners(LABEL.MOVE_BUTTON);
-            cc.eventManager.removeCustomListeners(LABEL.GET_BUTTON);
+            cc.eventManager.removeCustomListeners(Helper.LABEL.ARROW_BUTTON);
+            cc.eventManager.removeCustomListeners(Helper.LABEL.MOVE_BUTTON);
+            cc.eventManager.removeCustomListeners(Helper.LABEL.GET_BUTTON);
         }
         //////////// ▲ActionChoicePhase▲ ////////////
         
@@ -117,20 +119,18 @@ var BokupanMainScene = cc.Scene.extend({
                     swallowTouches: true,
                     onTouchBegan: function (touch, event) {
                         
-                        rtc_manager.send({"label":LABEL.TOUCH,
-                                          "touchX" :touch.getLocationX(),
-                                          "touchY" :touch.getLocationY()
-                                          });
-                                          
-                        cc.eventManager.dispatchCustomEvent(LABEL.TOUCH,{
-                                                        "touchX" :touch.getLocationX(),
-                                                        "touchY" :touch.getLocationY()});
+                        var touch_action = { "touchX" :touch.getLocationX(),
+                                      "touchY" :touch.getLocationY()
+                                    };
+                        
+                        rtc_manager.send(rtc_helper.encode(Helper.LABEL.TOUCH, touch_action));
+                        cc.eventManager.dispatchCustomEvent(Helper.LABEL.TOUCH,touch_action);
                     }
                 });
                 cc.eventManager.addListener(playerMovePhase.ev,mainMapLayer);
             }
             
-            cc.eventManager.addCustomListener(LABEL.TOUCH,function (event) {
+            cc.eventManager.addCustomListener(Helper.LABEL.TOUCH,function (event) {
                     cc.log(event.getUserData());
                     var touch = event.getUserData();
                     var touchX = touch.touchX;
@@ -148,7 +148,7 @@ var BokupanMainScene = cc.Scene.extend({
         playerMovePhase.onExit = function(){
             cc.log("onExit Move Phase");
             cc.eventManager.removeListener(playerMovePhase.ev);
-            cc.eventManager.removeCustomListeners(LABEL.TOUCH);
+            cc.eventManager.removeCustomListeners(Helper.LABEL.TOUCH);
             mainMapLayer.removeCursor();
         }
         //////////// ▲playerMovePhase▲ ////////////
@@ -168,20 +168,18 @@ var BokupanMainScene = cc.Scene.extend({
                     swallowTouches: true,
                     onTouchBegan: function (touch, event) {
                         
-                        rtc_manager.send({"label":LABEL.TOUCH,
-                                            "touchX" :touch.getLocationX(),
-                                            "touchY" :touch.getLocationY()
-                                            });
-                                            
-                        cc.eventManager.dispatchCustomEvent(LABEL.TOUCH,{
-                                                        "touchX" :touch.getLocationX(),
-                                                        "touchY" :touch.getLocationY()});
+                        var touch_action = { "touchX" :touch.getLocationX(),
+                                             "touchY" :touch.getLocationY()
+                                           };
+                        
+                        rtc_manager.send(rtc_helper.encode(Helper.LABEL.TOUCH, touch_action));
+                        cc.eventManager.dispatchCustomEvent(Helper.LABEL.TOUCH,touch_action);
                     }
                 });
                 cc.eventManager.addListener(rotateAllowPhase.ev,mainMapLayer);
             }
             
-            cc.eventManager.addCustomListener(LABEL.TOUCH,function (event) {
+            cc.eventManager.addCustomListener(Helper.LABEL.TOUCH,function (event) {
                     cc.log(event.getUserData());
                     var touch = event.getUserData();
                     var touchX = touch.touchX;
@@ -200,7 +198,7 @@ var BokupanMainScene = cc.Scene.extend({
         }
         rotateAllowPhase.onExit = function(){
             cc.log("onExit Rotate Phase");
-            cc.eventManager.removeCustomListeners(LABEL.TOUCH);
+            cc.eventManager.removeCustomListeners(Helper.LABEL.TOUCH);
             cc.eventManager.removeListener(rotateAllowPhase.ev);
             mainMapLayer.removeCursorAllow();
         }
@@ -357,8 +355,10 @@ var BokupanMainScene = cc.Scene.extend({
         
         rtc_manager.setReceiveAction(function(peerID, data){
             // cc.log(peerID,data);
-            switch(data.label){
-                case "NEW_PLAYER":
+            var decoded = rtc_helper.decode(data);
+            
+            switch(decoded.label){
+                case Helper.LABEL.NEW_PLAYER:
                     // プレイヤーが参加する。
                     if( rtc_manager.isHost ){
                         var newID = gameStatus.getNewPlayerID();
@@ -369,12 +369,12 @@ var BokupanMainScene = cc.Scene.extend({
                         mainMapLayer.textConsole("プレイヤーが参加しました。");
                         
                         // 相手のIDを教えてやる。
-                        rtc_manager.send({  "label"  : "NEW_PLAYER",
-                                            "id"     : newID,
-                                            "peerID" : peerID
-                                    });
+                        rtc_manager.send(rtc_helper.encode(Helper.LABEL.NEW_PLAYER, {
+                                                                    "id"     : newID,
+                                                                    "peerID" : peerID}));
                    　}else{
-                       var newID = data.id;
+                       
+                       var newID = decoded.action.id;
                        var firstPos = [POSITION_ID.HOME_A, POSITION_ID.HOME_B, POSITION_ID.HOME_C, POSITION_ID.HOME_D];
                        var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], playerStatusLayer, data.peerID);
                        mainMapLayer.setPlayer(newPlayer);
@@ -391,14 +391,9 @@ var BokupanMainScene = cc.Scene.extend({
                         playerPhase.onEnter();
                     }
                     break;
-                case LABEL.TOUCH:
-                    cc.eventManager.dispatchCustomEvent(LABEL.TOUCH,{
-                                                        "touchX" :data.touchX,
-                                                        "touchY" :data.touchY});
-                    break;
                 default:
-                    cc.eventManager.dispatchCustomEvent(data.label);
-                    cc.log(data);
+                    cc.eventManager.dispatchCustomEvent(decoded.label, decoded.action);
+                    cc.log(decoded);
                     break;
             }    
         });
@@ -410,7 +405,7 @@ var BokupanMainScene = cc.Scene.extend({
             mainMapLayer.setPlayer(player1);
             gameStatus.addPlayer(player1);
         }else{
-            rtc_manager.send({ "label":"NEW_PLAYER" });
+            rtc_manager.send(rtc_helper.encode(Helper.LABEL.NEW_PLAYER, {}));
         }
 
     }
