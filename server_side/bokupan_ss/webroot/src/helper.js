@@ -4,12 +4,13 @@ function Helper(){
 
 /* Labelの定義 */
 Helper.LABEL = {
-  MOVE_BUTTON 	: "MOVE_BUTTON",
-  ARROW_BUTTON 	: "ARROW_BUTTON",
-  GET_BUTTON 	: "GET_BUTTON",
-  ITEM_BUTTON 	: "ITEM_BUTTON", 
-  TOUCH 		: "TOUCH",
-  NEW_PLAYER 	: "NEW_PLAYER"
+    MOVE_BUTTON		: "MOVE_BUTTON"
+  , ARROW_BUTTON 	: "ARROW_BUTTON"
+  , GET_BUTTON 		: "GET_BUTTON"
+  , ITEM_BUTTON 	: "ITEM_BUTTON" 
+  , TOUCH 			: "TOUCH"
+  , NEW_PLAYER 		: "NEW_PLAYER"
+  , CAST_DICE		: "CAST_DICE"
 }
 
 /*

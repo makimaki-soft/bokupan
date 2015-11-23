@@ -336,15 +336,27 @@ var BokupanMainScene = cc.Scene.extend({
             
             var currPlayer = gameStatus.getCurrPlayer();
             
-            var num = castDice();
-            mainMapLayer.playDiceAnimation(num);
-            mainMapLayer.movePolice(num, function(currPos){
-                this.checkIfForfeitPosition(currPos);
-            }, currPlayer);
-            this.gotoNextPhase(0,1200*num, false);
+            cc.eventManager.addCustomListener(Helper.LABEL.CAST_DICE,function (event) {
+                cc.log(event.getUserData());
+                var num = event.getUserData().roll;
+                
+                mainMapLayer.playDiceAnimation(num);
+                mainMapLayer.movePolice(num, function(currPos){
+                    this.checkIfForfeitPosition(currPos);
+                }, currPlayer);
+                comPhase.gotoNextPhase(0,1200*num, false);
+            });
+            
+            if(currPlayer.isMe()){
+                var roll = castDice();
+                var roll_action = {"roll":roll};
+                rtc_manager.send(rtc_helper.encode(Helper.LABEL.CAST_DICE, roll_action));
+                cc.eventManager.dispatchCustomEvent(Helper.LABEL.CAST_DICE, roll_action);
+            }
         }
         comPhase.onExit = function(){
             cc.log("onExit Com Phase");
+            cc.eventManager.removeCustomListeners(Helper.LABEL.CAST_DICE);
         }
         //////////// ▲Com Phase▲ ////////////
         
