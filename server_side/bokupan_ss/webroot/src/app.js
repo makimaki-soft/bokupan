@@ -317,14 +317,34 @@ var BokupanMainScene = cc.Scene.extend({
         
         //////////// ▼Player Phase▼ ////////////
         playerPhase.nextPhase[0] = comPhase;
-        playerPhase.setchildEntryPoint( actionChoicePhase );
+        playerPhase.nextPhase[1] = playerPhase;
+        playerPhase.setchildEntryPoint( actionChoicePhase ); // 子フェーズの設定
+        /**
+         * playerPhaseの開始処理
+         *  - 次のフェーズがComかプレイヤーか決定し、子フェーズを開始する。
+         */
         playerPhase.onEnter = function(){
             cc.log("onEnter Player Phase");
             
+            var currPlayer = gameStatus.getCurrPlayer();
+            
+            // 順番が最後のプレイヤのフェーズが終了するとComフェーズ、それ以外は次のプレイヤのフェーズ
+            if(gameStatus.isLastPlayer(currPlayer)){
+                this.nextPhaseIdx = 0; // comPhase
+            }else{
+                this.nextPhaseIdx = 1; // playerPhase
+            }
+            
+            // 子フェーズを開始する。
             this.gotoChildPhase(0);
         }
+        /**
+         * playerPhaseの終了処理
+         *  - 次のプレイヤーに変更する。
+         */
         playerPhase.onExit = function(){
             cc.log("onExit Player Phase");
+            gameStatus.chengePlayer();
         }
         //////////// ▲Player Phase▲ ////////////
         
@@ -333,7 +353,7 @@ var BokupanMainScene = cc.Scene.extend({
         comPhase.onEnter = function(){
             cc.log("onEnter Com Phase");
             mainMapLayer.textConsole("警察が動きます。");
-            
+            this.nextPhaseIdx = 0;
             var currPlayer = gameStatus.getCurrPlayer();
             
             cc.eventManager.addCustomListener(Helper.LABEL.CAST_DICE,function (event) {
@@ -388,7 +408,7 @@ var BokupanMainScene = cc.Scene.extend({
                        
                        var newID = decoded.action.id;
                        var firstPos = [POSITION_ID.HOME_A, POSITION_ID.HOME_B, POSITION_ID.HOME_C, POSITION_ID.HOME_D];
-                       var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], playerStatusLayer, data.peerID);
+                       var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], playerStatusLayer, decoded.action.peerID);
                        mainMapLayer.setPlayer(newPlayer);
                        gameStatus.addPlayer(newPlayer);
                        mainMapLayer.textConsole("プレイヤーが参加しました。");

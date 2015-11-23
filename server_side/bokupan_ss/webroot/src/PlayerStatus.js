@@ -192,6 +192,17 @@ function Mkmk_GameStatus(){
 		
 		return null;
 	}
+	/**
+     * 最終プレイヤーの判定
+     *  @param player {Mkmk_PlayerStatus} - プレイヤー
+	 *  @return {boolean} 最終プレイヤーかどうか
+     */
+	this.isLastPlayer = function(player){
+		if( player.playerID == this.players.length -1 ){
+			return true;
+		}
+		return false;
+	}
 }
 
 var gameStatus = new Mkmk_GameStatus();

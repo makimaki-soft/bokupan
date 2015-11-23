@@ -52,7 +52,8 @@ function Mkmk_Phase() {
       if( playCnt == 0 ){
         playCnt = 2;
         var parentPhase = this.parentPhase;
-        parentPhase.gotoNextPhase(0, delay_msec+1500, false);
+        var nextIdx = parentPhase.nextPhaseIdx;
+        parentPhase.gotoNextPhase(nextIdx, delay_msec+1500, false);
       } else{ 
         setTimeout(function(){
           nextPhase.onEnter();
