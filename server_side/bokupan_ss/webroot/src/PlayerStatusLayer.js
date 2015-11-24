@@ -449,7 +449,8 @@ var PlayerStatusLayer = cc.LayerColor.extend({
 
         return true;
     }
-  , statusChanged:function(player){
+  , statusChanged:function(){
+      var player = this.player;
       for (var i = this.pocketList.length - 1; i >= 0; i--) {
           this.pocketList[i].setVisible(player.isBasket(i));
       };

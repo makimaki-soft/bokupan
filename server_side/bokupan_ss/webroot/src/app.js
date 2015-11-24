@@ -442,6 +442,7 @@ var BokupanMainScene = cc.Scene.extend({
                        var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], playerStatusLayer, decoded.action.peerID);
                        mainMapLayer.setPlayer(newPlayer);
                        gameStatus.addPlayer(newPlayer);
+                       playerStatusLayer.setPlayer(newPlayer);
                        mainMapLayer.textConsole("プレイヤーが参加しました。");
                        
                        var hostPlayer = new Mkmk_PlayerStatus(0 , "Tezuka", firstPos[0], playerStatusLayer, peerID);
@@ -466,6 +467,7 @@ var BokupanMainScene = cc.Scene.extend({
             var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_A, playerStatusLayer, rtc_manager.getmyid());
             menuLayer.setPlayer(player1);
             mainMapLayer.setPlayer(player1);
+            playerStatusLayer.setPlayer(player1);
             gameStatus.addPlayer(player1);
         }else{
             rtc_manager.send(rtc_helper.encode(Helper.LABEL.NEW_PLAYER, {}));
