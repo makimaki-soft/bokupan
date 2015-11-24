@@ -414,11 +414,12 @@ var MainMapLayer = cc.LayerColor.extend({
       this.removeChild(this.menuItemPeople, 0);
       
   }
-  , addItemCard:function(){
+  , addItemCard:function(){   
         // アイテムボタンの追加
         this.ItemArrowIcon = new Mkmk_MenuItemImage(
             res.CardArrow,
-            res.CardArrow);
+            res.CardArrow,
+            Helper.LABEL.ITEM_ARROW);
         this.ItemArrowIcon.attr({
             scaleX: 100/this.ItemArrowIcon.height,
             scaleY: 100/this.ItemArrowIcon.height,
@@ -434,7 +435,8 @@ var MainMapLayer = cc.LayerColor.extend({
         
         this.ItemPoliceIcon = new Mkmk_MenuItemImage(
             res.CardPolice,
-            res.CardPolice);
+            res.CardPolice,
+            Helper.LABEL.ITEM_POLICE);
         this.ItemPoliceIcon.attr({
             scaleX: 100/this.ItemPoliceIcon.height,
             scaleY: 100/this.ItemPoliceIcon.height,
@@ -450,7 +452,8 @@ var MainMapLayer = cc.LayerColor.extend({
         
         this.ItemPeopleIcon = new Mkmk_MenuItemImage(
             res.CardPeople,
-            res.CardPeople);
+            res.CardPeople,
+            Helper.LABEL.ITEM_PEOPLE);
         this.ItemPeopleIcon.attr({
             scaleX: 100/this.ItemPeopleIcon.height,
             scaleY: 100/this.ItemPeopleIcon.height,

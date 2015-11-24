@@ -88,10 +88,15 @@ var BokupanMainScene = cc.Scene.extend({
                     actionChoicePhase.gotoNextPhase(2);
                 });
                 
+            cc.eventManager.addCustomListener(Helper.LABEL.ITEM_BUTTON ,function (event) {
+                    cc.log(event.getUserData());  
+                    actionChoicePhase.gotoNextPhase(3);
+                });
+                
             // this.setOnClickEventListener(menuLayer.rotateIcon,  this.gotoNextPhase, 0);
             // this.setOnClickEventListener(menuLayer.moveIcon,    this.gotoNextPhase, 1);
             // this.setOnClickEventListener(menuLayer.CollectIcon, this.gotoNextPhase, 2);
-            this.setOnClickEventListener(menuLayer.ItemIcon,    this.gotoNextPhase, 3);
+            //this.setOnClickEventListener(menuLayer.ItemIcon,    this.gotoNextPhase, 3);
         }
         actionChoicePhase.onExit = function(){
             cc.log("onExit Action Choice Phase");
@@ -103,6 +108,7 @@ var BokupanMainScene = cc.Scene.extend({
             cc.eventManager.removeCustomListeners(Helper.LABEL.ARROW_BUTTON);
             cc.eventManager.removeCustomListeners(Helper.LABEL.MOVE_BUTTON);
             cc.eventManager.removeCustomListeners(Helper.LABEL.GET_BUTTON);
+            cc.eventManager.removeCustomListeners(Helper.LABEL.ITEM_BUTTON);
         }
         //////////// ▲ActionChoicePhase▲ ////////////
         
@@ -239,12 +245,24 @@ var BokupanMainScene = cc.Scene.extend({
             cc.log("onEnter Select Item Phase");
             mainMapLayer.addItemCard();
      
-            this.setOnClickEventListener(mainMapLayer.ItemArrowIcon,   this.gotoNextPhase, 0);
-            this.setOnClickEventListener(mainMapLayer.ItemPoliceIcon,  this.gotoNextPhase, 1); 
-            this.setOnClickEventListener(mainMapLayer.ItemPeopleIcon,  this.gotoNextPhase, 2);   
+            cc.eventManager.addCustomListener(Helper.LABEL.ITEM_ARROW ,function (event) {
+                    cc.log(event.getUserData());  
+                    selectItemPhase.gotoNextPhase(0);
+                });
+            cc.eventManager.addCustomListener(Helper.LABEL.ITEM_POLICE ,function (event) {
+                    cc.log(event.getUserData());  
+                    selectItemPhase.gotoNextPhase(1);
+                });
+            cc.eventManager.addCustomListener(Helper.LABEL.ITEM_PEOPLE ,function (event) {
+                    cc.log(event.getUserData());  
+                    selectItemPhase.gotoNextPhase(2);
+                });
         }
         selectItemPhase.onExit = function(){
             cc.log("onExit Select Item Phase");
+            cc.eventManager.removeCustomListeners(Helper.LABEL.ITEM_ARROW);
+            cc.eventManager.removeCustomListeners(Helper.LABEL.ITEM_POLICE);
+            cc.eventManager.removeCustomListeners(Helper.LABEL.ITEM_PEOPLE);
             mainMapLayer.removeItemCard();
         }
         //////////// ▲SelectItemPhase▲ ////////////
@@ -280,16 +298,29 @@ var BokupanMainScene = cc.Scene.extend({
                 this.gotoNextPhase(0,1000, false);
                 return;
             }
-            var num = castDice();
-            mainMapLayer.playDiceAnimation(num);
-            mainMapLayer.movePolice(num, function(currPos){
-                this.checkIfForfeitPosition(currPos);
-            }, currPlayer.useItem);
-            currPlayer.useItem.useItem(ITEM.POLICE);
-            this.gotoNextPhase(0,1200*num, true);
+            
+            cc.eventManager.addCustomListener(Helper.LABEL.CAST_DICE,function (event) {
+                cc.log(event.getUserData());
+                var num = event.getUserData().roll;
+                
+                mainMapLayer.playDiceAnimation(num);
+                mainMapLayer.movePolice(num, function(currPos){
+                    this.checkIfForfeitPosition(currPos);
+                }, currPlayer);
+                movePolicePhase.gotoNextPhase(0,1200*num, true);
+            });
+            
+            if(currPlayer.isMe()){
+                var roll = castDice();
+                var roll_action = {"roll":roll};
+                rtc_manager.send(rtc_helper.encode(Helper.LABEL.CAST_DICE, roll_action));
+                cc.eventManager.dispatchCustomEvent(Helper.LABEL.CAST_DICE, roll_action);
+            }
+            currPlayer.useItem(ITEM.POLICE);
         }
         movePolicePhase.onExit = function(){
             cc.log("onExit Move Police Phase");
+            cc.eventManager.removeCustomListeners(Helper.LABEL.CAST_DICE);
         }
         //////////// ▲Move Police Phase▲ ////////////
         
