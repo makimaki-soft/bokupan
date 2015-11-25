@@ -144,7 +144,9 @@ var BokupanMainScene = cc.Scene.extend({
 
                     if(mainMapLayer.isInside(touchX, touchY)){
                         var dir = mainMapLayer.getRelativeDirection(currID, touchX,touchY);
-                        var res = mainMapLayer.movePlayer(currID, dir);
+                        var res = mainMapLayer.movePlayer(currID, dir, function(currPos){
+                            this.checkIfForfeitPosition(currPos);
+                        }, currPlayer);
                         if(res){
                             playerMovePhase.gotoNextPhase(0, 1000, true);
                         }
@@ -231,6 +233,8 @@ var BokupanMainScene = cc.Scene.extend({
                 mainMapLayer.textConsole("取得済みです");
                 collectPantsPhase.gotoNextPhase(0,1000, false);
             }
+            
+            currPlayer.checkIfForfeitPosition(police.getCurrPosition());
         }
         collectPantsPhase.onExit = function(){
             cc.log("onExit Collect Pants Phase");
@@ -303,10 +307,14 @@ var BokupanMainScene = cc.Scene.extend({
                 cc.log(event.getUserData());
                 var num = event.getUserData().roll;
                 
+                var allplayers = gameStatus.getAllPlayers();
+                
                 mainMapLayer.playDiceAnimation(num);
                 mainMapLayer.movePolice(num, function(currPos){
-                    this.checkIfForfeitPosition(currPos);
-                }, currPlayer);
+                    for( var i=0 ; i<this.length ; i++ ){
+                        this[i].checkIfForfeitPosition(currPos);
+                    }
+                }, allplayers);
                 movePolicePhase.gotoNextPhase(0,1200*num, true);
             });
             
@@ -391,10 +399,14 @@ var BokupanMainScene = cc.Scene.extend({
                 cc.log(event.getUserData());
                 var num = event.getUserData().roll;
                 
+                var allplayers = gameStatus.getAllPlayers();
+                
                 mainMapLayer.playDiceAnimation(num);
                 mainMapLayer.movePolice(num, function(currPos){
-                    this.checkIfForfeitPosition(currPos);
-                }, currPlayer);
+                    for( var i=0 ; i<this.length ; i++ ){
+                        this[i].checkIfForfeitPosition(currPos);
+                    }
+                }, allplayers);
                 comPhase.gotoNextPhase(0,1200*num, false);
             });
             

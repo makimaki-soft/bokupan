@@ -219,11 +219,20 @@ var MainMapLayer = cc.LayerColor.extend({
       }
       return false;
   }
-  , movePlayer:function(id, direction){
+  , movePlayer:function(id, direction, callback, target){
       //cc.log("movePlayer called");
       if( this.movePiece(this.playerIcons[id], direction) ){
         var player = gameStatus.getPlayer(id);
         player.setCurrPosition(this.playerIcons[id].NextPositionID);
+        this.scheduleOnce(function(){
+          if(callback){
+            if( target ){ 
+                callback.call(target, this.police.getCurrPosition());
+              }else{
+                callback.call(this, this.police.getCurrPosition());
+              }
+          }
+        }, 1.2 );
         return true;
       }
       return false;

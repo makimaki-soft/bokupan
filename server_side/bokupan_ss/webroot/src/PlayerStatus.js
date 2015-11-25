@@ -203,6 +203,13 @@ function Mkmk_GameStatus(){
 		}
 		return false;
 	}
-}
+	/**
+	 *  全プレイヤーオブジェクト配列の取得
+	 *  @return {Mkmk_PlayerStatus[]} - プレイヤー配列
+	 */
+	this.getAllPlayers = function(){
+		return this.players;
+	}
+}	
 
 var gameStatus = new Mkmk_GameStatus();
