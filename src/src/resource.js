@@ -1,7 +1,7 @@
 var res = {
-    MainMap_png : "res/map_ver3_noon.png"
+    MainMap_png : "res/map_ver4.png"
     , Allow_png : "res/arrow.png"
-    , Yajirushi : "res/Yajirushi.png"
+    , Yajirushi : "res/arrowsign_red.png"
     , IconMove : "res/command_move.png"
     , IconGet : "res/command_get.png"
     , IconChange : "res/command_change.png"
