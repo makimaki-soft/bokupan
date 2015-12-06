@@ -325,7 +325,20 @@ var MainMapLayer = cc.LayerColor.extend({
   , setPlayer:function(player){
       this.player = player;
       this.setPlayerIcon();
-    }
+      this.player.setIcon(this.playerIcon);
+      this.playerIcon.setPlayerStatus(this.player);
+      this.ev = cc.EventListener.create({
+        event: cc.EventListener.TOUCH_ONE_BY_ONE,
+        swallowTouches: true,
+        onTouchBegan: function (touch, event) {
+          cc.log("clicked");
+          player.updateView();
+          // MainMapLayer.playerIcon.fireViewChangeEvent();
+        }
+      });
+      cc.eventManager.addListener(this.ev,this.playerIcon);
+
+  }
   , setPolice:function(police){
       this.police = police;
       this.setPoliceIcon();
