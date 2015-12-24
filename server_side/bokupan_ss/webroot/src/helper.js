@@ -52,11 +52,11 @@ Helper.prototype.move_formatter = function(_id, _action) {
 
 /*
  * 受信したjson文字列をデコードする。
- * idが自分のidより小さい場合は捨てる。
+ * idが自分のid以下の場合は捨てる。
  */
 Helper.prototype.decode = function(_recive_json_str) {
 	var receive_data = JSON.parse(_recive_json_str);
-	if(receive_data.id < this.id) {
+	if(receive_data.id <= this.id) {
 		return null;
 	}
 	this.id = receive_data.id;
