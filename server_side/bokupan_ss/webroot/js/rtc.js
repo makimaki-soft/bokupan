@@ -10,14 +10,14 @@ var rtc_manager = function() {
 
 	var peer = null;
 	var myid = null; // 自身のPeerID
-	var connectId = null;
+	var hostPeerId = null; // hostのPeerID
 	var receive_action = null; //func
+	var my_connections = [];
 
 	var close_callback;// コネクションのcloseイベントが発火した時に実行する処理
 
 	var connect = function(c) {
 		console.log("peer.on('connection') called." + c.peer);
-		connectId = c.peer;
 		c.on('data', receive);
 		c.on('close', function(){
 			console.log("[Close]:プレイヤーが退出しました。ゲームを修了します。");
@@ -27,13 +27,28 @@ var rtc_manager = function() {
 			console.log("[Error]:" + e);
 			console.log("エラーが発生しました。ゲームを修了します。");
 		});
+
+		// 自身に接続されたDataConnectionオブジェクトを保持
+		my_connections.push(c);
 	}
 
 	var receive = function(data) {
-		console.log('Received: ' + data);
+		console.log('Received: ' + data.msg);
 
+		if(myid === data.id) { // 自分から遅れらてきたデータは捨てる
+			return;
+		}
+		if(hostPeerId == null) { // hostユーザはデータを受け取ったらみんなに送信する
+			send_to_all(data.msg);
+		}
 		if(receive_action != null) {
-			receive_action(this.peer, data);
+			receive_action(this.peer, data.msg);
+		}
+	}
+
+	var send_to_all = function(msg) {
+		for(var i = 0; i < my_connections.length; i++){
+			my_connections[i].send({msg:msg, id:myid});
 		}
 	}
 
@@ -53,21 +68,20 @@ var rtc_manager = function() {
 		// 最初に接続するときに呼ぶ
 		connecting : function(to) {
 			console.log("connect to " + to);
-			connectId = to;
+			hostPeerId = to;
 			var conn = peer.connect(to);
 			conn.on('open', function(){
 				console.log("conn.on('data') called.");
-				conn.send("Hello!");
+				conn.send({msg:"Hello!", id:myid});
 				connect(conn);
 			});
 		},
 
 		send : function(msg) {
-			if (Object.keys(peer.connections).length != 0) {
-				var conn = peer.connections[connectId][0];
-				conn.send(msg);
+			if(hostPeerId == null) {
+				send_to_all(msg);
 			}else {
-				console.log("no connections");
+				peer.connections[hostPeerId][0].send({msg:msg, id:myid});
 			}
 		},
 
