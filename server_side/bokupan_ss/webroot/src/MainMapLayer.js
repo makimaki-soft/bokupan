@@ -242,9 +242,9 @@ var MainMapLayer = cc.LayerColor.extend({
   }
   , movePoliceRecursive:function(direction, currDepth, maxDepth, callback, target){
       if( this.movePiece(this.policeIcon, direction) ){
+        this.police.updateDir();
         this.scheduleOnce(function(){
             this.police.setCurrPosition(this.policeIcon.NextPositionID);
-            this.police.updateDir();
             if(callback){
               cc.log("callback");
               if( target ){ 
