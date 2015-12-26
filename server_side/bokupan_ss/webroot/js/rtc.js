@@ -72,7 +72,6 @@ var rtc_manager = function() {
 			var conn = peer.connect(to);
 			conn.on('open', function(){
 				console.log("conn.on('data') called.");
-				conn.send({msg:"Hello!", id:myid});
 				connect(conn);
 			});
 		},
