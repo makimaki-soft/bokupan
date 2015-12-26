@@ -239,6 +239,14 @@ var MainMapLayer = cc.LayerColor.extend({
       }
       return false;
   }
+  , resetPlayerPosition:function(player){
+      var pos = Coordinate[player.initialPosition];
+      var move = cc.MoveTo.create(1, cc.p(pos.x, pos.y));
+      var icon = this.playerIcons[player.playerID];
+      icon.runAction(move);
+      icon.setNextPos(player.initialPosition);
+      icon.scheduleOnce(icon.updatePos,1);
+  }
   , movePolice:function(num, callback, target){
       this.movePoliceRecursive(this.police.getNextDir(), 1, num, callback, target);
   }
