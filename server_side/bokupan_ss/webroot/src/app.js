@@ -431,7 +431,11 @@ var BokupanMainScene = cc.Scene.extend({
         rtc_manager.setReceiveAction(function(peerID, data){
             // cc.log(peerID,data);
             var decoded = rtc_helper.decode(data);
-            
+
+            if(decoded == null){
+                return;
+            }
+
             switch(decoded.label){
                 case Helper.LABEL.NEW_PLAYER:
                     // プレイヤーが参加する。
