@@ -78,9 +78,11 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 		}
 	}
 	this.checkIfForfeitPosition = function(pos){
-		if( pos == this.currPos ){
+		if( pos == this.currPos && this.basketStatus > 0){
 			this.clearBasket();
+			return true;
 		}
+		return false;
 	}
 }
 

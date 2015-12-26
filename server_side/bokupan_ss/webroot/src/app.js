@@ -145,7 +145,9 @@ var BokupanMainScene = cc.Scene.extend({
                     if(mainMapLayer.isInside(touchX, touchY)){
                         var dir = mainMapLayer.getRelativeDirection(currID, touchX,touchY);
                         var res = mainMapLayer.movePlayer(currID, dir, function(currPos){
-                            this.checkIfForfeitPosition(currPos);
+                            if(this.checkIfForfeitPosition(currPos)) {
+                                mainMapLayer.resetPlayerPosition(this);
+                            }
                         }, currPlayer);
                         if(res){
                             playerMovePhase.gotoNextPhase(0, 1000, true);
@@ -234,7 +236,9 @@ var BokupanMainScene = cc.Scene.extend({
                 collectPantsPhase.gotoNextPhase(0,1000, false);
             }
             
-            currPlayer.checkIfForfeitPosition(police.getCurrPosition());
+            if(currPlayer.checkIfForfeitPosition(police.getCurrPosition())) {
+                mainMapLayer.resetPlayerPosition(currPlayer);
+            }
         }
         collectPantsPhase.onExit = function(){
             cc.log("onExit Collect Pants Phase");
@@ -312,7 +316,9 @@ var BokupanMainScene = cc.Scene.extend({
                 mainMapLayer.playDiceAnimation(num);
                 mainMapLayer.movePolice(num, function(currPos){
                     for( var i=0 ; i<this.length ; i++ ){
-                        this[i].checkIfForfeitPosition(currPos);
+                        if(this[i].checkIfForfeitPosition(currPos)) {
+                            mainMapLayer.resetPlayerPosition(this[i]);
+                        }
                     }
                 }, allplayers);
                 movePolicePhase.gotoNextPhase(0,1200*num, true);
@@ -404,7 +410,9 @@ var BokupanMainScene = cc.Scene.extend({
                 mainMapLayer.playDiceAnimation(num);
                 mainMapLayer.movePolice(num, function(currPos){
                     for( var i=0 ; i<this.length ; i++ ){
-                        this[i].checkIfForfeitPosition(currPos);
+                        if(this[i].checkIfForfeitPosition(currPos)){
+                            mainMapLayer.resetPlayerPosition(this[i]);
+                        }
                     }
                 }, allplayers);
                 comPhase.gotoNextPhase(0,1200*num, false);
