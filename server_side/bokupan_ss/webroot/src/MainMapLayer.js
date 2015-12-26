@@ -406,17 +406,17 @@ var MainMapLayer = cc.LayerColor.extend({
       this.addChild(this.text, 0);
       this.scheduleOnce(this.removeText, 1 );
   }
-  , playDiceAnimation:function(num){
+  , playDiceAnimation:function(num, offset){
       if(num<1 || 6<num){
         return;
       }
       
       // サイコロのSpriteを作成
-      this.dice = new cc.Sprite(res.Dice1);
-      this.dice.attr({
-          scaleX: 80/this.dice.width,
-          scaleY: 80/this.dice.height,
-          x: 50,
+      var dice = new cc.Sprite(res.Dice1);
+      dice.attr({
+          scaleX: 80/dice.width,
+          scaleY: 80/dice.height,
+          x: 50 + offset,
           y: 50,
           anchorX: 0,
           anchorY: 0
@@ -451,9 +451,9 @@ var MainMapLayer = cc.LayerColor.extend({
       var dispResult = new cc.CallFunc(function(){
           var src = [res.Dice1, res.Dice2, res.Dice3, res.Dice4, res.Dice5, res.Dice6]
           var deme = new cc.Sprite(src[num-1]);
-          this.dice.setSpriteFrame(deme.getSpriteFrame());
+          dice.setSpriteFrame(deme.getSpriteFrame());
           this.scheduleOnce(function(){
-            this.removeChild(this.dice, 1);
+            this.removeChild(dice, 1);
           }, 1 );
       }, this)
       
@@ -463,8 +463,8 @@ var MainMapLayer = cc.LayerColor.extend({
       seqence[1] = dispResult;
       var wholeMotion = new cc.Sequence(seqence);
       
-      this.addChild(this.dice, 1);
-      this.dice.runAction(wholeMotion);
+      this.addChild(dice, 1);
+      dice.runAction(wholeMotion);
   }
   , removeItemCard:function(){
       this.removeChild(this.menuItemArrow, 0);

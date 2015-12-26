@@ -41,6 +41,7 @@ class RoomsController extends AppController
         }
         $this->set('room', $room);
         $this->set('_serialize', ['room']);
+        $this->layout = false;
     }
 
     /**

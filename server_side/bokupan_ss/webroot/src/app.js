@@ -313,24 +313,26 @@ var BokupanMainScene = cc.Scene.extend({
             
             cc.eventManager.addCustomListener(Helper.LABEL.CAST_DICE,function (event) {
                 cc.log(event.getUserData());
-                var num = event.getUserData().roll;
                 
                 var allplayers = gameStatus.getAllPlayers();
-                
-                mainMapLayer.playDiceAnimation(num);
-                mainMapLayer.movePolice(num, function(currPos){
+                var num1 = event.getUserData().roll1;
+                mainMapLayer.playDiceAnimation(num1, 0);
+                var num2 = event.getUserData().roll2;
+                mainMapLayer.playDiceAnimation(num2, 80);
+                mainMapLayer.movePolice((num1+num2), function(currPos){
                     for( var i=0 ; i<this.length ; i++ ){
                         if(this[i].checkIfForfeitPosition(currPos)) {
                             mainMapLayer.resetPlayerPosition(this[i]);
                         }
                     }
                 }, allplayers);
-                movePolicePhase.gotoNextPhase(0,1200*num, true);
+                movePolicePhase.gotoNextPhase(0,1200*(num1+num2), true);
             });
             
             if(currPlayer.isMe()){
-                var roll = castDice();
-                var roll_action = {"roll":roll};
+                var roll1 = castDice();
+                var roll2 = castDice();
+                var roll_action = {"roll1":roll1, "roll2":roll2};
                 rtc_manager.send(rtc_helper.encode(Helper.LABEL.CAST_DICE, roll_action));
                 cc.eventManager.dispatchCustomEvent(Helper.LABEL.CAST_DICE, roll_action);
             }
@@ -437,24 +439,27 @@ var BokupanMainScene = cc.Scene.extend({
             
             cc.eventManager.addCustomListener(Helper.LABEL.CAST_DICE,function (event) {
                 cc.log(event.getUserData());
-                var num = event.getUserData().roll;
-                
+
                 var allplayers = gameStatus.getAllPlayers();
-                
-                mainMapLayer.playDiceAnimation(num);
-                mainMapLayer.movePolice(num, function(currPos){
+                var num1 = event.getUserData().roll1;
+                mainMapLayer.playDiceAnimation(num1, 0);
+                var num2 = event.getUserData().roll2;
+                mainMapLayer.playDiceAnimation(num2, 80);
+
+                mainMapLayer.movePolice(num1+num2, function(currPos){
                     for( var i=0 ; i<this.length ; i++ ){
                         if(this[i].checkIfForfeitPosition(currPos)){
                             mainMapLayer.resetPlayerPosition(this[i]);
                         }
                     }
                 }, allplayers);
-                comPhase.gotoNextPhase(0,1200*num, false);
+                comPhase.gotoNextPhase(0,1200*(num1+num2), false);
             });
             
             if(currPlayer.isMe()){
-                var roll = castDice();
-                var roll_action = {"roll":roll};
+                var roll1 = castDice();
+                var roll2 = castDice();
+                var roll_action = {"roll1":roll1, "roll2":roll2};
                 rtc_manager.send(rtc_helper.encode(Helper.LABEL.CAST_DICE, roll_action));
                 cc.eventManager.dispatchCustomEvent(Helper.LABEL.CAST_DICE, roll_action);
             }
