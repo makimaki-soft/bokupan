@@ -149,7 +149,7 @@ var BokupanMainScene = cc.Scene.extend({
                     if(mainMapLayer.isInside(touchX, touchY)){
                         var dir = mainMapLayer.getRelativeDirection(currID, touchX,touchY);
                         var res = mainMapLayer.movePlayer(currID, dir, function(currPos){
-                            if(this.checkIfForfeitPosition(currPos)) {
+                            if(this.checkIfForfeitPosition(currPos)||this.checkIfForfeitPosition(girl.currPos)) {
                                 mainMapLayer.resetPlayerPosition(this);
                             }
                         }, currPlayer);
@@ -240,7 +240,7 @@ var BokupanMainScene = cc.Scene.extend({
                 collectPantsPhase.gotoNextPhase(0,1000, false);
             }
             
-            if(currPlayer.checkIfForfeitPosition(police.getCurrPosition())) {
+            if(currPlayer.checkIfForfeitPosition(police.getCurrPosition()||currPlayer.checkIfForfeitPosition(girl.currPos))) {
                 mainMapLayer.resetPlayerPosition(currPlayer);
             }
         }
@@ -358,19 +358,14 @@ var BokupanMainScene = cc.Scene.extend({
             
             cc.eventManager.addCustomListener(Helper.LABEL.CHOOSE_HOME,function (event) {
                 cc.log(event.getUserData());
-                var nextHome = event.getUserData().home;
-                
+                var nextHome = event.getUserData().home;  
                 var allplayers = gameStatus.getAllPlayers();
-                
-                // mainMapLayer.playDiceAnimation(num);
-                
-                /*mainMapLayer.movePolice(num, function(currPos){
-                    for( var i=0 ; i<this.length ; i++ ){
-                        if(this[i].checkIfForfeitPosition(currPos)) {
-                            mainMapLayer.resetPlayerPosition(this[i]);
-                        }
+              
+                for( var i=0 ; i<allplayers.length ; i++){
+                    if( allplayers[i].checkIfForfeitPosition(nextHome) ){
+                        mainMapLayer.resetPlayerPosition(allplayers[i]);
                     }
-                }, allplayers);*/
+                }
                 
                 mainMapLayer.moveGirl(nextHome);
                 girl.setPos(nextHome);
@@ -384,11 +379,6 @@ var BokupanMainScene = cc.Scene.extend({
                 cc.eventManager.dispatchCustomEvent(Helper.LABEL.CHOOSE_HOME, home_action);
             }
             currPlayer.useItem(ITEM.PEOPLE);
-            
-            //var num = castDice();
-            //mainMapLayer.playDiceAnimation(num);
-            //currPlayer.useItem(ITEM.PEOPLE);
-            //this.gotoNextPhase(0,1000, true);
         }
         movePeoplePhase.onExit = function(){
             cc.log("onExit Move People Phase");
@@ -433,6 +423,7 @@ var BokupanMainScene = cc.Scene.extend({
         comPhase.nextPhase[0]  = playerPhase;
         comPhase.onEnter = function(){
             cc.log("onEnter Com Phase");
+            
             mainMapLayer.textConsole("警察が動きます。");
             this.nextPhaseIdx = 0;
             var currPlayer = gameStatus.getCurrPlayer();
