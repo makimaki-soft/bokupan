@@ -53,6 +53,10 @@ var BokupanMainScene = cc.Scene.extend({
         mainMapLayer.setPolice(police);
         police.setArrows(mainMapLayer.allows);
         
+        /////////// Girls //////////////
+        var girl = new Mkmk_GirlsStatus(POSITION_ID.HOME_9);
+        mainMapLayer.setGirl(girl);
+        
         // sample 
         menuLayer.setMapLayer(mainMapLayer);
         mainMapLayer.setMenuLayer(menuLayer);
@@ -349,10 +353,40 @@ var BokupanMainScene = cc.Scene.extend({
                 this.gotoNextPhase(0,1000, false);
                 return;
             }
-            var num = castDice();
-            mainMapLayer.playDiceAnimation(num);
+            
+            cc.eventManager.addCustomListener(Helper.LABEL.CHOOSE_HOME,function (event) {
+                cc.log(event.getUserData());
+                var nextHome = event.getUserData().home;
+                
+                var allplayers = gameStatus.getAllPlayers();
+                
+                // mainMapLayer.playDiceAnimation(num);
+                
+                /*mainMapLayer.movePolice(num, function(currPos){
+                    for( var i=0 ; i<this.length ; i++ ){
+                        if(this[i].checkIfForfeitPosition(currPos)) {
+                            mainMapLayer.resetPlayerPosition(this[i]);
+                        }
+                    }
+                }, allplayers);*/
+                
+                mainMapLayer.moveGirl(nextHome);
+                girl.setPos(nextHome);
+                movePeoplePhase.gotoNextPhase(0,1000, true);
+            });
+            
+            if(currPlayer.isMe()){
+                var home = chooseHome();
+                var home_action = {"home":home};
+                rtc_manager.send(rtc_helper.encode(Helper.LABEL.CHOOSE_HOME, home_action));
+                cc.eventManager.dispatchCustomEvent(Helper.LABEL.CHOOSE_HOME, home_action);
+            }
             currPlayer.useItem(ITEM.PEOPLE);
-            this.gotoNextPhase(0,1000, true);
+            
+            //var num = castDice();
+            //mainMapLayer.playDiceAnimation(num);
+            //currPlayer.useItem(ITEM.PEOPLE);
+            //this.gotoNextPhase(0,1000, true);
         }
         movePeoplePhase.onExit = function(){
             cc.log("onExit Move People Phase");
@@ -462,6 +496,7 @@ var BokupanMainScene = cc.Scene.extend({
                    　}else{
                        
                        var newID = decoded.action.id;
+                       
                        var firstPos = [POSITION_ID.HOME_A, POSITION_ID.HOME_B, POSITION_ID.HOME_C, POSITION_ID.HOME_D];
                        var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], playerStatusLayer, decoded.action.peerID);
                        mainMapLayer.setPlayer(newPlayer);

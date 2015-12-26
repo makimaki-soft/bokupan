@@ -67,6 +67,41 @@ var MainMapLayer = cc.LayerColor.extend({
       this.policeIcon.setPos(this.police.getCurrPosition());
       this.addChild(this.policeIcon, 0);
   }
+  , setGirlIcon:function(){
+      var pos = this.girl.currPos;
+      var currRes = getGirlResouce(pos);
+      this.girlIcon = new Mkmk_Piece(currRes);
+      
+      var cod = getCoordinate(pos);
+      
+      this.girlIcon.attr({
+            scaleX: 60/this.girlIcon.width,
+            scaleY: 60/this.girlIcon.height,
+            x: cod.x,
+            y: cod.y,
+            anchorX: 0,
+            anchorY: 0
+        });
+      
+      this.addChild(this.girlIcon, 0);
+  }
+  , moveGirl:function(homeID){
+      var currRes = getGirlResouce(homeID);
+      var newSprite = new cc.Sprite(currRes);
+      
+      var sequence = [];
+      sequence.push(new cc.FadeOut(0.5));
+      sequence.push(
+        new cc.CallFunc(function(){
+            this.girlIcon.setSpriteFrame(newSprite.getSpriteFrame());
+            this.girlIcon.setPos(homeID);
+        }, this)
+      );
+      sequence.push(new cc.FadeIn(0.5));
+      var wholeAction = cc.Sequence.create(sequence);
+      
+      this.girlIcon.runAction(wholeAction);
+  }
   , setMenuLayer:function(menuLayer){
       this.menuLayer = menuLayer;
   }
@@ -352,6 +387,10 @@ var MainMapLayer = cc.LayerColor.extend({
   , setPolice:function(police){
       this.police = police;
       this.setPoliceIcon();
+  }
+  , setGirl:function(girl){
+      this.girl = girl;
+      this.setGirlIcon();
   }
   , removeText:function(){
       this.removeChild(this.text);

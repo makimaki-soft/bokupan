@@ -184,3 +184,28 @@ var getArrowByRoadPosition = function(positionID){
       return null;
   }        
 }
+
+var getGirlResouce = function(positionID){
+  switch(positionID){
+    case POSITION_ID.HOME_1:
+      return res.Girl1;
+    case POSITION_ID.HOME_2:
+      return res.Girl2;
+    case POSITION_ID.HOME_3:
+      return res.Girl3;
+    case POSITION_ID.HOME_4:
+      return res.Girl4;
+    case POSITION_ID.HOME_5:
+      return res.Girl5;
+    case POSITION_ID.HOME_6:
+      return res.Girl6;
+    case POSITION_ID.HOME_7:
+      return res.Girl7;
+    case POSITION_ID.HOME_8:
+      return res.Girl8;
+    case POSITION_ID.HOME_9:
+      return res.Girl9;
+    default:
+      return null;
+  }        
+}

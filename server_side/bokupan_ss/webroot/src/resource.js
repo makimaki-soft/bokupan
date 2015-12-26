@@ -46,6 +46,15 @@ var res = {
     , Pocket9 : "res/pocket9.png"
     , UsedMenu : "res/menuUsed.png"
     , DisableMark : "res/overray_disabled.png"
+    , Girl1 : "res/girl_no1.png"
+    , Girl2 : "res/girl_no2.png"
+    , Girl3 : "res/girl_no3.png"
+    , Girl4 : "res/girl_no4.png"
+    , Girl5 : "res/girl_no5.png"
+    , Girl6 : "res/girl_no6.png"
+    , Girl7 : "res/girl_no7.png"
+    , Girl8 : "res/girl_no8.png"
+    , Girl9 : "res/girl_no9.png"
 };
 
 var g_resources = [];

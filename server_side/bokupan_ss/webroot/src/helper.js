@@ -14,6 +14,7 @@ Helper.LABEL = {
   , TOUCH 			: "TOUCH"
   , NEW_PLAYER 		: "NEW_PLAYER"
   , CAST_DICE		: "CAST_DICE"
+  , CHOOSE_HOME		: "CHOOSE_HOME"
 }
 
 /*

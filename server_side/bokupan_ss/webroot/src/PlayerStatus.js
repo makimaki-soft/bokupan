@@ -157,6 +157,14 @@ function Mkmk_PoliceStatus(initialPosition){
 	}
 }
 
+function Mkmk_GirlsStatus(initialPosition){
+	this.currPos = initialPosition;
+	
+	this.setPos = function(pos){
+		this.currPos = pos;
+	}
+}
+
 function Mkmk_GameStatus(){
 	
 	this.players = [];
