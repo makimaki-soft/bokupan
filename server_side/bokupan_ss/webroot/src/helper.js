@@ -15,6 +15,7 @@ Helper.LABEL = {
   , NEW_PLAYER 		: "NEW_PLAYER"
   , CAST_DICE		: "CAST_DICE"
   , CHOOSE_HOME		: "CHOOSE_HOME"
+  , TWO_CHOICE		: "TWO_CHOICE"
 }
 
 /*

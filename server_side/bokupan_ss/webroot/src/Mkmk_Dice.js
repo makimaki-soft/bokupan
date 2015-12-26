@@ -2,6 +2,10 @@ var castDice = function(){
 	return (Math.floor( Math.random() * 100 ) % 6)+1;
 }
 
+var twoChoice = function(){
+	return (Math.floor( Math.random() * 100 ) % 2);
+}
+
 var chooseHome = function(){
 	var home = (Math.floor( Math.random() * 100 ) % 9)+1;
 	switch(home){
