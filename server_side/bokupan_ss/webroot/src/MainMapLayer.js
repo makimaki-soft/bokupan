@@ -52,7 +52,9 @@ var MainMapLayer = cc.LayerColor.extend({
         return true;
     }
   , setPlayerIcon:function(player){
-      var newIcon =  new Mkmk_Piece(res.Player1_png);
+      var icons = [ res.Player1_png, res.Player2_png, res.Player3_png, res.Player4_png ];
+      var iconIdx =  player.playerID;
+      var newIcon =  new Mkmk_Piece(icons[iconIdx]);
       var id = player.playerID;
       newIcon.setSize(40,40);
       newIcon.setPos(player.getCurrPosition());
