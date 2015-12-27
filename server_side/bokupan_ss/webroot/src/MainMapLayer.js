@@ -382,18 +382,7 @@ var MainMapLayer = cc.LayerColor.extend({
       }
   }
   , setPlayer:function(player){
-      this.player = player;
       this.setPlayerIcon(player);
-      this.player.setIcon(this.playerIcon);
-      this.playerIcon.setPlayerStatus(this.player);
-      this.ev = cc.EventListener.create({
-        event: cc.EventListener.TOUCH_ONE_BY_ONE,
-        swallowTouches: true,
-        onTouchBegan: function (touch, event) {
-          player.updateView();
-        }
-      });
-      cc.eventManager.addListener(this.ev,this.playerIcon);
     }
   , setPolice:function(police){
       this.police = police;
