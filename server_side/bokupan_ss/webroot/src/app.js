@@ -4,6 +4,8 @@ var BokupanMainScene = cc.Scene.extend({
     onEnter:function () {
         this._super();
                 
+        var thisScene = this;
+                
         // for debug
         var debugInfoLayer = new DebugInfoLayer();
         debugInfoLayer.setPosition(cc.p(0,0));
@@ -16,6 +18,7 @@ var BokupanMainScene = cc.Scene.extend({
         var　menuLayer         = new MenuLayer         (cc.color(255,200,100,100), g_layout.        menu_width, g_layout.        menu_height);
         var　mainMapLayer      = new MainMapLayer      (cc.color(100,255,140,100), g_layout.         map_width, g_layout.         map_height);
         var　enemyStatusLayer  = new DummyLayer        (cc.color( 70,200, 70,100), g_layout. enemystatus_width, g_layout. enemystatus_height);
+        var gameClearLayer    = new GameClearLayer     (cc.color(  0,  0, 70,100), g_layout. canvas_width,      g_layout. canvas_height );
 
         playerStatusLayer.setPosition(cc.p(0,0));
         this.addChild(playerStatusLayer);
@@ -33,7 +36,7 @@ var BokupanMainScene = cc.Scene.extend({
         this.addChild(enemyStatusLayer);
         position_Y += g_layout.enemystatus_height;
         
-        
+        gameClearLayer.setPosition(cc.p(0,0));
         
         ////////////  Define Phases //////////// 
         var actionChoicePhase   = new Mkmk_Phase();
@@ -61,6 +64,14 @@ var BokupanMainScene = cc.Scene.extend({
         menuLayer.setMapLayer(mainMapLayer);
         mainMapLayer.setMenuLayer(menuLayer);
         
+        var terminateBokupan = function(){
+            var winner = gameStatus.getPlayer(gameStatus.winner);
+                cc.log(winner);
+                mainMapLayer.textConsole(winner.PlayerName +  "さんが勝ちました。");
+                gameClearLayer.setWinnerInfo(winner);
+                thisScene.addChild(gameClearLayer, 1);
+        };
+        
         //////////// ▼ActionChoicePhase▼ ////////////
         actionChoicePhase.nextPhase[0] = rotateAllowPhase;
         actionChoicePhase.nextPhase[1] = playerMovePhase;
@@ -70,13 +81,17 @@ var BokupanMainScene = cc.Scene.extend({
             cc.log("onEnter Action Choice Phase");
             var currPlayer = gameStatus.getCurrPlayer();
             
-            if(currPlayer.isMe()){
+            // 終了判定
+            if( currPlayer.checkIfUpdateContainer() ){
+                terminateBokupan();
+            }
+            
+            if(currPlayer.isMe() && gameStatus.winner == -1 ){
                 menuLayer.setMoveMenuEnable(true);
                 menuLayer.setRotateMenuEnable(isIntersectionWithArrow(currPlayer.getCurrPosition()));
                 menuLayer.setCollectMenuEnable(isTargetHome(currPlayer.getCurrPosition()));
                 menuLayer.setItemMenuEnable(!currPlayer.isAlreadyUseAll());
             }
-            currPlayer.checkIfUpdateContainer();
             
             cc.eventManager.addCustomListener(Helper.LABEL.ARROW_BUTTON ,function (event) {
                     cc.log(event.getUserData());  
@@ -416,6 +431,13 @@ var BokupanMainScene = cc.Scene.extend({
          */
         playerPhase.onExit = function(){
             cc.log("onExit Player Phase");
+            var currPlayer = gameStatus.getCurrPlayer();
+            setTimeout(function(){
+                // 終了判定
+                if( currPlayer.checkIfUpdateContainer() ){
+                    terminateBokupan();
+                }
+            }, 1000 );
             gameStatus.chengePlayer();
         }
         //////////// ▲Player Phase▲ ////////////

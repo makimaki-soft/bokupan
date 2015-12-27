@@ -75,7 +75,9 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 	this.checkIfUpdateContainer = function(){
 		if( this.initialPosition == this.currPos ){
 			this.setBasketToContainer();
+			return gameStatus.checkWinner();
 		}
+		return false;
 	}
 	this.checkIfForfeitPosition = function(pos){
 		if( pos == this.currPos && this.basketStatus > 0){
@@ -169,6 +171,7 @@ function Mkmk_GameStatus(){
 	
 	this.players = [];
 	this.currPlayerIdx = 0;
+	this.winner = -1;
 	
 	this.addPlayer = function(newPlayer){
 		
@@ -219,6 +222,23 @@ function Mkmk_GameStatus(){
 	 */
 	this.getAllPlayers = function(){
 		return this.players;
+	}
+	
+	this.checkWinner = function(){
+		var status = this;
+		this.winner = function(){
+			for(var i=0 ; i<status.players.length ; i++){
+				var player = status.players[i];
+				if(player.checkContainerFull()){
+					return player.playerID;
+				}
+			}
+			return -1;
+		}();
+		
+		cc.log("Find winner ", this.winner);
+		
+		return ( this.winner != -1 );
 	}
 }	
 
