@@ -30,17 +30,11 @@ var Mkmk_Piece = cc.Sprite.extend({
       var cod = getCoordinate(this.positionID);
       this.x = cod.x;
       this.y = cod.y;
-    }
+  }
   , setNextDir:function(direction){
       this.NextDir = direction;
     }
   , updateDir:function(){
       this.dir = this.NextDir;
-    }
-  , setPlayerStatus:function(player){
-    this.player = player;
-  }
-  , fireViewChangeEvent:function(){
-    this.player.view.statusChanged();
   }
 });
