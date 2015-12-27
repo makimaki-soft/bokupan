@@ -63,7 +63,7 @@ var BokupanMainScene = cc.Scene.extend({
         // sample 
         menuLayer.setMapLayer(mainMapLayer);
         mainMapLayer.setMenuLayer(menuLayer);
-        
+
         var terminateBokupan = function(){
             var winner = gameStatus.getPlayer(gameStatus.winner);
                 cc.log(winner);
@@ -71,7 +71,7 @@ var BokupanMainScene = cc.Scene.extend({
                 gameClearLayer.setWinnerInfo(winner);
                 thisScene.addChild(gameClearLayer, 1);
         };
-        
+
         //////////// ▼ActionChoicePhase▼ ////////////
         actionChoicePhase.nextPhase[0] = rotateAllowPhase;
         actionChoicePhase.nextPhase[1] = playerMovePhase;
@@ -165,6 +165,7 @@ var BokupanMainScene = cc.Scene.extend({
                         var dir = mainMapLayer.getRelativeDirection(currID, touchX,touchY);
                         var res = mainMapLayer.movePlayer(currID, dir, function(currPos){
                             if(this.checkIfForfeitPosition(currPos)||this.checkIfForfeitPosition(girl.currPos)) {
+                                mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
                                 mainMapLayer.resetPlayerPosition(this);
                             }
                         }, currPlayer);
@@ -256,6 +257,7 @@ var BokupanMainScene = cc.Scene.extend({
             }
             
             if(currPlayer.checkIfForfeitPosition(police.getCurrPosition()||currPlayer.checkIfForfeitPosition(girl.currPos))) {
+                mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
                 mainMapLayer.resetPlayerPosition(currPlayer);
             }
         }
@@ -337,6 +339,7 @@ var BokupanMainScene = cc.Scene.extend({
                 mainMapLayer.movePolice((num1+num2), function(currPos){
                     for( var i=0 ; i<this.length ; i++ ){
                         if(this[i].checkIfForfeitPosition(currPos)) {
+                            mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
                             mainMapLayer.resetPlayerPosition(this[i]);
                         }
                     }

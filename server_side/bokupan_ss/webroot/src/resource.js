@@ -55,6 +55,8 @@ var res = {
     , Girl7 : "res/girl_no7.png"
     , Girl8 : "res/girl_no8.png"
     , Girl9 : "res/girl_no9.png"
+    , CutinForfeitPolice: "res/cutin/forfeit_police.png"
+    , CutinForfeitGirl: ["res/cutin/cutin_forfeit_girl01.png"]
 };
 
 var g_resources = [];

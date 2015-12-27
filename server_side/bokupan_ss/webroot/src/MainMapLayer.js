@@ -525,4 +525,49 @@ var MainMapLayer = cc.LayerColor.extend({
         this.menuItemPeople.y = 0;
         this.addChild(this.menuItemPeople, 0);
   }
+  , playCutinAnimation:function(cutin_res){ // 逮捕・通報時のカットインアニメーション
+
+      var cutin = new cc.Sprite(cutin_res);
+
+      cutin.attr({
+          scaleX: this.width/cutin.width,
+          scaleY: this.width/cutin.width,
+          x: this.width,
+          y: this.height/2,
+          anchorX: 0,
+          anchorY: 0.5
+      });
+      this.addChild(cutin, 1);
+
+      var size = cutin.getContentSize();
+      var init_height = 10;
+
+      // アニメーション前の初期位置
+      var init_sprites = [];
+      init_sprites.push(new cc.SpriteFrame(cutin_res, cc.rect(0, 0, size.width, init_height)));
+      var init_action = new cc.Animate(new cc.Animation(init_sprites, 0.2));
+
+      // 開くアニメーション
+      var open_sprites = [];
+      open_sprites.push(new cc.SpriteFrame(cutin_res, cc.rect(0, 0, size.width, init_height)));
+      open_sprites.push(new cc.SpriteFrame(cutin_res, cc.rect(0, 0, size.width, size.height)));
+      var open_action = new cc.Animate(new cc.Animation(open_sprites, 0.2));
+
+      var self = this;
+      var end_anim = new cc.CallFunc(function(){
+        self.scheduleOnce(function(){
+          self.removeChild(cutin);
+        }, 1.2);
+      });
+
+      // 右からスライド後、開くアニメーション
+      var anims = [];
+      anims.push(init_action);
+      anims.push(cc.MoveTo.create(0.1, cc.p(0, this.height/2)));
+      anims.push(open_action);
+      anims.push(end_anim);
+      var seq = new cc.Sequence(anims);
+      cutin.runAction(seq);
+
+  }
 });
