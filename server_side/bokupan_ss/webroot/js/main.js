@@ -15,6 +15,7 @@ var open_callback_handler = function(peer_id) {
 				//console.log(data);
 			}
 		});
+        start_cocos();
 	}else { // ホストユーザでない場合はサーバに人数追加する
 		console.log("I am servant");
 		$.ajax({
@@ -27,9 +28,8 @@ var open_callback_handler = function(peer_id) {
 		});
 
 		// hostに接続
-		rtc_manager.connecting(host_pid);
+		rtc_manager.connecting(host_pid, start_cocos);;
 	}
-    start_cocos();
 }
 
 var close_callback_handler = function(){

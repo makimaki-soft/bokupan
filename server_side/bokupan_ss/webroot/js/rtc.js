@@ -66,13 +66,14 @@ var rtc_manager = function() {
 		},
 
 		// 最初に接続するときに呼ぶ
-		connecting : function(to) {
+		connecting : function(to, _open_callback) {
 			console.log("connect to " + to);
 			hostPeerId = to;
 			var conn = peer.connect(to, { reliable : true } );
 			conn.on('open', function(){
 				console.log("conn.on('data') called.");
 				connect(conn);
+				_open_callback();
 			});
 		},
 
