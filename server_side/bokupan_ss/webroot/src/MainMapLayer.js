@@ -537,6 +537,9 @@ var MainMapLayer = cc.LayerColor.extend({
           anchorY: 0.5
       });
       this.addChild(cutin, 1);
+      
+      // サイレン音を再生
+      cc.audioEngine.playEffect(res.audio_silen);
 
       var size = cutin.getContentSize();
       var init_height = 10;

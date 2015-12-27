@@ -6,6 +6,8 @@ var BokupanMainScene = cc.Scene.extend({
                 
         var thisScene = this;
                 
+        cc.audioEngine.setEffectsVolume(1.0);
+                
         // for debug
         var debugInfoLayer = new DebugInfoLayer();
         debugInfoLayer.setPosition(cc.p(0,0));
