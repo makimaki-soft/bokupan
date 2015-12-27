@@ -58,7 +58,8 @@ Helper.prototype.move_formatter = function(_id, _action) {
  */
 Helper.prototype.decode = function(_recive_json_str) {
 	var receive_data = JSON.parse(_recive_json_str);
-	if(receive_data.id <= this.id) {
+	if(receive_data.id <= this.id && receive_data.label != Helper.LABEL.NEW_PLAYER ) {
+		console.log("igonre this data (received:", receive_data.id, ") this:",this.id );
 		return null;
 	}
 	this.id = receive_data.id;

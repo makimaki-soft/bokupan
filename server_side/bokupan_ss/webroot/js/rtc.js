@@ -69,7 +69,7 @@ var rtc_manager = function() {
 		connecting : function(to) {
 			console.log("connect to " + to);
 			hostPeerId = to;
-			var conn = peer.connect(to);
+			var conn = peer.connect(to, { reliable : true } );
 			conn.on('open', function(){
 				console.log("conn.on('data') called.");
 				connect(conn);
@@ -78,8 +78,10 @@ var rtc_manager = function() {
 
 		send : function(msg) {
 			if(hostPeerId == null) {
+				console.log(msg + "(host)");
 				send_to_all(msg);
 			}else {
+				console.log(msg + "(servant)");
 				peer.connections[hostPeerId][0].send({msg:msg, id:myid});
 			}
 		},

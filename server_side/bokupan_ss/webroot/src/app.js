@@ -106,7 +106,7 @@ var BokupanMainScene = cc.Scene.extend({
                     cc.log(event.getUserData());  
                     actionChoicePhase.gotoNextPhase(2);
                 });
-                
+
             cc.eventManager.addCustomListener(Helper.LABEL.ITEM_BUTTON ,function (event) {
                     cc.log(event.getUserData());  
                     actionChoicePhase.gotoNextPhase(3);
@@ -502,7 +502,7 @@ var BokupanMainScene = cc.Scene.extend({
                             cc.log("通報!!");
                         }
                     }
-                    
+
                     mainMapLayer.moveGirl(nextHome);
                     girl.setPos(nextHome);
                     comPhase.gotoNextPhase(0,1100, false);
@@ -548,35 +548,58 @@ var BokupanMainScene = cc.Scene.extend({
                 case Helper.LABEL.NEW_PLAYER:
                     // プレイヤーが参加する。
                     if( rtc_manager.isHost ){
-                        var newID = gameStatus.getNewPlayerID();
-                        var firstPos = [POSITION_ID.HOME_A, POSITION_ID.HOME_B, POSITION_ID.HOME_C, POSITION_ID.HOME_D];
-                        var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], playerStatusLayer, peerID);
-                        mainMapLayer.setPlayer(newPlayer);
-                        gameStatus.addPlayer(newPlayer);
-                        mainMapLayer.textConsole("プレイヤーが参加しました。");
-                        
-                        // 相手のIDを教えてやる。
-                        rtc_manager.send(rtc_helper.encode(Helper.LABEL.NEW_PLAYER, {
-                                                                    "id"     : newID,
-                                                                    "peerID" : peerID}));
+                            
+                        // 初めて送られてきたpeerIDの場合は、プレイヤーを追加する
+                        var currLen  = gameStatus.players.length;
+                        for(var i=0 ; i<currLen ; i++ ){
+                           if(gameStatus.players[i].myPeerID==peerID){
+                               // すでに作成ずみ
+                               break;
+                           }
+                           var newID = gameStatus.getNewPlayerID();
+                           var firstPos = [POSITION_ID.HOME_A, POSITION_ID.HOME_B, POSITION_ID.HOME_C, POSITION_ID.HOME_D];
+                           var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], playerStatusLayer, peerID);
+                           mainMapLayer.setPlayer(newPlayer);
+                           gameStatus.addPlayer(newPlayer);
+                           mainMapLayer.textConsole("プレイヤーが参加しました。");
+                           break;
+                        }
+
+                        // 全員のIDを教えてやる。
+                        currLen  = gameStatus.players.length;
+                        for(var i=0 ; i<currLen ; i++ ){
+                            var currPlayer = gameStatus.players[i];
+                            rtc_manager.send(rtc_helper.encode(Helper.LABEL.NEW_PLAYER, {
+                                                                    "id"     : currPlayer.playerID,
+                                                                    "peerID" : currPlayer.myPeerID}));
+                        }
+
                    　}else{
                        
                        var newID = decoded.action.id;
-                       
-                       var firstPos = [POSITION_ID.HOME_A, POSITION_ID.HOME_B, POSITION_ID.HOME_C, POSITION_ID.HOME_D];
-                       var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], playerStatusLayer, decoded.action.peerID);
-                       mainMapLayer.setPlayer(newPlayer);
-                       gameStatus.addPlayer(newPlayer);
-                       playerStatusLayer.setPlayer(newPlayer);
-                       mainMapLayer.textConsole("プレイヤーが参加しました。");
-                       
-                       var hostPlayer = new Mkmk_PlayerStatus(0 , "Tezuka", firstPos[0], playerStatusLayer, peerID);
-                       mainMapLayer.setPlayer(hostPlayer);
-                       gameStatus.addPlayer(hostPlayer);
+                       var targetPeerID = decoded.action.peerID;
+
+                       // 作成済みでないプレイヤを追加する
+                       var bFind = false;
+                       for(var i=0 ; i<gameStatus.players.length ; i++ ){
+                           if(gameStatus.players[i].myPeerID==targetPeerID){
+                               bFind = true;
+                               break;
+                           }
+                       }
+
+                       if( !bFind ){
+                           var firstPos = [POSITION_ID.HOME_A, POSITION_ID.HOME_B, POSITION_ID.HOME_C, POSITION_ID.HOME_D];
+                           var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], playerStatusLayer, decoded.action.peerID);
+                           mainMapLayer.setPlayer(newPlayer);
+                           gameStatus.addPlayer(newPlayer);
+                           playerStatusLayer.setPlayer(newPlayer);
+                           mainMapLayer.textConsole("プレイヤーが参加しました。");
+                       }
                     }
                     
                     // 人数が集まったらゲームを開始する。
-                    if( gameStatus.players.length == 2 ){
+                    if( gameStatus.players.length == 4 ){
                         playerPhase.onEnter();
                     }
                     break;
@@ -596,6 +619,7 @@ var BokupanMainScene = cc.Scene.extend({
             gameStatus.addPlayer(player1);
         }else{
             rtc_manager.send(rtc_helper.encode(Helper.LABEL.NEW_PLAYER, {}));
+            cc.log("requent my id");
         }
 
     }

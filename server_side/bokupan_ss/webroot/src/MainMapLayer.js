@@ -392,19 +392,18 @@ var MainMapLayer = cc.LayerColor.extend({
       this.girl = girl;
       this.setGirlIcon();
   }
-  , removeText:function(){
-      this.removeChild(this.text);
-  }
   , textConsole:function(str){
-      this.text = cc.LabelTTF.create(str,"Meiryo",28);
-      this.text.attr({
+      var text = cc.LabelTTF.create(str,"Meiryo",28);
+      text.attr({
             x: 0,
             y: 0,
             anchorX: 0,
             anchorY: 0
         });
-      this.addChild(this.text, 0);
-      this.scheduleOnce(this.removeText, 1 );
+      this.addChild(text, 0);
+      this.scheduleOnce(function(){
+        this.removeChild(text);
+      }, 1 );
   }
   , playDiceAnimation:function(num, offset){
       if(num<1 || 6<num){
