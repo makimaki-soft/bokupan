@@ -335,8 +335,8 @@ var PlayerStatusLayer = cc.LayerColor.extend({
             scaleY: this.height/2/this.menuUsed.height,
             x: 0,
             y: 0,
-            anchorX: -6,
-            anchorY: -1
+            anchorX: -5.5,
+            anchorY: 0
         });
         this.menuUsed = new cc.Menu(this.menuUsed);
         this.menuUsed.x = 0;
@@ -351,7 +351,7 @@ var PlayerStatusLayer = cc.LayerColor.extend({
             scaleY: this.height/2/this.cardArrow.height,
             x: 0,
             y: 0,
-            anchorX: -12,
+            anchorX: -13,
             anchorY: 0
         });
         this.cardArrow = new cc.Menu(this.cardArrow);
@@ -366,7 +366,7 @@ var PlayerStatusLayer = cc.LayerColor.extend({
             scaleY: this.height/2/this.cardArrowDisable.height,
             x: 0,
             y: 1,
-            anchorX: -12,
+            anchorX: -13,
             anchorY: 0
         });
         this.cardArrowDisable = new cc.Menu(this.cardArrowDisable);
@@ -382,7 +382,7 @@ var PlayerStatusLayer = cc.LayerColor.extend({
             scaleY: this.height/2/this.cardPolice.height,
             x: 0,
             y: 0,
-            anchorX: -13,
+            anchorX: -14,
             anchorY: 0
         });
         this.cardPolice = new cc.Menu(this.cardPolice);
@@ -397,7 +397,7 @@ var PlayerStatusLayer = cc.LayerColor.extend({
             scaleY: this.height/2/this.cardPoliceDisable.height,
             x: 0,
             y: 1,
-            anchorX: -13,
+            anchorX: -14,
             anchorY: 0
         });
         this.cardPoliceDisable = new cc.Menu(this.cardPoliceDisable);
@@ -413,7 +413,7 @@ var PlayerStatusLayer = cc.LayerColor.extend({
             scaleY: this.height/2/this.cardPeople.height,
             x: 0,
             y: 0,
-            anchorX: -14,
+            anchorX: -15,
             anchorY: 0
         });
         this.cardPeople = new cc.Menu(this.cardPeople);
@@ -428,13 +428,24 @@ var PlayerStatusLayer = cc.LayerColor.extend({
             scaleY: this.height/2/this.cardPeopleDisable.height,
             x: 0,
             y: 1,
-            anchorX: -14,
+            anchorX: -15,
             anchorY: 0
         });
         this.cardPeopleDisable = new cc.Menu(this.cardPeopleDisable);
         this.cardPeopleDisable.x = 0;
         this.cardPeopleDisable.y = 0;
         this.addChild(this.cardPeopleDisable, 0);
+
+        //プレイヤー名の表示
+        this.playerName = new cc.LabelTTF.create("name","Meiryo",this.height);
+        this.playerName.attr({
+            x: 0,
+            y: 0,
+            anchorX: 0,
+            anchorY: 0
+        });
+        this.addChild(this.playerName, 0);
+
 
         this.pocketList = [this.pocket1,this.pocket2,this.pocket3,this.pocket4,this.pocket5,this.pocket6,this.pocket7,this.pocket8,this.pocket9];
         this.collectedList = [this.collected1,this.collected2,this.collected3,this.collected4,this.collected5,this.collected6,this.collected7,this.collected8,this.collected9];
@@ -449,8 +460,7 @@ var PlayerStatusLayer = cc.LayerColor.extend({
 
         return true;
     }
-  , statusChanged:function(){
-      var player = this.player;
+  , statusChanged:function(player){
       for (var i = this.pocketList.length - 1; i >= 0; i--) {
           this.pocketList[i].setVisible(player.isBasket(i));
       };
@@ -460,6 +470,15 @@ var PlayerStatusLayer = cc.LayerColor.extend({
       for (var i = this.usedList.length - 1; i >= 0; i--) {
           this.usedList[i].setVisible(player.isAlreadyUse(i));
       };
+    this.removeChild(this.playerName, 0);
+    this.playerName = new cc.LabelTTF.create(player.PlayerName,"Meiryo",this.height/2);
+        this.playerName.attr({
+            x: this.width-this.playerName.width,
+            y: this.height-this.playerName.height,
+            anchorX: 0,
+            anchorY: 0
+        });
+    this.addChild(this.playerName, 0);
     }
   , setPlayer:function(player){
       this.player = player;
