@@ -164,9 +164,15 @@ var BokupanMainScene = cc.Scene.extend({
                     if(mainMapLayer.isInside(touchX, touchY)){
                         var dir = mainMapLayer.getRelativeDirection(currID, touchX,touchY);
                         var res = mainMapLayer.movePlayer(currID, dir, function(currPos){
-                            if(this.checkIfForfeitPosition(currPos)||this.checkIfForfeitPosition(girl.currPos)) {
+                            if(this.checkIfForfeitPosition(currPos)) { // 警察と接触
                                 mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
                                 mainMapLayer.resetPlayerPosition(this);
+                                cc.log("逮捕!!");
+                            }
+                            if(this.checkIfForfeitPosition(girl.currPos)) { // 住人に見つかる
+                                mainMapLayer.playCutinAnimation(res["CutinForfeitGirl0" + girl.currPos]);
+                                mainMapLayer.resetPlayerPosition(this);
+                                cc.log("通報!!");
                             }
                         }, currPlayer);
                         if(res){
@@ -256,9 +262,15 @@ var BokupanMainScene = cc.Scene.extend({
                 collectPantsPhase.gotoNextPhase(0,1000, false);
             }
             
-            if(currPlayer.checkIfForfeitPosition(police.getCurrPosition()||currPlayer.checkIfForfeitPosition(girl.currPos))) {
+            if(currPlayer.checkIfForfeitPosition(police.getCurrPosition())) { //警察と接触
                 mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
                 mainMapLayer.resetPlayerPosition(currPlayer);
+                cc.log("逮捕!!");
+            }
+            if(currPlayer.checkIfForfeitPosition(girl.currPos)) { // 住人に見つかる
+                mainMapLayer.playCutinAnimation(res["CutinForfeitGirl0" + girl.currPos]);
+                mainMapLayer.resetPlayerPosition(currPlayer);
+                cc.log("通報!!");
             }
         }
         collectPantsPhase.onExit = function(){
@@ -341,6 +353,7 @@ var BokupanMainScene = cc.Scene.extend({
                         if(this[i].checkIfForfeitPosition(currPos)) {
                             mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
                             mainMapLayer.resetPlayerPosition(this[i]);
+                            cc.log("逮捕!!");
                         }
                     }
                 }, allplayers);
@@ -380,8 +393,10 @@ var BokupanMainScene = cc.Scene.extend({
                 var allplayers = gameStatus.getAllPlayers();
               
                 for( var i=0 ; i<allplayers.length ; i++){
-                    if( allplayers[i].checkIfForfeitPosition(nextHome) ){
+                    if( allplayers[i].checkIfForfeitPosition(nextHome) ){ // 通報
+                        mainMapLayer.playCutinAnimation(res["CutinForfeitGirl0" + girl.currPos]);
                         mainMapLayer.resetPlayerPosition(allplayers[i]);
+                        cc.log("通報!!");
                     }
                 }
                 
@@ -467,7 +482,9 @@ var BokupanMainScene = cc.Scene.extend({
                     mainMapLayer.movePolice(num1+num2, function(currPos){
                         for( var i=0 ; i<this.length ; i++ ){
                             if(this[i].checkIfForfeitPosition(currPos)){
+                                mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
                                 mainMapLayer.resetPlayerPosition(this[i]);
+                                cc.log("逮捕!!");
                             }
                         }
                     }, allplayers);
@@ -480,7 +497,9 @@ var BokupanMainScene = cc.Scene.extend({
               
                     for( var i=0 ; i<allplayers.length ; i++){
                         if( allplayers[i].checkIfForfeitPosition(nextHome) ){
+                            mainMapLayer.playCutinAnimation(res["CutinForfeitGirl0" + girl.currPos]);
                             mainMapLayer.resetPlayerPosition(allplayers[i]);
+                            cc.log("通報!!");
                         }
                     }
                     
