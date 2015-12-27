@@ -604,8 +604,10 @@ var BokupanMainScene = cc.Scene.extend({
                     }
                     break;
                 default:
-                    cc.eventManager.dispatchCustomEvent(decoded.label, decoded.action);
-                    cc.log(decoded);
+                    setTimeout(function(){
+                        cc.eventManager.dispatchCustomEvent(decoded.label, decoded.action);
+                        cc.log(decoded);
+                    }, 0.5 );
                     break;
             }    
         });
