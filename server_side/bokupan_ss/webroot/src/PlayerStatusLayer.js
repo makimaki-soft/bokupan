@@ -474,7 +474,7 @@ var PlayerStatusLayer = cc.LayerColor.extend({
   , updatePlayerStatusView:function(player){
     cc.log("update status");
     this.removeChild(this.playerName, 0);
-    this.playerName = new cc.LabelTTF.create(player.PlayerName,"Meiryo",this.height/2);
+    this.playerName = new cc.LabelTTF.create(player.playerName,"Meiryo",this.height/2);
     this.playerName.attr({
         x: this.width-this.playerName.width,
         y: this.height-this.playerName.height,
