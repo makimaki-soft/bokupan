@@ -57,14 +57,14 @@ var res = {
     , Girl9 : "res/girl_no9.png"
     , CutinForfeitPolice: "res/cutin/forfeit_police.png"
     , CutinForfeitGirl01: "res/cutin/cutin_forfeit_girl01.png"
-    , CutinForfeitGirl02: "res/cutin/cutin_forfeit_girl01.png"
-    , CutinForfeitGirl03: "res/cutin/cutin_forfeit_girl01.png"
-    , CutinForfeitGirl04: "res/cutin/cutin_forfeit_girl01.png"
-    , CutinForfeitGirl05: "res/cutin/cutin_forfeit_girl01.png"
-    , CutinForfeitGirl06: "res/cutin/cutin_forfeit_girl01.png"
-    , CutinForfeitGirl07: "res/cutin/cutin_forfeit_girl01.png"
-    , CutinForfeitGirl08: "res/cutin/cutin_forfeit_girl01.png"
-    , CutinForfeitGirl09: "res/cutin/cutin_forfeit_girl01.png"
+    , CutinForfeitGirl02: "res/cutin/cutin_forfeit_girl02.png"
+    , CutinForfeitGirl03: "res/cutin/cutin_forfeit_girl03.png"
+    , CutinForfeitGirl04: "res/cutin/cutin_forfeit_girl04.png"
+    , CutinForfeitGirl05: "res/cutin/cutin_forfeit_girl05.png"
+    , CutinForfeitGirl06: "res/cutin/cutin_forfeit_girl06.png"
+    , CutinForfeitGirl07: "res/cutin/cutin_forfeit_girl07.png"
+    , CutinForfeitGirl08: "res/cutin/cutin_forfeit_girl08.png"
+    , CutinForfeitGirl09: "res/cutin/cutin_forfeit_girl09.png"
 };
 
 var g_resources = [];
