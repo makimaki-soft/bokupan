@@ -1,6 +1,6 @@
 function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 	this.playerID   = playerID;
-	this.PlayerName = playerName;
+	this.playerName = playerName;
 	this.currPos = initialPosition;
 	this.initialPosition = initialPosition;
 	this.view = view;
@@ -10,7 +10,8 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 	this.basketStatus = 0;
 	this.containerStatus = 0;
 	this.ItemAlreadyUsed = 0;
-	
+
+
 	this.setNewPantsToBasket = function(position_id){
 		if(isTargetHome(position_id)){
 			this.basketStatus |= (1 << position_id);

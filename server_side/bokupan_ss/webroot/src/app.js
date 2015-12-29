@@ -14,11 +14,11 @@ var BokupanMainScene = cc.Scene.extend({
         
         var position_Y = 0;
         
-        var　playerStatusLayer = new PlayerStatusLayer (cc.color(200,200, 50,100), g_layout.playerstatus_width, g_layout.playerstatus_height);
-        var　menuLayer         = new MenuLayer         (cc.color(255,200,100,100), g_layout.        menu_width, g_layout.        menu_height);
-        var　mainMapLayer      = new MainMapLayer      (cc.color(100,255,140,100), g_layout.         map_width, g_layout.         map_height);
-        var　enemyStatusLayer  = new DummyLayer        (cc.color( 70,200, 70,100), g_layout. enemystatus_width, g_layout. enemystatus_height);
-        var gameClearLayer    = new GameClearLayer     (cc.color(  0,  0, 70,100), g_layout. canvas_width,      g_layout. canvas_height );
+        var playerStatusLayer = new PlayerStatusLayer (cc.color(200,200, 50,100), g_layout.playerstatus_width, g_layout.playerstatus_height);
+        var menuLayer         = new MenuLayer         (cc.color(255,200,100,100), g_layout.        menu_width, g_layout.        menu_height);
+        var mainMapLayer      = new MainMapLayer      (cc.color(100,255,140,100), g_layout.         map_width, g_layout.         map_height);
+        var gameStatusLayer   = new GameStatusLayer   (cc.color( 70,200, 70,100), g_layout. enemystatus_width, g_layout. enemystatus_height);
+        var gameClearLayer    = new GameClearLayer    (cc.color(  0,  0, 70,100), g_layout. canvas_width,      g_layout. canvas_height );
 
         playerStatusLayer.setPosition(cc.p(0,0));
         this.addChild(playerStatusLayer);
@@ -32,8 +32,8 @@ var BokupanMainScene = cc.Scene.extend({
         this.addChild(mainMapLayer);
         position_Y += g_layout.map_height;
 
-        enemyStatusLayer.setPosition(cc.p(0,position_Y));
-        this.addChild(enemyStatusLayer);
+        gameStatusLayer.setPosition(cc.p(0,position_Y));
+        this.addChild(gameStatusLayer);
         position_Y += g_layout.enemystatus_height;
         
         gameClearLayer.setPosition(cc.p(0,0));
@@ -67,7 +67,7 @@ var BokupanMainScene = cc.Scene.extend({
         var terminateBokupan = function(){
             var winner = gameStatus.getPlayer(gameStatus.winner);
                 cc.log(winner);
-                mainMapLayer.textConsole(winner.PlayerName +  "さんが勝ちました。");
+                mainMapLayer.textConsole(winner.playerName +  "さんが勝ちました。");
                 gameClearLayer.setWinnerInfo(winner);
                 thisScene.addChild(gameClearLayer, 1);
         };
@@ -169,11 +169,13 @@ var BokupanMainScene = cc.Scene.extend({
                                 mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
                                 mainMapLayer.resetPlayerPosition(this);
                                 cc.log("逮捕!!");
+                                gameStatusLayer.updateMsg(this.playerName + "さんが逮捕されました。");
                             }
                             else if(this.checkIfForfeitPosition(girl.currPos)) { // 住人に見つかる
                                 mainMapLayer.playCutinAnimation(getGirlCutinResouce(girl.currPos));
                                 mainMapLayer.resetPlayerPosition(this);
                                 cc.log("通報!!");
+                                gameStatusLayer.updateMsg(this.playerName + "さんが通報されました。");
                             }
                         }, currPlayer);
                         if(result){
@@ -257,9 +259,11 @@ var BokupanMainScene = cc.Scene.extend({
             if(!currPlayer.checkAcquired(currPos)){
                 currPlayer.setNewPantsToBasket(currPos);
                 mainMapLayer.textConsole("取得しました");
+                gameStatusLayer.updateMsg(currPlayer.playerName + "さんがパンツを取得しました。");
                 collectPantsPhase.gotoNextPhase(0,1000, true);
             }else{
                 mainMapLayer.textConsole("取得済みです");
+                gameStatusLayer.updateMsg("取得済みです。");
                 collectPantsPhase.gotoNextPhase(0,1000, false);
             }
             
@@ -267,11 +271,13 @@ var BokupanMainScene = cc.Scene.extend({
                 mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
                 mainMapLayer.resetPlayerPosition(currPlayer);
                 cc.log("逮捕!!");
+                gameStatusLayer.updateMsg(currPlayer.playerName + "さんが逮捕されました。");
             }
             else if(currPlayer.checkIfForfeitPosition(girl.currPos)) { // 住人に見つかる
                 mainMapLayer.playCutinAnimation(getGirlCutinResouce(girl.currPos));
                 mainMapLayer.resetPlayerPosition(currPlayer);
                 cc.log("通報!!");
+                gameStatusLayer.updateMsg(currPlayer.playerName + "さんが通報されました。");
             }
         }
         collectPantsPhase.onExit = function(){
@@ -317,6 +323,8 @@ var BokupanMainScene = cc.Scene.extend({
             
             if(currPlayer.isAlreadyUse(ITEM.ARROW)){
                 mainMapLayer.textConsole("使用済みです");
+                gameStatusLayer.updateMsg("使用済みです。");
+
                 this.gotoNextPhase(0,1000, false);
                 return;
             }
@@ -337,6 +345,7 @@ var BokupanMainScene = cc.Scene.extend({
             
             if(currPlayer.isAlreadyUse(ITEM.POLICE)){
                 mainMapLayer.textConsole("使用済みです");
+                gameStatusLayer.updateMsg("使用済みです。");
                 this.gotoNextPhase(0,1000, false);
                 return;
             }
@@ -355,6 +364,7 @@ var BokupanMainScene = cc.Scene.extend({
                             mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
                             mainMapLayer.resetPlayerPosition(this[i]);
                             cc.log("逮捕!!");
+                            gameStatusLayer.updateMsg(this[i].playerName + "さんが逮捕されました。");
                         }
                     }
                 }, allplayers);
@@ -384,6 +394,7 @@ var BokupanMainScene = cc.Scene.extend({
             
             if(currPlayer.isAlreadyUse(ITEM.PEOPLE)){
                 mainMapLayer.textConsole("使用済みです");
+                gameStatusLayer.updateMsg("使用済みです。");
                 this.gotoNextPhase(0,1000, false);
                 return;
             }
@@ -398,6 +409,7 @@ var BokupanMainScene = cc.Scene.extend({
                         mainMapLayer.playCutinAnimation(getGirlCutinResouce(nextHome));
                         mainMapLayer.resetPlayerPosition(allplayers[i]);
                         cc.log("通報!!");
+                        gameStatusLayer.updateMsg(allplayers[i].playerName + "さんが通報されました。");
                     }
                 }
                 
@@ -435,6 +447,7 @@ var BokupanMainScene = cc.Scene.extend({
             var currPlayer = gameStatus.getCurrPlayer();
 
             menuLayer.updateGameStatusText(currPlayer);
+            gameStatusLayer.updateMsg(currPlayer.playerName + "さんのターンです。");
             
             // 順番が最後のプレイヤのフェーズが終了するとComフェーズ、それ以外は次のプレイヤのフェーズ
             if(gameStatus.isLastPlayer(currPlayer)){
@@ -476,6 +489,7 @@ var BokupanMainScene = cc.Scene.extend({
                 
                 if(isPolicePhase){
                     mainMapLayer.textConsole("警察が動きます。");
+                    gameStatusLayer.updateMsg("警察が動きます。");
                     var allplayers = gameStatus.getAllPlayers();
                     var num1 = event.getUserData().roll1;
                     mainMapLayer.playDiceAnimation(num1, 0);
@@ -488,12 +502,14 @@ var BokupanMainScene = cc.Scene.extend({
                                 mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
                                 mainMapLayer.resetPlayerPosition(this[i]);
                                 cc.log("逮捕!!");
+                                gameStatusLayer.updateMsg(this[i].playerName + "さんが逮捕されました。");
                             }
                         }
                     }, allplayers);
                     comPhase.gotoNextPhase(0,1200*(num1+num2), false);
                 }else{
                     mainMapLayer.textConsole("住人が動きます。");
+                    gameStatusLayer.updateMsg("住人が動きます。");
                     
                     var nextHome = event.getUserData().home;  
                     var allplayers = gameStatus.getAllPlayers();
@@ -503,6 +519,7 @@ var BokupanMainScene = cc.Scene.extend({
                             mainMapLayer.playCutinAnimation(getGirlCutinResouce(nextHome));
                             mainMapLayer.resetPlayerPosition(allplayers[i]);
                             cc.log("通報!!");
+                            gameStatusLayer.updateMsg(allplayers[i].playerName + "さんが通報されました。");
                         }
                     }
 
@@ -537,8 +554,6 @@ var BokupanMainScene = cc.Scene.extend({
         //////////// Phase Entry Point ////////////
         //////////// Phase Entry Point ////////////
         
-        // 
-        
         rtc_manager.setReceiveAction(function(peerID, data){
             // cc.log(peerID,data);
             var decoded = rtc_helper.decode(data);
@@ -547,6 +562,7 @@ var BokupanMainScene = cc.Scene.extend({
                 return;
             }
 
+            var home_text = ["A", "B", "C", "D"];
             switch(decoded.label){
                 case Helper.LABEL.NEW_PLAYER:
                     // プレイヤーが参加する。
@@ -561,10 +577,12 @@ var BokupanMainScene = cc.Scene.extend({
                            }
                            var newID = gameStatus.getNewPlayerID();
                            var firstPos = [POSITION_ID.HOME_A, POSITION_ID.HOME_B, POSITION_ID.HOME_C, POSITION_ID.HOME_D];
-                           var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], playerStatusLayer, peerID);
+                           var newPlayer = new Mkmk_PlayerStatus(newID, home_text[newID], firstPos[newID], playerStatusLayer, peerID);
                            mainMapLayer.setPlayer(newPlayer);
                            gameStatus.addPlayer(newPlayer);
                            mainMapLayer.textConsole("プレイヤーが参加しました。");
+                           gameStatusLayer.updateMsg(newPlayer.playerName + "さんが参加しました。");
+
                            break;
                         }
 
@@ -593,17 +611,19 @@ var BokupanMainScene = cc.Scene.extend({
 
                        if( !bFind ){
                            var firstPos = [POSITION_ID.HOME_A, POSITION_ID.HOME_B, POSITION_ID.HOME_C, POSITION_ID.HOME_D];
-                           var newPlayer = new Mkmk_PlayerStatus(newID, "Tezuka", firstPos[newID], playerStatusLayer, decoded.action.peerID);
+                           var newPlayer = new Mkmk_PlayerStatus(newID, home_text[newID], firstPos[newID], playerStatusLayer, decoded.action.peerID);
                            mainMapLayer.setPlayer(newPlayer);
                            gameStatus.addPlayer(newPlayer);
                            playerStatusLayer.setPlayer(newPlayer);
                            mainMapLayer.textConsole("プレイヤーが参加しました。");
+                           gameStatusLayer.updateMsg(newPlayer.playerName + "さんが参加しました。");
                        }
                     }
                     
                     // 人数が集まったらゲームを開始する。
                     if( gameStatus.players.length == 4 ){
                         playerPhase.onEnter();
+                        gameStatusLayer.updateMsg("ゲームを開始します。");
                     }
                     break;
                 default:
@@ -615,7 +635,8 @@ var BokupanMainScene = cc.Scene.extend({
         
         ////////////  Define Players //////////// 
         if(rtc_manager.isHost){
-            var player1 = new Mkmk_PlayerStatus(0, "Tezuka", POSITION_ID.HOME_A, playerStatusLayer, rtc_manager.getmyid());
+            var home_text = ["A", "B", "C", "D"];
+            var player1 = new Mkmk_PlayerStatus(0, home_text[0], POSITION_ID.HOME_A, playerStatusLayer, rtc_manager.getmyid());
             menuLayer.setPlayer(player1);
             mainMapLayer.setPlayer(player1);
             playerStatusLayer.setPlayer(player1);
