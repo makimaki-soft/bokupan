@@ -621,7 +621,7 @@ var BokupanMainScene = cc.Scene.extend({
                     }
                     
                     // 人数が集まったらゲームを開始する。
-                    if( gameStatus.players.length == 2 ){
+                    if( gameStatus.players.length == 4 ){
                         playerPhase.onEnter();
                         gameStatusLayer.updateMsg("ゲームを開始します。");
                     }
