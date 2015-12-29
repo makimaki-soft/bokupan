@@ -1,6 +1,6 @@
 function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 	this.playerID   = playerID;
-	this.PlayerName = playerName;
+	this.playerName = playerName;
 	this.currPos = initialPosition;
 	this.initialPosition = initialPosition;
 	this.view = view;
