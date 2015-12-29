@@ -80,6 +80,7 @@ var BokupanMainScene = cc.Scene.extend({
         actionChoicePhase.onEnter = function(){
             cc.log("onEnter Action Choice Phase");
             var currPlayer = gameStatus.getCurrPlayer();
+            menuLayer.updateGameStatusText(currPlayer);
             
             // 終了判定
             if( currPlayer.checkIfUpdateContainer() ){
@@ -432,6 +433,8 @@ var BokupanMainScene = cc.Scene.extend({
             cc.log("onEnter Player Phase");
             
             var currPlayer = gameStatus.getCurrPlayer();
+
+            menuLayer.updateGameStatusText(currPlayer);
             
             // 順番が最後のプレイヤのフェーズが終了するとComフェーズ、それ以外は次のプレイヤのフェーズ
             if(gameStatus.isLastPlayer(currPlayer)){
