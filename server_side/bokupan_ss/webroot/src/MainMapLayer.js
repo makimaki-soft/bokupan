@@ -576,4 +576,44 @@ var MainMapLayer = cc.LayerColor.extend({
       cutin.runAction(seq);
 
   }
+  /*
+   * プレイヤの頭上にカーソルを表示する
+   */
+  , setCurrPlayerCursor : function(targetPlayer){
+      
+      var currPos = targetPlayer.getCurrPosition();
+      var cor = getCoordinate(currPos);
+      var offset = 30;
+      
+      var playerCursor = new cc.Sprite(res.cursor);
+
+      playerCursor.attr({
+          scaleX: 50/playerCursor.width,
+          scaleY: 50/playerCursor.width,
+          x: cor.x,
+          y: cor.y + offset,
+          anchorX: 0.5,
+          anchorY: 0.5
+      });
+      this.addChild(playerCursor, 1);
+      
+      var animationFrame = [];
+      animationFrame.push(new cc.MoveBy(0.5, cc.p(0, 10)));
+      animationFrame.push(new cc.MoveBy(0.5, cc.p(0,-10)));
+      var seq = new cc.Sequence(animationFrame);
+      
+      var seq_infinite = new cc.RepeatForever(seq);
+      
+      playerCursor.runAction(seq_infinite);
+      
+      this.playerCursor = playerCursor;
+      cc.log("setCurrPlayerCursor",targetPlayer,cor );
+  }
+  /*
+   * プレイヤの頭上の表示中のカーソルを削除する
+   */
+  , removeCurrPlayerCursor : function(){
+      this.removeChild(this.playerCursor);
+      cc.log("removeCurrPlayerCursor");
+  }
 });
