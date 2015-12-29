@@ -395,7 +395,7 @@ var BokupanMainScene = cc.Scene.extend({
               
                 for( var i=0 ; i<allplayers.length ; i++){
                     if( allplayers[i].checkIfForfeitPosition(nextHome) ){ // 通報
-                        mainMapLayer.playCutinAnimation(getGirlCutinResouce(girl.currPos));
+                        mainMapLayer.playCutinAnimation(getGirlCutinResouce(nextHome));
                         mainMapLayer.resetPlayerPosition(allplayers[i]);
                         cc.log("通報!!");
                     }
@@ -500,7 +500,7 @@ var BokupanMainScene = cc.Scene.extend({
               
                     for( var i=0 ; i<allplayers.length ; i++){
                         if( allplayers[i].checkIfForfeitPosition(nextHome) ){
-                            mainMapLayer.playCutinAnimation(getGirlCutinResouce(girl.currPos));
+                            mainMapLayer.playCutinAnimation(getGirlCutinResouce(nextHome));
                             mainMapLayer.resetPlayerPosition(allplayers[i]);
                             cc.log("通報!!");
                         }
