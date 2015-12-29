@@ -163,19 +163,19 @@ var BokupanMainScene = cc.Scene.extend({
 
                     if(mainMapLayer.isInside(touchX, touchY)){
                         var dir = mainMapLayer.getRelativeDirection(currID, touchX,touchY);
-                        var res = mainMapLayer.movePlayer(currID, dir, function(currPos){
+                        var result = mainMapLayer.movePlayer(currID, dir, function(currPos){
                             if(this.checkIfForfeitPosition(currPos)) { // 警察と接触
                                 mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
                                 mainMapLayer.resetPlayerPosition(this);
                                 cc.log("逮捕!!");
                             }
-                            if(this.checkIfForfeitPosition(girl.currPos)) { // 住人に見つかる
-                                mainMapLayer.playCutinAnimation(res["CutinForfeitGirl0" + girl.currPos]);
+                            else if(this.checkIfForfeitPosition(girl.currPos)) { // 住人に見つかる
+                                mainMapLayer.playCutinAnimation(getGirlCutinResouce(girl.currPos));
                                 mainMapLayer.resetPlayerPosition(this);
                                 cc.log("通報!!");
                             }
                         }, currPlayer);
-                        if(res){
+                        if(result){
                             playerMovePhase.gotoNextPhase(0, 1000, true);
                         }
                     }
@@ -267,8 +267,8 @@ var BokupanMainScene = cc.Scene.extend({
                 mainMapLayer.resetPlayerPosition(currPlayer);
                 cc.log("逮捕!!");
             }
-            if(currPlayer.checkIfForfeitPosition(girl.currPos)) { // 住人に見つかる
-                mainMapLayer.playCutinAnimation(res["CutinForfeitGirl0" + girl.currPos]);
+            else if(currPlayer.checkIfForfeitPosition(girl.currPos)) { // 住人に見つかる
+                mainMapLayer.playCutinAnimation(getGirlCutinResouce(girl.currPos));
                 mainMapLayer.resetPlayerPosition(currPlayer);
                 cc.log("通報!!");
             }
@@ -394,7 +394,7 @@ var BokupanMainScene = cc.Scene.extend({
               
                 for( var i=0 ; i<allplayers.length ; i++){
                     if( allplayers[i].checkIfForfeitPosition(nextHome) ){ // 通報
-                        mainMapLayer.playCutinAnimation(res["CutinForfeitGirl0" + girl.currPos]);
+                        mainMapLayer.playCutinAnimation(getGirlCutinResouce(girl.currPos));
                         mainMapLayer.resetPlayerPosition(allplayers[i]);
                         cc.log("通報!!");
                     }
@@ -497,7 +497,7 @@ var BokupanMainScene = cc.Scene.extend({
               
                     for( var i=0 ; i<allplayers.length ; i++){
                         if( allplayers[i].checkIfForfeitPosition(nextHome) ){
-                            mainMapLayer.playCutinAnimation(res["CutinForfeitGirl0" + girl.currPos]);
+                            mainMapLayer.playCutinAnimation(getGirlCutinResouce(girl.currPos));
                             mainMapLayer.resetPlayerPosition(allplayers[i]);
                             cc.log("通報!!");
                         }
