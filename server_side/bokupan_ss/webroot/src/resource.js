@@ -1,5 +1,5 @@
 var res = {
-    MainMap_png : "res/map_ver4.png"
+    MainMap_png : "res/map_ver5.png"
     , Allow_png : "res/arrow.png"
     , Yajirushi : "res/arrowsign.png"
     , IconMove : "res/command_move.png"
@@ -21,7 +21,7 @@ var res = {
     , CardPeople : "res/ItemPeople.png"
     , PoliceIcon : "res/police.png"
     , Player1_png : "res/koma_red.png"
-    , Player2_png : "res/koma_green.png"
+    , Player2_png : "res/koma_pink.png"
     , Player3_png : "res/koma_blue.png"
     , Player4_png : "res/koma_yellow.png"
     , CollectedMenu : "res/menuCollected.png"
