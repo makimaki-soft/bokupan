@@ -183,7 +183,14 @@ var BokupanMainScene = cc.Scene.extend({
                             }
                         }, currPlayer);
                         if(result){
-                            playerMovePhase.gotoNextPhase(0, 1000, true);
+                            var delay = 1000;
+                            if( currPlayer.checkIfForfeitPositionWithoutStatusChange(police.getCurrPosition()) ){
+                                delay += 1000;
+                            }
+                            else if( currPlayer.checkIfForfeitPositionWithoutStatusChange(girl.currPos)){
+                                delay += 1000;
+                            }
+                            playerMovePhase.gotoNextPhase(0, delay, true);
                         }
                     }
                 });
