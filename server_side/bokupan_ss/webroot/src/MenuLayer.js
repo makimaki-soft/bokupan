@@ -111,8 +111,7 @@ var MenuLayer = cc.LayerColor.extend({
       this.player = player;
     }
   , updateGameStatusText: function(player) {
-        var home_text = ["A", "B", "C", "D"];
-        var str = home_text[player.playerID] + "さんのターンです。" + playCnt + "/2\n";
+        var str = player.playerName + "さんのターンです。" + playCnt + "/2\n";
         this.gameStatusText.setString(str);
   }
 });
