@@ -447,6 +447,7 @@ var BokupanMainScene = cc.Scene.extend({
             var currPlayer = gameStatus.getCurrPlayer();
 
             menuLayer.updateGameStatusText(currPlayer);
+            gameStatusLayer.updateMsg(currPlayer.playerName + "さんのターンです。");
             
             // 順番が最後のプレイヤのフェーズが終了するとComフェーズ、それ以外は次のプレイヤのフェーズ
             if(gameStatus.isLastPlayer(currPlayer)){
@@ -620,8 +621,9 @@ var BokupanMainScene = cc.Scene.extend({
                     }
                     
                     // 人数が集まったらゲームを開始する。
-                    if( gameStatus.players.length == 2 ){
+                    if( gameStatus.players.length == 4 ){
                         playerPhase.onEnter();
+                        gameStatusLayer.updateMsg("ゲームを開始します。");
                     }
                     break;
                 default:
