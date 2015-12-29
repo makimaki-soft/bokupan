@@ -12,6 +12,7 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 	this.ItemAlreadyUsed = 0;
 	
 	this.updateView = function(){
+		view.setViewedPlayer(this);
 		view.statusChanged(this);
 	}
 	this.updateStatusView = function(){
@@ -26,12 +27,14 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 			this.basketStatus |= (1 << position_id);
 		}
 		view.statusChanged(this);
+		view.updatePlayerStatusView(this);
 	}
 	
 	this.setBasketToContainer = function(){
 		this.containerStatus |= this.basketStatus;
 		this.basketStatus = 0;
 		view.statusChanged(this);
+		view.updatePlayerStatusView(this);
 	}
 
 	this.isBasket = function(position_id){
@@ -56,6 +59,7 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 	this.clearBasket = function(){
 		this.basketStatus = 0;
 		view.statusChanged(this);
+		view.updatePlayerStatusView(this);
 	}
 	
 	this.getCurrPosition = function(){
@@ -70,6 +74,7 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 			this.ItemAlreadyUsed |= (1 << item_id);
 		}
 		view.statusChanged(this);
+		view.updatePlayerStatusView(this);
 	}
 	
 	this.isAlreadyUse = function(item_id){
