@@ -3,11 +3,21 @@
  *  - 画像中央をアンカーポイントとしたSpriteオブジェクト
  *  - POSITION_IDを用いて位置を制御する
  */
-var Mkmk_Piece = cc.Sprite.extend({
-    ctor:function (image) {
+var Mkmk_Piece = cc.MenuItemImage.extend({
+    ctor:function (image, player, target) {
         this._super(image);
         this.anchorX = 0.5;
         this.anchorY = 0.5;
+        var player = player;
+
+        this.CallBackOrg = function(){
+          cc.log("callback");
+          cc.log(player);
+          player.updateView();
+          player.updateStatusView();
+        };
+        this._super(image, image, this.CallBackOrg, target);
+
     }
   , setPos:function(positionID){
         this.positionID = positionID;
@@ -36,5 +46,8 @@ var Mkmk_Piece = cc.Sprite.extend({
     }
   , updateDir:function(){
       this.dir = this.NextDir;
-  }
+    }
+  , setPlayerStatus:function(player){
+    this.player = player;
+    }
 });

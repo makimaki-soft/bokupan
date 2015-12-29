@@ -437,7 +437,7 @@ var PlayerStatusLayer = cc.LayerColor.extend({
         this.addChild(this.cardPeopleDisable, 0);
 
         //プレイヤー名の表示
-        this.playerName = new cc.LabelTTF.create("name","Meiryo",this.height);
+        this.playerName = new cc.LabelTTF.create("","Meiryo",this.height);
         this.playerName.attr({
             x: 0,
             y: 0,
@@ -470,16 +470,19 @@ var PlayerStatusLayer = cc.LayerColor.extend({
       for (var i = this.usedList.length - 1; i >= 0; i--) {
           this.usedList[i].setVisible(player.isAlreadyUse(i));
       };
+    }
+  , updatePlayerStatusView:function(player){
+    cc.log("update status");
     this.removeChild(this.playerName, 0);
     this.playerName = new cc.LabelTTF.create(player.PlayerName,"Meiryo",this.height/2);
-        this.playerName.attr({
-            x: this.width-this.playerName.width,
-            y: this.height-this.playerName.height,
-            anchorX: 0,
-            anchorY: 0
-        });
+    this.playerName.attr({
+        x: this.width-this.playerName.width,
+        y: this.height-this.playerName.height,
+        anchorX: 0,
+        anchorY: 0
+    });
     this.addChild(this.playerName, 0);
-    }
+  }
   , setPlayer:function(player){
       this.player = player;
     }

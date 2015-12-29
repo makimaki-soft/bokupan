@@ -5,6 +5,7 @@ var MainMapLayer = cc.LayerColor.extend({
         this._super(color,w,h);
 
         this.playerIcons = [null, null, null, null];
+        this.clickablePlayers = [null, null, null, null];
 
         // マップSpriteを作成＆表示
         this.sprite = new cc.Sprite(res.MainMap_png);
@@ -54,12 +55,18 @@ var MainMapLayer = cc.LayerColor.extend({
   , setPlayerIcon:function(player){
       var icons = [ res.Player1_png, res.Player2_png, res.Player3_png, res.Player4_png ];
       var iconIdx =  player.playerID;
-      var newIcon =  new Mkmk_Piece(icons[iconIdx]);
+      var newIcon =  new Mkmk_Piece(icons[iconIdx],player,newIcon);
       var id = player.playerID;
       newIcon.setSize(40,40);
       newIcon.setPos(player.getCurrPosition());
       this.playerIcons[id] = newIcon;
-      this.addChild(newIcon, 0);
+      newIcon.setPlayerStatus(player);
+      // this.addChild(newIcon, 0);
+
+      this.newIconMenu = new cc.Menu(newIcon);
+      this.newIconMenu.x = 0;
+      this.newIconMenu.y = 0;
+      this.addChild(this.newIconMenu, 0);
     }
   , setPoliceIcon:function(){
       this.policeIcon = new Mkmk_Piece(res.PoliceIcon);
@@ -382,8 +389,8 @@ var MainMapLayer = cc.LayerColor.extend({
       }
   }
   , setPlayer:function(player){
-      this.setPlayerIcon(player);
-    }
+    this.setPlayerIcon(player);
+  }
   , setPolice:function(police){
       this.police = police;
       this.setPoliceIcon();

@@ -11,6 +11,16 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 	this.containerStatus = 0;
 	this.ItemAlreadyUsed = 0;
 	
+	this.updateView = function(){
+		view.statusChanged(this);
+	}
+	this.updateStatusView = function(){
+		view.updatePlayerStatusView(this);
+	}
+	this.setIcon = function(icon){
+		this.playerIcon = icon;
+	}
+
 	this.setNewPantsToBasket = function(position_id){
 		if(isTargetHome(position_id)){
 			this.basketStatus |= (1 << position_id);
