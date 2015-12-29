@@ -87,6 +87,8 @@ var BokupanMainScene = cc.Scene.extend({
                 terminateBokupan();
             }
             
+            mainMapLayer.setCurrPlayerCursor(currPlayer);
+            
             if(currPlayer.isMe() && gameStatus.winner == -1 ){
                 menuLayer.setMoveMenuEnable(true);
                 menuLayer.setRotateMenuEnable(isIntersectionWithArrow(currPlayer.getCurrPosition()));
@@ -124,6 +126,8 @@ var BokupanMainScene = cc.Scene.extend({
             menuLayer.setRotateMenuEnable(false);
             menuLayer.setCollectMenuEnable(false);
             menuLayer.setItemMenuEnable(false);
+            
+            mainMapLayer.removeCurrPlayerCursor();
             
             cc.eventManager.removeCustomListeners(Helper.LABEL.ARROW_BUTTON);
             cc.eventManager.removeCustomListeners(Helper.LABEL.MOVE_BUTTON);
