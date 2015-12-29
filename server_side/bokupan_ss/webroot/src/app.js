@@ -87,7 +87,9 @@ var BokupanMainScene = cc.Scene.extend({
                 terminateBokupan();
             }
             
+            // setTimeout(function(){
             mainMapLayer.setCurrPlayerCursor(currPlayer);
+            // }, 210);
             
             if(currPlayer.isMe() && gameStatus.winner == -1 ){
                 menuLayer.setMoveMenuEnable(true);
@@ -183,7 +185,14 @@ var BokupanMainScene = cc.Scene.extend({
                             }
                         }, currPlayer);
                         if(result){
-                            playerMovePhase.gotoNextPhase(0, 1000, true);
+                            var delay = 1000;
+                            if( currPlayer.checkIfForfeitPositionWithoutStatusChange(police.getCurrPosition()) ){
+                                delay += 1000;
+                            }
+                            else if( currPlayer.checkIfForfeitPositionWithoutStatusChange(girl.currPos)){
+                                delay += 1000;
+                            }
+                            playerMovePhase.gotoNextPhase(0, delay, true);
                         }
                     }
                 });
@@ -625,7 +634,7 @@ var BokupanMainScene = cc.Scene.extend({
                     }
                     
                     // 人数が集まったらゲームを開始する。
-                    if( gameStatus.players.length == 4 ){
+                    if( gameStatus.players.length == 2 ){
                         playerPhase.onEnter();
                         gameStatusLayer.updateMsg("ゲームを開始します。");
                     }

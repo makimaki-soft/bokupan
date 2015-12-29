@@ -62,6 +62,7 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 		return this.currPos;
 	}
 	this.setCurrPosition = function(position_id){
+		cc.log("setCurrPosition=",position_id);
 		this.currPos = position_id;
 	}
 	
@@ -86,6 +87,12 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 		if( this.initialPosition == this.currPos ){
 			this.setBasketToContainer();
 			return gameStatus.checkWinner();
+		}
+		return false;
+	}
+	this.checkIfForfeitPositionWithoutStatusChange = function(pos){
+		if( pos == this.currPos && this.basketStatus > 0){
+			return true;
 		}
 		return false;
 	}

@@ -100,7 +100,7 @@ var MainMapLayer = cc.LayerColor.extend({
       sequence.push(new cc.FadeOut(0.5));
       sequence.push(
         new cc.CallFunc(function(){
-            this.girlIcon.setSpriteFrame(newSprite.getSpriteFrame());
+            this.girlIcon.setNormalSpriteFrame(newSprite.getSpriteFrame());
             this.girlIcon.setPos(homeID);
         }, this)
       );
@@ -264,7 +264,7 @@ var MainMapLayer = cc.LayerColor.extend({
       return false;
   }
   , movePlayer:function(id, direction, callback, target){
-      //cc.log("movePlayer called");
+      cc.log("movePlayer called");
       if( this.movePiece(this.playerIcons[id], direction) ){
         var player = gameStatus.getPlayer(id);
         player.setCurrPosition(this.playerIcons[id].NextPositionID);
@@ -282,12 +282,14 @@ var MainMapLayer = cc.LayerColor.extend({
       return false;
   }
   , resetPlayerPosition:function(player){
+      cc.log("resetPlayerPosition");
       var pos = Coordinate[player.initialPosition];
       var move = cc.MoveTo.create(1, cc.p(pos.x, pos.y));
       var icon = this.playerIcons[player.playerID];
       icon.runAction(move);
       icon.setNextPos(player.initialPosition);
       icon.scheduleOnce(icon.updatePos,1);
+      player.setCurrPosition(player.initialPosition);
   }
   , movePolice:function(num, callback, target){
       this.movePoliceRecursive(this.police.getNextDir(), 1, num, callback, target);
@@ -584,7 +586,7 @@ var MainMapLayer = cc.LayerColor.extend({
       var currPos = targetPlayer.getCurrPosition();
       var cor = getCoordinate(currPos);
       var offset = 30;
-      
+      cc.log("setCurrPlayerCursor",targetPlayer,cor );
       var playerCursor = new cc.Sprite(res.cursor);
 
       playerCursor.attr({
@@ -607,7 +609,6 @@ var MainMapLayer = cc.LayerColor.extend({
       playerCursor.runAction(seq_infinite);
       
       this.playerCursor = playerCursor;
-      cc.log("setCurrPlayerCursor",targetPlayer,cor );
   }
   /*
    * プレイヤの頭上の表示中のカーソルを削除する
