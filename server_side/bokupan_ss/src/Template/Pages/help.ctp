@@ -57,7 +57,7 @@ $my_copyright = Configure::read('Common.copyright');
             </tr>
             <tr>
                 <td>プレイ人数</td>
-                <td>2〜4人</td>
+                <td>4人</td>
             </tr>
             </table>
             <p>
@@ -67,43 +67,40 @@ $my_copyright = Configure::read('Common.copyright');
         </section>
         <section>
             <h4>◯ 画面の見方</h4>
-            <p class="center_img"><?= $this->Html->image('map_ver3_nightscape', ['alt' => 'ゲーム画面']); ?></p>
+            <p class="center_img"><?= $this->Html->image('screen_game.png', ['alt' => 'ゲーム画面']); ?></p>
             <p>
             マップ これが今回のコンテスト会場です（マップ全体の絵）
             ターゲットとなる家は９つあります。
             </p>
             <p class="box-001">
-            <?= $this->Html->image('dummy', ['alt' => 'プレイヤー']); ?>
-            <span>プレイヤー</span>
+            <?= $this->Html->image('koma.png', ['alt' => 'プレイヤー']); ?>
+            <span>プレイヤーのアイコンです。プレイヤー毎に色が違います。</span>
             </p>
             <p class="box-001">
-            <?= $this->Html->image('dummy', ['alt' => '住人のいない家']); ?>
+            <?= $this->Html->image('house.png', ['alt' => '住人のいない家']); ?>
             <span>家です。</span>
             </p>
             <p class="box-001">
-            <?= $this->Html->image('dummy', ['alt' => '住人のいる家']); ?>
+            <?= $this->Html->image('people.png', ['alt' => '住人のいる家']); ?>
             <span>家に住人がいる場合、住人アイコンが表示されます。</span>
             </p>
             <p class="box-001">
-            <?= $this->Html->image('dummy', ['alt' => '自分の拠点']); ?>
-            <span>自分の拠点です。拠点に変えるまでがパンツコンテンストです。</span>
+            <?= $this->Html->image('ajito.png', ['alt' => '拠点']); ?>
+            <span>アイコンと同じ色が自分の拠点です。自分の拠点に帰るまでがパンツコンテンストです。</span>
             </p>
             <p class="box-001">
-            <?= $this->Html->image('dummy', ['alt' => 'ライバルの拠点']); ?>
-            <span>ライバルの拠点です。</span>
-            </p>
-            <p class="box-001">
-            <?= $this->Html->image('dummy', ['alt' => '警察官']); ?>
+            <?= $this->Html->image('police.png', ['alt' => '警察官']); ?>
             <span>巡回中の警察官です。見つかると・・・。</span>
             </p>
             <p class="box-001">
-            <?= $this->Html->image('dummy', ['alt' => '巡回ルートの矢印']); ?>
+            <?= $this->Html->image('arrowsign.png', ['alt' => '巡回ルートの矢印']); ?>
             <span>巡回ルートを示す看板（矢印）がです。警察官は矢印に従って巡回します。</span>
             </p>
 
-            <p>ステータス画面</p>
-            <p class="box-001"><?= $this->Html->image('map_ver3_nightscape', ['alt' => '自分のステータス']); ?>
+            <p class="box-002"><?= $this->Html->image('status.png', ['alt' => '自分のステータス']); ?></p>
+            <p>
             <span>
+            ステータス画面です。<br>
             ① ぽっけにいれているパンツ<br>
             ② 拠点に持ち帰ったパンツ<br>
             ③ コンテスト主催者から配られたアイテム。紳士に奇跡を起こします。<br>
@@ -128,7 +125,6 @@ $my_copyright = Configure::read('Common.copyright');
                 <ul>
                     <li>- 警察官の移動</li>
                     <li>- 住人の帰宅</li>
-                    <li>- 巡回ルートの変更</li>
                 </ul>
                 <span>警察官の移動について</span>
                 <p>
@@ -139,10 +135,6 @@ $my_copyright = Configure::read('Common.copyright');
                 <p>
                     ランダムで住人がでかけたり、帰宅したりします。
                 </p>
-                <span>巡回ルーツの変更について</span>
-                 <p>
-                     すべての矢印が時計回りに１つずつ回ります。
-                 </p>
              </div>
             </div>
 
@@ -177,7 +169,7 @@ $my_copyright = Configure::read('Common.copyright');
             <ul>
                 <li>- 警察官に巡回させる</li>
                 <li>- ランダムに住人を帰宅させる</li>
-                <li>- 巡回ルートの矢印の向きをランダムに変える</li>
+                <li>- 巡回ルートの矢印の向きを時計回りに１つずつ回す</li>
             </ul>
            </p>
              </div>
