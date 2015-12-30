@@ -66,6 +66,7 @@ var res = {
     , CutinForfeitGirl08: "res/cutin/cutin_forfeit_girl08.png"
     , CutinForfeitGirl09: "res/cutin/cutin_forfeit_girl09.png"
     , cursor : "res/cursor.png"
+    , MessegeWindow: "res/waku.png"
 };
 
 var g_resources = [];
