@@ -5,6 +5,7 @@ var MainMapLayer = cc.LayerColor.extend({
         this._super(color,w,h);
 
         this.playerIcons = [null, null, null, null];
+        this.clickablePlayers = [null, null, null, null];
 
         // マップSpriteを作成＆表示
         this.sprite = new cc.Sprite(res.MainMap_png);
@@ -54,12 +55,18 @@ var MainMapLayer = cc.LayerColor.extend({
   , setPlayerIcon:function(player){
       var icons = [ res.Player1_png, res.Player2_png, res.Player3_png, res.Player4_png ];
       var iconIdx =  player.playerID;
-      var newIcon =  new Mkmk_Piece(icons[iconIdx]);
+      var newIcon =  new Mkmk_Piece(icons[iconIdx],player,newIcon);
       var id = player.playerID;
       newIcon.setSize(40,40);
       newIcon.setPos(player.getCurrPosition());
       this.playerIcons[id] = newIcon;
-      this.addChild(newIcon, 0);
+      newIcon.setPlayerStatus(player);
+      // this.addChild(newIcon, 0);
+
+      this.newIconMenu = new cc.Menu(newIcon);
+      this.newIconMenu.x = 0;
+      this.newIconMenu.y = 0;
+      this.addChild(this.newIconMenu, 0);
     }
   , setPoliceIcon:function(){
       this.policeIcon = new Mkmk_Piece(res.PoliceIcon);
@@ -93,7 +100,7 @@ var MainMapLayer = cc.LayerColor.extend({
       sequence.push(new cc.FadeOut(0.5));
       sequence.push(
         new cc.CallFunc(function(){
-            this.girlIcon.setSpriteFrame(newSprite.getSpriteFrame());
+            this.girlIcon.setNormalSpriteFrame(newSprite.getSpriteFrame());
             this.girlIcon.setPos(homeID);
         }, this)
       );
@@ -257,7 +264,7 @@ var MainMapLayer = cc.LayerColor.extend({
       return false;
   }
   , movePlayer:function(id, direction, callback, target){
-      //cc.log("movePlayer called");
+      cc.log("movePlayer called");
       if( this.movePiece(this.playerIcons[id], direction) ){
         var player = gameStatus.getPlayer(id);
         player.setCurrPosition(this.playerIcons[id].NextPositionID);
@@ -275,12 +282,14 @@ var MainMapLayer = cc.LayerColor.extend({
       return false;
   }
   , resetPlayerPosition:function(player){
+      cc.log("resetPlayerPosition");
       var pos = Coordinate[player.initialPosition];
       var move = cc.MoveTo.create(1, cc.p(pos.x, pos.y));
       var icon = this.playerIcons[player.playerID];
       icon.runAction(move);
       icon.setNextPos(player.initialPosition);
       icon.scheduleOnce(icon.updatePos,1);
+      player.setCurrPosition(player.initialPosition);
   }
   , movePolice:function(num, callback, target){
       this.movePoliceRecursive(this.police.getNextDir(), 1, num, callback, target);
@@ -382,8 +391,8 @@ var MainMapLayer = cc.LayerColor.extend({
       }
   }
   , setPlayer:function(player){
-      this.setPlayerIcon(player);
-    }
+    this.setPlayerIcon(player);
+  }
   , setPolice:function(police){
       this.police = police;
       this.setPoliceIcon();
@@ -571,5 +580,44 @@ var MainMapLayer = cc.LayerColor.extend({
       var seq = new cc.Sequence(anims);
       cutin.runAction(seq);
 
+  }
+  /*
+   * プレイヤの頭上にカーソルを表示する
+   */
+  , setCurrPlayerCursor : function(targetPlayer){
+      
+      var currPos = targetPlayer.getCurrPosition();
+      var cor = getCoordinate(currPos);
+      var offset = 30;
+      cc.log("setCurrPlayerCursor",targetPlayer,cor );
+      var playerCursor = new cc.Sprite(res.cursor);
+
+      playerCursor.attr({
+          scaleX: 50/playerCursor.width,
+          scaleY: 50/playerCursor.width,
+          x: cor.x,
+          y: cor.y + offset,
+          anchorX: 0.5,
+          anchorY: 0.5
+      });
+      this.addChild(playerCursor, 1);
+      
+      var animationFrame = [];
+      animationFrame.push(new cc.MoveBy(0.5, cc.p(0, 10)));
+      animationFrame.push(new cc.MoveBy(0.5, cc.p(0,-10)));
+      var seq = new cc.Sequence(animationFrame);
+      
+      var seq_infinite = new cc.RepeatForever(seq);
+      
+      playerCursor.runAction(seq_infinite);
+      
+      this.playerCursor = playerCursor;
+  }
+  /*
+   * プレイヤの頭上の表示中のカーソルを削除する
+   */
+  , removeCurrPlayerCursor : function(){
+      this.removeChild(this.playerCursor);
+      cc.log("removeCurrPlayerCursor");
   }
 });

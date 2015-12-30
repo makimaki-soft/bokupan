@@ -1,6 +1,7 @@
 var PlayerStatusLayer = cc.LayerColor.extend({
     sprite:null,
     ctor:function (color,w,h) {
+        this.nowViewed = 0;
         this._super(color,w,h);
         this.menuPocket = new Mkmk_MenuItemImage(
             res.PocketMenu,
@@ -437,7 +438,7 @@ var PlayerStatusLayer = cc.LayerColor.extend({
         this.addChild(this.cardPeopleDisable, 0);
 
         //プレイヤー名の表示
-        this.playerName = new cc.LabelTTF.create("name","Meiryo",this.height);
+        this.playerName = new cc.LabelTTF.create("","Meiryo",this.height);
         this.playerName.attr({
             x: 0,
             y: 0,
@@ -461,6 +462,9 @@ var PlayerStatusLayer = cc.LayerColor.extend({
         return true;
     }
   , statusChanged:function(player){
+    if (this.nowViewed != player.playerID) {
+        return;
+    };
       for (var i = this.pocketList.length - 1; i >= 0; i--) {
           this.pocketList[i].setVisible(player.isBasket(i));
       };
@@ -470,17 +474,26 @@ var PlayerStatusLayer = cc.LayerColor.extend({
       for (var i = this.usedList.length - 1; i >= 0; i--) {
           this.usedList[i].setVisible(player.isAlreadyUse(i));
       };
-    this.removeChild(this.playerName, 0);
-    this.playerName = new cc.LabelTTF.create(player.PlayerName,"Meiryo",this.height/2);
-        this.playerName.attr({
-            x: this.width-this.playerName.width,
-            y: this.height-this.playerName.height,
-            anchorX: 0,
-            anchorY: 0
-        });
-    this.addChild(this.playerName, 0);
     }
+  , updatePlayerStatusView:function(player){
+    if (this.nowViewed != player.playerID) {
+        return;
+    };
+    cc.log("update status");
+    this.removeChild(this.playerName, 0);
+    this.playerName = new cc.LabelTTF.create(player.playerName,"Meiryo",this.height/2);
+    this.playerName.attr({
+        x: this.width-this.playerName.width,
+        y: this.height-this.playerName.height,
+        anchorX: 0,
+        anchorY: 0
+    });
+    this.addChild(this.playerName, 0);
+  }
   , setPlayer:function(player){
       this.player = player;
     }
+  , setViewedPlayer:function(player){
+    this.nowViewed = player.playerID;
+  }
 });

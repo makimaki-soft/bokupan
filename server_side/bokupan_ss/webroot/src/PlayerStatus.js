@@ -1,6 +1,6 @@
 function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 	this.playerID   = playerID;
-	this.PlayerName = playerName;
+	this.playerName = playerName;
 	this.currPos = initialPosition;
 	this.initialPosition = initialPosition;
 	this.view = view;
@@ -11,17 +11,30 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 	this.containerStatus = 0;
 	this.ItemAlreadyUsed = 0;
 	
+	this.updateView = function(){
+		view.setViewedPlayer(this);
+		view.statusChanged(this);
+	}
+	this.updateStatusView = function(){
+		view.updatePlayerStatusView(this);
+	}
+	this.setIcon = function(icon){
+		this.playerIcon = icon;
+	}
+
 	this.setNewPantsToBasket = function(position_id){
 		if(isTargetHome(position_id)){
 			this.basketStatus |= (1 << position_id);
 		}
 		view.statusChanged(this);
+		view.updatePlayerStatusView(this);
 	}
 	
 	this.setBasketToContainer = function(){
 		this.containerStatus |= this.basketStatus;
 		this.basketStatus = 0;
 		view.statusChanged(this);
+		view.updatePlayerStatusView(this);
 	}
 
 	this.isBasket = function(position_id){
@@ -46,12 +59,14 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 	this.clearBasket = function(){
 		this.basketStatus = 0;
 		view.statusChanged(this);
+		view.updatePlayerStatusView(this);
 	}
 	
 	this.getCurrPosition = function(){
 		return this.currPos;
 	}
 	this.setCurrPosition = function(position_id){
+		cc.log("setCurrPosition=",position_id);
 		this.currPos = position_id;
 	}
 	
@@ -60,6 +75,7 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 			this.ItemAlreadyUsed |= (1 << item_id);
 		}
 		view.statusChanged(this);
+		view.updatePlayerStatusView(this);
 	}
 	
 	this.isAlreadyUse = function(item_id){
@@ -76,6 +92,12 @@ function Mkmk_PlayerStatus(playerID, playerName, initialPosition, view, peerID){
 		if( this.initialPosition == this.currPos ){
 			this.setBasketToContainer();
 			return gameStatus.checkWinner();
+		}
+		return false;
+	}
+	this.checkIfForfeitPositionWithoutStatusChange = function(pos){
+		if( pos == this.currPos && this.basketStatus > 0){
+			return true;
 		}
 		return false;
 	}

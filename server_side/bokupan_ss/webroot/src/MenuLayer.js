@@ -77,7 +77,16 @@ var MenuLayer = cc.LayerColor.extend({
         this.menuCollect.setEnabled(false);
         this.menuRotate.setEnabled(false);
         this.menuMove.setEnabled(false);
-        
+
+        this.gameStatusText = cc.LabelTTF.create("準備中です。\nゲーム開始までお待ち下さい。","Meiryo",14);
+        this.gameStatusText.attr({
+            x: this.height*4 + 10,
+            y: 0,
+            anchorX: 0,
+            anchorY: 0
+        });
+        this.addChild(this.gameStatusText, 0);
+
         return true;
     }
   , setMapLayer:function(map){
@@ -101,4 +110,8 @@ var MenuLayer = cc.LayerColor.extend({
   , setPlayer:function(player){
       this.player = player;
     }
+  , updateGameStatusText: function(player) {
+        var str = player.playerName + "さんのターンです。" + playCnt + "/2\n";
+        this.gameStatusText.setString(str);
+  }
 });

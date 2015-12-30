@@ -209,3 +209,28 @@ var getGirlResouce = function(positionID){
       return null;
   }        
 }
+
+var getGirlCutinResouce = function(positionID){
+  switch(positionID){
+    case POSITION_ID.HOME_1:
+      return res.CutinForfeitGirl01;
+    case POSITION_ID.HOME_2:
+      return res.CutinForfeitGirl02;
+    case POSITION_ID.HOME_3:
+      return res.CutinForfeitGirl03;
+    case POSITION_ID.HOME_4:
+      return res.CutinForfeitGirl04;
+    case POSITION_ID.HOME_5:
+      return res.CutinForfeitGirl05;
+    case POSITION_ID.HOME_6:
+      return res.CutinForfeitGirl06;
+    case POSITION_ID.HOME_7:
+      return res.CutinForfeitGirl07;
+    case POSITION_ID.HOME_8:
+      return res.CutinForfeitGirl08;
+    case POSITION_ID.HOME_9:
+      return res.CutinForfeitGirl09;
+    default:
+      return null;
+  }        
+}
