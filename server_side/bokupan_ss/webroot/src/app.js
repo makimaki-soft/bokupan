@@ -93,20 +93,24 @@ var BokupanMainScene = cc.Scene.extend({
 
             cc.eventManager.addCustomListener(Helper.LABEL.ARROW_BUTTON ,function (event) {
                     cc.log(event.getUserData());
+                    cc.audioEngine.playEffect(res.audio_click);
                     actionChoicePhase.gotoNextPhase(0);
                 });
 
             cc.eventManager.addCustomListener(Helper.LABEL.MOVE_BUTTON,function (event) {
                     cc.log(event.getUserData());
+                    cc.audioEngine.playEffect(res.audio_click);
                     actionChoicePhase.gotoNextPhase(1);
                 });
             cc.eventManager.addCustomListener(Helper.LABEL.GET_BUTTON,function (event) {
                     cc.log(event.getUserData());
+                    cc.audioEngine.playEffect(res.audio_click);
                     actionChoicePhase.gotoNextPhase(2);
                 });
 
             cc.eventManager.addCustomListener(Helper.LABEL.ITEM_BUTTON ,function (event) {
                     cc.log(event.getUserData());
+                    cc.audioEngine.playEffect(res.audio_click);
                     actionChoicePhase.gotoNextPhase(3);
                 });
 
