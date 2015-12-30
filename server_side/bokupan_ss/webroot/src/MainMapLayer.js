@@ -50,6 +50,9 @@ var MainMapLayer = cc.LayerColor.extend({
           cc.log(this.allows.length, allow.dir);
         }
         
+        
+        
+        
         return true;
     }
   , setPlayerIcon:function(player){

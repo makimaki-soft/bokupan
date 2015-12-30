@@ -1,10 +1,45 @@
 var rtc_helper = new Helper();
 
 var BokupanMainScene = cc.Scene.extend({
+    
+    /**
+     * Constructor function
+     */
     onEnter:function () {
         this._super();
-                
-        var thisScene = this;
+        
+        
+        this.layers = defineLayers();
+        
+        
+        bokupaninit.call(this);
+    }
+});
+
+function defineLayers(){
+    
+    var test1 = new PlayerStatusLayer (cc.color(200,200, 50,100), g_layout.playerstatus_width, g_layout.playerstatus_height);
+    var test2 = new MenuLayer         (cc.color(255,200,100,100), g_layout.        menu_width, g_layout.        menu_height);
+    var test3 = new MainMapLayer      (cc.color(100,255,140,100), g_layout.         map_width, g_layout.         map_height);
+    var test4 = new GameStatusLayer   (cc.color( 70,200, 70,100), g_layout. enemystatus_width, g_layout. enemystatus_height);
+    var test5 = new GameClearLayer    (cc.color(  0,  0, 70,100), g_layout. canvas_width,      g_layout. canvas_height )   ;
+    
+    return {
+          playerStatusLayer : test1
+        , menuLayer         : test2
+        , mainMapLayer      : test3
+        , gameStatusLayer   : test4
+        , gameClearLayer    : test5
+    };
+};
+
+/**
+ * Constructor function, override it to extend the construction behavior, remember to call "this._super()" in the extended "ctor" function.
+ * @param {cc.Node} [stencil=null]
+ */
+function bokupaninit(){
+    
+    var thisScene = this;
                 
         // for debug
         var debugInfoLayer = new DebugInfoLayer();
@@ -14,11 +49,11 @@ var BokupanMainScene = cc.Scene.extend({
         
         var position_Y = 0;
         
-        var playerStatusLayer = new PlayerStatusLayer (cc.color(200,200, 50,100), g_layout.playerstatus_width, g_layout.playerstatus_height);
-        var menuLayer         = new MenuLayer         (cc.color(255,200,100,100), g_layout.        menu_width, g_layout.        menu_height);
-        var mainMapLayer      = new MainMapLayer      (cc.color(100,255,140,100), g_layout.         map_width, g_layout.         map_height);
-        var gameStatusLayer   = new GameStatusLayer   (cc.color( 70,200, 70,100), g_layout. enemystatus_width, g_layout. enemystatus_height);
-        var gameClearLayer    = new GameClearLayer    (cc.color(  0,  0, 70,100), g_layout. canvas_width,      g_layout. canvas_height );
+        var playerStatusLayer = this.layers.playerStatusLayer;
+        var menuLayer         = this.layers.menuLayer;
+        var mainMapLayer      = this.layers.mainMapLayer;
+        var gameStatusLayer   = this.layers.gameStatusLayer;
+        var gameClearLayer    = this.layers.gameClearLayer;
 
         playerStatusLayer.setPosition(cc.p(0,0));
         this.addChild(playerStatusLayer);
@@ -118,7 +153,7 @@ var BokupanMainScene = cc.Scene.extend({
             // this.setOnClickEventListener(menuLayer.rotateIcon,  this.gotoNextPhase, 0);
             // this.setOnClickEventListener(menuLayer.moveIcon,    this.gotoNextPhase, 1);
             // this.setOnClickEventListener(menuLayer.CollectIcon, this.gotoNextPhase, 2);
-            //this.setOnClickEventListener(menuLayer.ItemIcon,    this.gotoNextPhase, 3);
+            // this.setOnClickEventListener(menuLayer.ItemIcon,    this.gotoNextPhase, 3);
         }
         actionChoicePhase.onExit = function(){
             cc.log("onExit Action Choice Phase");
@@ -656,6 +691,8 @@ var BokupanMainScene = cc.Scene.extend({
             rtc_manager.send(rtc_helper.encode(Helper.LABEL.NEW_PLAYER, {}));
             cc.log("requent my id");
         }
+     
+    
+}
 
-    }
-});
+
