@@ -3,17 +3,9 @@ var rtc_helper = new Helper();
 var BokupanMainScene = cc.Scene.extend({
     onEnter:function () {
         this._super();
-                
+
         var thisScene = this;
-                
-        // for debug
-        var debugInfoLayer = new DebugInfoLayer();
-        debugInfoLayer.setPosition(cc.p(0,0));
-        debugInfoLayer.scheduleUpdate();
-        this.addChild(debugInfoLayer);
-        
         var position_Y = 0;
-        
         var playerStatusLayer = new PlayerStatusLayer (cc.color(200,200, 50,100), g_layout.playerstatus_width, g_layout.playerstatus_height);
         var menuLayer         = new MenuLayer         (cc.color(255,200,100,100), g_layout.        menu_width, g_layout.        menu_height);
         var mainMapLayer      = new MainMapLayer      (cc.color(100,255,140,100), g_layout.         map_width, g_layout.         map_height);
