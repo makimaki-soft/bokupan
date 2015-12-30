@@ -17,7 +17,7 @@ var BokupanMainScene = cc.Scene.extend({
         var playerStatusLayer = new PlayerStatusLayer (cc.color(200,200, 50,100), g_layout.playerstatus_width, g_layout.playerstatus_height);
         var menuLayer         = new MenuLayer         (cc.color(255,200,100,100), g_layout.        menu_width, g_layout.        menu_height);
         var mainMapLayer      = new MainMapLayer      (cc.color(100,255,140,100), g_layout.         map_width, g_layout.         map_height);
-        var gameStatusLayer   = new GameStatusLayer   (cc.color( 70,200, 70,100), g_layout. enemystatus_width, g_layout. enemystatus_height);
+        var gameStatusLayer   = new GameStatusLayer   (cc.color(  0,  0,  0,100), g_layout. enemystatus_width, g_layout. enemystatus_height);
         var gameClearLayer    = new GameClearLayer    (cc.color(  0,  0, 70,100), g_layout. canvas_width,      g_layout. canvas_height );
 
         playerStatusLayer.setPosition(cc.p(0,0));
