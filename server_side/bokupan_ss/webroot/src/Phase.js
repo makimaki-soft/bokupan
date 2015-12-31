@@ -1,6 +1,8 @@
+var mkmk = mkmk || {};
+
 var playCnt = 2;
 
-function Mkmk_Phase() {
+mkmk.Phase = function() {
     this.nextPhase = [];
     this.childPhase = null;
     this.parentPhase = null;
