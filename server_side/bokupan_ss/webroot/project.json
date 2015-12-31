@@ -27,5 +27,6 @@
         , "src/PlayerStatus.js"
         , "src/Mkmk_Dice.js"
         , "src/GameClearLayer.js"
+        , "src/mkmkItemImage.js"
     ]
 }
