@@ -13,6 +13,8 @@
     "jsList" : [
           "src/resource.js"
         , "src/helper.js"
+        , "src/BokupanPhases.js"
+        , "src/Phase.js"
         , "src/app.js"
         , "res/loading_image.js"
         , "src/layout.js"
@@ -23,7 +25,6 @@
         , "src/Mkmk_Piece.js"
         , "src/Position.js"
         , "src/MenuLayer.js"
-        , "src/Phase.js"
         , "src/PlayerStatus.js"
         , "src/Mkmk_Dice.js"
         , "src/GameClearLayer.js"

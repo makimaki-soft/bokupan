@@ -51,3 +51,23 @@ mkmk.Phase = function() {
     //ステータスを更新
 
 }
+
+/**
+ * Phaseのインスタンス
+ * @type {Object}
+ */
+mkmk.phases = (function defineBokupanPhases(){
+
+    return (function() {
+
+        var phase = {};
+        var list = mkmk.phaseList.list;
+
+        for(var key in list) {
+            phase[list[key]] = new mkmk.Phase();
+        }
+
+        return phase;
+
+    }());
+}());

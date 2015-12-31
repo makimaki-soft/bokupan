@@ -74,17 +74,17 @@ function bokupaninit(){
         gameClearLayer.setPosition(cc.p(0,0));
         
         ////////////  Define Phases //////////// 
-        var actionChoicePhase   = new mkmk.Phase();
-        var playerMovePhase     = new mkmk.Phase();
-        var rotateAllowPhase    = new mkmk.Phase();
-        var collectPantsPhase   = new mkmk.Phase();
-        var selectItemPhase     = new mkmk.Phase();
-        var rotateAllAllowPhase = new mkmk.Phase();
-        var movePolicePhase     = new mkmk.Phase();
-        var movePeoplePhase     = new mkmk.Phase();
+        var actionChoicePhase   = mkmk.phases.actionChoicePhase;
+        var playerMovePhase     = mkmk.phases.playerMovePhase;
+        var rotateAllowPhase    = mkmk.phases.rotateAllowPhase;
+        var collectPantsPhase   = mkmk.phases.collectPantsPhase;
+        var selectItemPhase     = mkmk.phases.selectItemPhase;
+        var rotateAllAllowPhase = mkmk.phases.rotateAllAllowPhase;
+        var movePolicePhase     = mkmk.phases.movePolicePhase;
+        var movePeoplePhase     = mkmk.phases.movePeoplePhase;
         
-        var comPhase            = new mkmk.Phase();
-        var playerPhase         = new mkmk.Phase();
+        var comPhase            = mkmk.phases.comPhase;
+        var playerPhase         = mkmk.phases.playerPhase;
         
         //////////// Police ////////////
         var police = new Mkmk_PoliceStatus(POSITION_ID.HOME_7);
