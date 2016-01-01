@@ -18,6 +18,7 @@ mkmk.phases.actionChoicePhase.attr({
             
             // 終了判定
             if( currPlayer.checkIfUpdateContainer() ){
+                // 未対応
                 terminateBokupan();
             }
             

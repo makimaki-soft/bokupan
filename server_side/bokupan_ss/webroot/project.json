@@ -16,6 +16,7 @@
         , "src/BokupanPhases.js"
         , "src/Phase.js"
         , "src/ActionChoicePhase.js"
+        , "src/PlayerMovePhase.js"
         , "src/app.js"
         , "res/loading_image.js"
         , "src/layout.js"

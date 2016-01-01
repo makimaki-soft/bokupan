@@ -1,5 +1,7 @@
 var rtc_helper = new Helper();
 
+var bkpn = bkpn || {};
+
 var BokupanMainScene = cc.Scene.extend({
     
     /**
@@ -94,10 +96,12 @@ function bokupaninit(){
         var police = new Mkmk_PoliceStatus(POSITION_ID.HOME_7);
         mainMapLayer.setPolice(police);
         police.setArrows(mainMapLayer.allows);
+        bkpn.police = police;
         
         /////////// Girls //////////////
         var girl = new Mkmk_GirlsStatus(POSITION_ID.HOME_9);
         mainMapLayer.setGirl(girl);
+        bkpn.girl = girl;
         
         // sample 
         menuLayer.setMapLayer(mainMapLayer);
@@ -110,74 +114,6 @@ function bokupaninit(){
                 gameClearLayer.setWinnerInfo(winner);
                 thisScene.addChild(gameClearLayer, 1);
         };
- 
-        //////////// ▼playerMovePhase▼ ////////////
-        playerMovePhase.nextPhase = [];
-        playerMovePhase.nextPhase[0] = actionChoicePhase;
-        playerMovePhase.onEnter = function(){
-            cc.log("onEnter Move Phase");
-            var currPlayer = gameStatus.getCurrPlayer();
-            var currID = currPlayer.playerID;
-            mainMapLayer.addCursorToPlayer(currID);
-            if(currPlayer.isMe()){
-                this.ev = cc.EventListener.create({
-                    event: cc.EventListener.TOUCH_ONE_BY_ONE,
-                    swallowTouches: true,
-                    onTouchBegan: function (touch, event) {
-                        
-                        var touch_action = { "touchX" :touch.getLocationX(),
-                                      "touchY" :touch.getLocationY()
-                                    };
-                        
-                        rtc_manager.send(rtc_helper.encode(Helper.LABEL.TOUCH, touch_action));
-                        cc.eventManager.dispatchCustomEvent(Helper.LABEL.TOUCH,touch_action);
-                    }
-                });
-                cc.eventManager.addListener(playerMovePhase.ev,mainMapLayer);
-            }
-            
-            cc.eventManager.addCustomListener(Helper.LABEL.TOUCH,function (event) {
-                    cc.log(event.getUserData());
-                    var touch = event.getUserData();
-                    var touchX = touch.touchX;
-                    var touchY = touch.touchY;
-
-                    if(mainMapLayer.isInside(touchX, touchY)){
-                        var dir = mainMapLayer.getRelativeDirection(currID, touchX,touchY);
-                        var result = mainMapLayer.movePlayer(currID, dir, function(currPos){
-                            if(this.checkIfForfeitPosition(currPos)) { // 警察と接触
-                                mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
-                                mainMapLayer.resetPlayerPosition(this);
-                                cc.log("逮捕!!");
-                                gameStatusLayer.updateMsg(this.playerName + "さんが逮捕されました。");
-                            }
-                            else if(this.checkIfForfeitPosition(girl.currPos)) { // 住人に見つかる
-                                mainMapLayer.playCutinAnimation(getGirlCutinResouce(girl.currPos));
-                                mainMapLayer.resetPlayerPosition(this);
-                                cc.log("通報!!");
-                                gameStatusLayer.updateMsg(this.playerName + "さんが通報されました。");
-                            }
-                        }, currPlayer);
-                        if(result){
-                            var delay = 1000;
-                            if( currPlayer.checkIfForfeitPositionWithoutStatusChange(police.getCurrPosition()) ){
-                                delay += 1000;
-                            }
-                            else if( currPlayer.checkIfForfeitPositionWithoutStatusChange(girl.currPos)){
-                                delay += 1000;
-                            }
-                            playerMovePhase.gotoNextPhase(0, delay, true);
-                        }
-                    }
-                });
-        };
-        playerMovePhase.onExit = function(){
-            cc.log("onExit Move Phase");
-            cc.eventManager.removeListener(playerMovePhase.ev);
-            cc.eventManager.removeCustomListeners(Helper.LABEL.TOUCH);
-            mainMapLayer.removeCursor();
-        }
-        //////////// ▲playerMovePhase▲ ////////////
         
         //////////// ▼RotateAllowPhase▼ ////////////
         rotateAllowPhase.nextPhase = [];
