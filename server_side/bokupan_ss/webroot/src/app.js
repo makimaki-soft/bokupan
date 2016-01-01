@@ -116,55 +116,7 @@ function bokupaninit(){
         };
         
         //////////// ▼RotateAllowPhase▼ ////////////
-        rotateAllowPhase.nextPhase = [];
-        rotateAllowPhase.nextPhase[0] = actionChoicePhase;
-        rotateAllowPhase.onEnter = function(){
-            cc.log("onEnter Rotate Phase");
-            // mainMapLayer.addCursorToAllows();
-            var currPlayer = gameStatus.getCurrPlayer();
-            
-            var targetArrow = getArrowByRoadPosition(currPlayer.getCurrPosition());
-            mainMapLayer.addCursorToArrow(targetArrow);
-            if(currPlayer.isMe()){
-                rotateAllowPhase.ev = cc.EventListener.create({
-                    event: cc.EventListener.TOUCH_ONE_BY_ONE,
-                    swallowTouches: true,
-                    onTouchBegan: function (touch, event) {
-                        
-                        var touch_action = { "touchX" :touch.getLocationX(),
-                                             "touchY" :touch.getLocationY()
-                                           };
-                        
-                        rtc_manager.send(rtc_helper.encode(Helper.LABEL.TOUCH, touch_action));
-                        cc.eventManager.dispatchCustomEvent(Helper.LABEL.TOUCH,touch_action);
-                    }
-                });
-                cc.eventManager.addListener(rotateAllowPhase.ev,mainMapLayer);
-            }
-            
-            cc.eventManager.addCustomListener(Helper.LABEL.TOUCH,function (event) {
-                    cc.log(event.getUserData());
-                    var touch = event.getUserData();
-                    var touchX = touch.touchX;
-                    var touchY = touch.touchY;
-                    
-                    if(mainMapLayer.isInside(touchX, touchY)){
-                        // var closestAllow = mainMapLayer.getClosestPosition(touchX,touchY);
-                        var dir = mainMapLayer.getRelativeDirectionAllow(targetArrow, touchX,touchY);
-                        var res = mainMapLayer.rotateAllow(targetArrow, dir);
-                        if(res){
-                            rotateAllowPhase.gotoNextPhase(0,1000, true);
-                        }
-                    }
-                    
-                });
-        }
-        rotateAllowPhase.onExit = function(){
-            cc.log("onExit Rotate Phase");
-            cc.eventManager.removeCustomListeners(Helper.LABEL.TOUCH);
-            cc.eventManager.removeListener(rotateAllowPhase.ev);
-            mainMapLayer.removeCursorAllow();
-        }
+        
         //////////// ▲RotateAllowPhase▲ ////////////
         
         //////////// ▼CollectPantsPhase▼ ////////////
