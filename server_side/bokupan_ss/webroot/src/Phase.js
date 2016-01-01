@@ -2,7 +2,6 @@ var mkmk = mkmk || {};
 
 var playCnt = 2;
 
-
 mkmk.Phase = function(name) {
     this._name = name;
 }; 
@@ -11,6 +10,13 @@ mkmk.Phase.prototype = {
     nextPhase : []
   , childPhase : null
   , parentPhase : null
+  , layers : null
+    
+  , attr : function(attrs){
+      for(var key in attrs) {
+        this[key] = attrs[key];
+      }
+    }
     
   , onEnter : function(){
       cc.log("This is onEnter function. Please override me.");
