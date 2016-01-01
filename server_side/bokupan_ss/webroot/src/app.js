@@ -8,9 +8,7 @@ var BokupanMainScene = cc.Scene.extend({
      * Constructor function
      */
     onEnter:function () {
-        this._super();
-        
-        
+        this._super(); 
         this.layers = defineLayers();
         
        
@@ -23,11 +21,11 @@ var BokupanMainScene = cc.Scene.extend({
 });
 
 function defineLayers(){
-    
+   
     var test1 = new PlayerStatusLayer (cc.color(200,200, 50,100), g_layout.playerstatus_width, g_layout.playerstatus_height);
     var test2 = new MenuLayer         (cc.color(255,200,100,100), g_layout.        menu_width, g_layout.        menu_height);
     var test3 = new MainMapLayer      (cc.color(100,255,140,100), g_layout.         map_width, g_layout.         map_height);
-    var test4 = new GameStatusLayer   (cc.color( 70,200, 70,100), g_layout. enemystatus_width, g_layout. enemystatus_height);
+    var test4 = new GameStatusLayer   (cc.color(  0,  0,  0,100), g_layout. enemystatus_width, g_layout. enemystatus_height);
     var test5 = new GameClearLayer    (cc.color(  0,  0, 70,100), g_layout. canvas_width,      g_layout. canvas_height )   ;
     
     return {
@@ -193,7 +191,7 @@ function bokupaninit(){
                     }
                     
                     // 人数が集まったらゲームを開始する。
-                    if( gameStatus.players.length == 4 ){
+                    if( gameStatus.players.length == 2 ){
                         playerPhase.onEnter();
                         gameStatusLayer.updateMsg("ゲームを開始します。");
                     }
