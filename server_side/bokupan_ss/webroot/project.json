@@ -24,6 +24,7 @@
         , "src/MovePolicePhase.js"
         , "src/MovePeoplePhase.js"
         , "src/PlayerPhase.js"
+        , "src/ComPhase.js"
         , "src/app.js"
         , "res/loading_image.js"
         , "src/layout.js"
