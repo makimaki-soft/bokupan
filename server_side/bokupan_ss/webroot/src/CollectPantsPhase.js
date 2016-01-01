@@ -26,7 +26,7 @@ mkmk.phases.collectPantsPhase.attr({
             self.gotoNextPhase(0,1000, false);
         }
         
-        if(currPlayer.checkIfForfeitPosition(police.getCurrPosition())) { //警察と接触
+        if(currPlayer.checkIfForfeitPosition(bkpn.police.getCurrPosition())) { //警察と接触
             mainMapLayer.playCutinAnimation(res.CutinForfeitPolice);
             mainMapLayer.resetPlayerPosition(currPlayer);
             cc.log("逮捕!!");
