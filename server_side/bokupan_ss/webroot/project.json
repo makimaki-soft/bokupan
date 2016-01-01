@@ -20,6 +20,7 @@
         , "src/RotateAllowPhase.js"
         , "src/CollectPantsPhase.js"
         , "src/SelectItemPhase.js"
+        , "src/RotateAllAllowPhase.js"
         , "src/app.js"
         , "res/loading_image.js"
         , "src/layout.js"

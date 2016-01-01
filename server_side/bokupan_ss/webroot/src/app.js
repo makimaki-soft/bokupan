@@ -115,29 +115,6 @@ function bokupaninit(){
                 thisScene.addChild(gameClearLayer, 1);
         };
         
-        //////////// ▼RotateAllAllowPhase▼ ////////////
-        rotateAllAllowPhase.nextPhase = [];
-        rotateAllAllowPhase.nextPhase[0] = actionChoicePhase;
-        rotateAllAllowPhase.onEnter = function(){
-            cc.log("onEnter Rotate All Arrow Phase");
-            var currPlayer = gameStatus.getCurrPlayer();
-            
-            if(currPlayer.isAlreadyUse(ITEM.ARROW)){
-                mainMapLayer.textConsole("使用済みです");
-                gameStatusLayer.updateMsg("使用済みです。");
-
-                this.gotoNextPhase(0,1000, false);
-                return;
-            }
-            mainMapLayer.rotateAllArrowClockwise();
-            currPlayer.useItem(ITEM.ARROW);
-            this.gotoNextPhase(0,1000, true);
-        }
-        rotateAllAllowPhase.onExit = function(){
-            cc.log("onExit Rotate All Arrow Phase");
-        }
-        //////////// ▲RotateAllAllowPhase▲ ////////////
-        
         //////////// ▼Move Police Phase▼ ////////////
         movePolicePhase.nextPhase = [];
         movePolicePhase.nextPhase[0] = actionChoicePhase;
