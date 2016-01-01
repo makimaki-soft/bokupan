@@ -108,6 +108,7 @@ function bokupaninit(){
         };
 
         //////////// ▼ActionChoicePhase▼ ////////////
+        actionChoicePhase.nextPhase = [];
         actionChoicePhase.nextPhase[0] = rotateAllowPhase;
         actionChoicePhase.nextPhase[1] = playerMovePhase;
         actionChoicePhase.nextPhase[2] = collectPantsPhase;
@@ -172,6 +173,7 @@ function bokupaninit(){
         //////////// ▲ActionChoicePhase▲ ////////////
         
         //////////// ▼playerMovePhase▼ ////////////
+        playerMovePhase.nextPhase = [];
         playerMovePhase.nextPhase[0] = actionChoicePhase;
         playerMovePhase.onEnter = function(){
             cc.log("onEnter Move Phase");
@@ -239,6 +241,7 @@ function bokupaninit(){
         //////////// ▲playerMovePhase▲ ////////////
         
         //////////// ▼RotateAllowPhase▼ ////////////
+        rotateAllowPhase.nextPhase = [];
         rotateAllowPhase.nextPhase[0] = actionChoicePhase;
         rotateAllowPhase.onEnter = function(){
             cc.log("onEnter Rotate Phase");
@@ -290,6 +293,7 @@ function bokupaninit(){
         //////////// ▲RotateAllowPhase▲ ////////////
         
         //////////// ▼CollectPantsPhase▼ ////////////
+        collectPantsPhase.nextPhase = [];
         collectPantsPhase.nextPhase[0] = actionChoicePhase;
         collectPantsPhase.onEnter = function(){
             cc.log("onEnter Collect Pants Phase");
@@ -332,6 +336,7 @@ function bokupaninit(){
         //////////// ▲CollectPantsPhase▲ ////////////
          
         //////////// ▼SelectItemPhase▼ ////////////
+        selectItemPhase.nextPhase = [];
         selectItemPhase.nextPhase[0] = rotateAllAllowPhase;
         selectItemPhase.nextPhase[1] = movePolicePhase;
         selectItemPhase.nextPhase[2] = movePeoplePhase;
@@ -362,6 +367,7 @@ function bokupaninit(){
         //////////// ▲SelectItemPhase▲ ////////////
         
         //////////// ▼RotateAllAllowPhase▼ ////////////
+        rotateAllAllowPhase.nextPhase = [];
         rotateAllAllowPhase.nextPhase[0] = actionChoicePhase;
         rotateAllAllowPhase.onEnter = function(){
             cc.log("onEnter Rotate All Arrow Phase");
@@ -384,6 +390,7 @@ function bokupaninit(){
         //////////// ▲RotateAllAllowPhase▲ ////////////
         
         //////////// ▼Move Police Phase▼ ////////////
+        movePolicePhase.nextPhase = [];
         movePolicePhase.nextPhase[0] = actionChoicePhase;
         movePolicePhase.onEnter = function(){
             cc.log("onEnter Move Police Phase");
@@ -433,6 +440,7 @@ function bokupaninit(){
         //////////// ▲Move Police Phase▲ ////////////
         
         //////////// ▼Move People Phase▼ ////////////
+        movePeoplePhase.nextPhase = [];
         movePeoplePhase.nextPhase[0] = actionChoicePhase;
         movePeoplePhase.onEnter = function(){
             cc.log("onEnter Move People Phase");
@@ -480,6 +488,7 @@ function bokupaninit(){
         //////////// ▲Move People Phase▲ ////////////
         
         //////////// ▼Player Phase▼ ////////////
+        playerPhase.nextPhase = [];
         playerPhase.nextPhase[0] = comPhase;
         playerPhase.nextPhase[1] = playerPhase;
         playerPhase.setchildEntryPoint( actionChoicePhase ); // 子フェーズの設定
@@ -523,6 +532,7 @@ function bokupaninit(){
         //////////// ▲Player Phase▲ ////////////
         
         //////////// ▼Com Phase▼ ////////////
+        comPhase.nextPhase = [];
         comPhase.nextPhase[0]  = playerPhase;
         comPhase.onEnter = function(){
             cc.log("onEnter Com Phase");

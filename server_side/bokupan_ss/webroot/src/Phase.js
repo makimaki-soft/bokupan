@@ -2,55 +2,65 @@ var mkmk = mkmk || {};
 
 var playCnt = 2;
 
-mkmk.Phase = function() {
-    this.nextPhase = [];
-    this.childPhase = null;
-    this.parentPhase = null;
-    this.onEnter = function(){
-      cc.log("onEnter");
-    };
-    this.onExit = function(){
-      cc.log("onExit");
-    };
-    this.setOnClickEventListener = function(mkmk_menuitem,fnc, id){
-        mkmk_menuitem.addCallbackFunc(fnc,this, id);
-    };
-    this.gotoNextPhase = function(id, delay_msec, bDec){
+
+mkmk.Phase = function(name) {
+    this._name = name;
+}; 
+
+mkmk.Phase.prototype = {
+    nextPhase : []
+  , childPhase : null
+  , parentPhase : null
+    
+  , onEnter : function(){
+      cc.log("This is onEnter function. Please override me.");
+    }
+    
+  , onExit : function(){
+      cc.log("This is onExit function. Please override me.");
+    }
+    
+  , setOnClickEventListener : function(mkmk_menuitem,fnc, id){
+      mkmk_menuitem.addCallbackFunc(fnc,this, id);
+    }
+    
+  , gotoNextPhase : function(id, delay_msec, bDec){
       this.onExit();
       var nextPhase = this.nextPhase[id];
       nextPhase.setParentEntoryPoint(this.parentPhase);
       
       if(bDec){
-        playCnt--;
+          playCnt--;
       }
       
       if( playCnt == 0 ){
-        playCnt = 2;
-        var parentPhase = this.parentPhase;
-        var nextIdx = parentPhase.nextPhaseIdx;
-        parentPhase.gotoNextPhase(nextIdx, delay_msec+1500, false);
+          playCnt = 2;
+          var parentPhase = this.parentPhase;
+          var nextIdx = parentPhase.nextPhaseIdx;
+          parentPhase.gotoNextPhase(nextIdx, delay_msec+1500, false);
       } else{ 
-        setTimeout(function(){
-          nextPhase.onEnter();
-        }, delay_msec);
+          setTimeout(function(){
+            nextPhase.onEnter();
+          }, delay_msec);
       }
     }
-    this.setchildEntryPoint = function(childPhase){
-        this.childPhase = childPhase;
-    };
-    this.setParentEntoryPoint = function(parentPhase){
-        this.parentPhase = parentPhase;
-    };
-    this.gotoChildPhase = function(delay_msec){
+    
+  , setchildEntryPoint : function(childPhase){
+      this.childPhase = childPhase;
+    }
+    
+  , setParentEntoryPoint : function(parentPhase){
+      this.parentPhase = parentPhase;
+    }
+    
+  , gotoChildPhase : function(delay_msec){
       var nextPhase = this.childPhase;
       nextPhase.setParentEntoryPoint(this);
       setTimeout(function(){
-        nextPhase.onEnter();
+          nextPhase.onEnter();
       }, delay_msec);
-    };
-    //ステータスを更新
-
-}
+    }
+};
 
 /**
  * Phaseのインスタンス
@@ -62,7 +72,7 @@ mkmk.phases = (function(){
     var list = mkmk.phaseList.list;
 
     for(var key in list) {
-        phase[list[key]] = new mkmk.Phase();
+        phase[list[key]] = new mkmk.Phase(list[key]);
     }
 
     return phase;
