@@ -115,37 +115,6 @@ function bokupaninit(){
                 thisScene.addChild(gameClearLayer, 1);
         };
         
-        //////////// ▼SelectItemPhase▼ ////////////
-        selectItemPhase.nextPhase = [];
-        selectItemPhase.nextPhase[0] = rotateAllAllowPhase;
-        selectItemPhase.nextPhase[1] = movePolicePhase;
-        selectItemPhase.nextPhase[2] = movePeoplePhase;
-        selectItemPhase.onEnter = function(){
-            cc.log("onEnter Select Item Phase");
-            mainMapLayer.addItemCard();
-     
-            cc.eventManager.addCustomListener(Helper.LABEL.ITEM_ARROW ,function (event) {
-                    cc.log(event.getUserData());  
-                    selectItemPhase.gotoNextPhase(0);
-                });
-            cc.eventManager.addCustomListener(Helper.LABEL.ITEM_POLICE ,function (event) {
-                    cc.log(event.getUserData());  
-                    selectItemPhase.gotoNextPhase(1);
-                });
-            cc.eventManager.addCustomListener(Helper.LABEL.ITEM_PEOPLE ,function (event) {
-                    cc.log(event.getUserData());  
-                    selectItemPhase.gotoNextPhase(2);
-                });
-        }
-        selectItemPhase.onExit = function(){
-            cc.log("onExit Select Item Phase");
-            cc.eventManager.removeCustomListeners(Helper.LABEL.ITEM_ARROW);
-            cc.eventManager.removeCustomListeners(Helper.LABEL.ITEM_POLICE);
-            cc.eventManager.removeCustomListeners(Helper.LABEL.ITEM_PEOPLE);
-            mainMapLayer.removeItemCard();
-        }
-        //////////// ▲SelectItemPhase▲ ////////////
-        
         //////////// ▼RotateAllAllowPhase▼ ////////////
         rotateAllAllowPhase.nextPhase = [];
         rotateAllAllowPhase.nextPhase[0] = actionChoicePhase;
