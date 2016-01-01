@@ -22,6 +22,7 @@
         , "src/SelectItemPhase.js"
         , "src/RotateAllAllowPhase.js"
         , "src/MovePolicePhase.js"
+        , "src/MovePeoplePhase.js"
         , "src/app.js"
         , "res/loading_image.js"
         , "src/layout.js"

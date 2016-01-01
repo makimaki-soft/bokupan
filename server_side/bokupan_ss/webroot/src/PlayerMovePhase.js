@@ -32,6 +32,7 @@ mkmk.phases.playerMovePhase.attr({
                 var touch = event.getUserData();
                 var touchX = touch.touchX;
                 var touchY = touch.touchY;
+                var girl   = bkpn.girl;
 
                 if(mainMapLayer.isInside(touchX, touchY)){
                     var dir = mainMapLayer.getRelativeDirection(currID, touchX,touchY);
@@ -52,7 +53,6 @@ mkmk.phases.playerMovePhase.attr({
                     if(result){
                         var delay = 1000;
                         var police = bkpn.police;
-                        var girl   = bkpn.girl;
                         if( currPlayer.checkIfForfeitPositionWithoutStatusChange(police.getCurrPosition()) ){
                             delay += 1000;
                         }

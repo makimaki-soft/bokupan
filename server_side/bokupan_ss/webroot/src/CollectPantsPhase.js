@@ -32,8 +32,8 @@ mkmk.phases.collectPantsPhase.attr({
             cc.log("逮捕!!");
             gameStatusLayer.updateMsg(currPlayer.playerName + "さんが逮捕されました。");
         }
-        else if(currPlayer.checkIfForfeitPosition(girl.currPos)) { // 住人に見つかる
-            mainMapLayer.playCutinAnimation(getGirlCutinResouce(girl.currPos));
+        else if(currPlayer.checkIfForfeitPosition(bkpn.girl.currPos)) { // 住人に見つかる
+            mainMapLayer.playCutinAnimation(getGirlCutinResouce(bkpn.girl.currPos));
             mainMapLayer.resetPlayerPosition(currPlayer);
             cc.log("通報!!");
             gameStatusLayer.updateMsg(currPlayer.playerName + "さんが通報されました。");
