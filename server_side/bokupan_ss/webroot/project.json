@@ -18,6 +18,7 @@
         , "src/ActionChoicePhase.js"
         , "src/PlayerMovePhase.js"
         , "src/RotateAllowPhase.js"
+        , "src/CollectPantsPhase.js"
         , "src/app.js"
         , "res/loading_image.js"
         , "src/layout.js"
