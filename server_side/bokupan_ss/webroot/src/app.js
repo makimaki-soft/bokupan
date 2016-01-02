@@ -105,25 +105,14 @@ function bokupaninit(){
         menuLayer.setMapLayer(mainMapLayer);
         mainMapLayer.setMenuLayer(menuLayer);
 
-        var terminateBokupan = function(){
+        bkpn.terminateBokupan = function(){
             var winner = gameStatus.getPlayer(gameStatus.winner);
                 cc.log(winner);
                 mainMapLayer.textConsole(winner.playerName +  "さんが勝ちました。");
                 gameClearLayer.setWinnerInfo(winner);
                 thisScene.addChild(gameClearLayer, 1);
         };
-       
-        //////////// ▼Player Phase▼ ////////////
-        
-        //////////// ▲Player Phase▲ ////////////
-        
-        //////////// ▼Com Phase▼ ////////////
-        
-        //////////// ▲Com Phase▲ ////////////
-        
-        //////////// Phase Entry Point ////////////
-        //////////// Phase Entry Point ////////////
-        
+               
         rtc_manager.setReceiveAction(function(peerID, data){
             // cc.log(peerID,data);
             var decoded = rtc_helper.decode(data);

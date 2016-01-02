@@ -41,8 +41,7 @@ mkmk.phases.playerPhase.attr({
         setTimeout(function(){
             // 終了判定
             if( currPlayer.checkIfUpdateContainer() ){
-                // 未対応
-                terminateBokupan();
+                bkpn.terminateBokupan();
             }
         }, 1000 );
         gameStatus.chengePlayer();
