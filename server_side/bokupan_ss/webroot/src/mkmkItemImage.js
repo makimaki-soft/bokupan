@@ -8,19 +8,4 @@ var Mkmk_MenuItemImage = cc.MenuItemImage.extend({
         
         this._super(normalImage, selectedImage, this.CallBackOrg, target);
     }
-  
- , addCallbackFunc:function(  fnc,    // callBack
-                              target, // "this" of callBack
-                              id      // condition ID
- ){
-      this.setCallback(function(sender){
-          // sender には setCallback をcallしたオブジェクトが入る
-          if(sender.CallBackOrg){
-            // コンストラクタ呼び出し時のtargetでcallBackをcall
-            sender.CallBackOrg.call(this);
-          }
-          // 追加のcallBackをcall
-          fnc.call(target, id, 0);
-      },this.target);
-  } 
 });

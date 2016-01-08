@@ -26,10 +26,6 @@ mkmk.Phase.prototype = {
       cc.log("This is onExit function. Please override me.");
     }
     
-  , setOnClickEventListener : function(mkmk_menuitem,fnc, id){
-      mkmk_menuitem.addCallbackFunc(fnc,this, id);
-    }
-    
   , gotoNextPhase : function(id, delay_msec, bDec){
       this.onExit();
       var nextPhase = this.nextPhase[id];

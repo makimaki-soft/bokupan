@@ -48,11 +48,6 @@ mkmk.phases.actionChoicePhase.attr({
                     cc.log(event.getUserData());  
                     self.gotoNextPhase(3);
                 });
-                
-            // this.setOnClickEventListener(menuLayer.rotateIcon,  this.gotoNextPhase, 0);
-            // this.setOnClickEventListener(menuLayer.moveIcon,    this.gotoNextPhase, 1);
-            // this.setOnClickEventListener(menuLayer.CollectIcon, this.gotoNextPhase, 2);
-            // this.setOnClickEventListener(menuLayer.ItemIcon,    this.gotoNextPhase, 3);
         }
         
       , onExit : function(){
