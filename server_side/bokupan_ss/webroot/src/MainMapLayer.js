@@ -340,7 +340,7 @@ var MainMapLayer = cc.LayerColor.extend({
       }
     }
   }
-  , getRelativeDirection(id,x,y){
+  , getRelativeDirection:function(id,x,y){
       var relativeX =  x - this.x - this.playerIcons[id].x;
       var relativeY =  y - this.y - this.playerIcons[id].y;
 
@@ -354,7 +354,7 @@ var MainMapLayer = cc.LayerColor.extend({
         return NEIGHBER.BELOW;
       }
   }
-  , getClosestPosition(x,y){
+  , getClosestPosition:function(x,y){
       var pos_id = [POSITION_ID.ALLOW_1,
                     POSITION_ID.ALLOW_2,
                     POSITION_ID.ALLOW_3,
@@ -375,7 +375,7 @@ var MainMapLayer = cc.LayerColor.extend({
 
       return bestPos;
   }
-  , getRelativeDirectionAllow(positionID, x,y){
+  , getRelativeDirectionAllow:function(positionID, x,y){
       var idx = positionID-POSITION_ID.ALLOW_1;
       var relativeX =  x - this.x - this.allows[idx].x;
       var relativeY =  y - this.y - this.allows[idx].y;
